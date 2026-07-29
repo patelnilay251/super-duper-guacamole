@@ -3,7 +3,18 @@
 Forty-odd dithering and shader-style algorithms, applied to real photographs and
 rendered onto a single canvas so they can be compared at a glance.
 
+**Live: [ditherwall.pages.dev](https://ditherwall.pages.dev)** — running on your
+own GPU, no server behind it.
+
 ![the wall](out/wall.png)
+
+Three front ends over one set of algorithms:
+
+| | What it is | Where it runs |
+|---|---|---|
+| [`ditherwall/`](ditherwall) | NumPy engine — renders posters, and is the reference implementation | Locally, offline |
+| [`web/`](web) | Server-rendered gallery, one tile per request | `http.server`, containerised |
+| [`gpu/`](gpu) | WebGL2 wall, animated and pointer-reactive | The viewer's GPU, served as static files |
 
 Every tile is a different algorithm on a different photograph, cropped at its own
 zoom and framing. The layout is a recursive split rather than a grid, so the tile
@@ -128,12 +139,17 @@ CORS-enabled, and Picsum sends no CORS header. Serving a bundled corpus sidestep
 the question and removes any runtime dependency on a third-party CDN or its rate
 limits — 36 photographs at 1024px come to 3.9 MB.
 
-**Statistics the shader cannot compute are precomputed.** `normalize_tone` needs
-luminance percentiles over the image; those go in the manifest at build time. The
-per-crop exposure gamma is measured on the CPU once per tile by drawing the crop
-into an 8×8 canvas and reading it back. Doing that in the shader instead cost
-nine texture fetches on *every pixel* to recompute a value constant across the
-tile — removing it took the software-rendered frame rate from 5 fps to 13.
+**Statistics the shader cannot compute are measured on the CPU.** `normalize_tone`
+needs luminance percentiles and a mean, neither of which a fragment shader can
+derive without an extra pass. Once per tile the crop is drawn into a 32×32 canvas
+and read back, which gives both for one `drawImage`, and they go in as uniforms.
+
+Measuring the *crop* rather than the whole photograph matters: a tight crop of sky
+inside a high-contrast frame gets almost no stretch from whole-image percentiles
+and dithers to a flat field. An earlier version did this inside the shader, at
+nine texture fetches on *every pixel*, to recompute a value that is constant
+across the tile — removing that took the software-rendered frame rate from 5 fps
+to 13.
 
 ## Depth-aware processes
 
@@ -234,18 +250,64 @@ and clamped to an edge pixel, leaving distant tiles flat black.
 
 ## Deploying
 
-The repo carries a `Dockerfile` and a Render Blueprint. Deployment is a pull, not
-a push — connect the repo in the Render dashboard (**New → Blueprint**), and it
-reads `render.yaml`, builds the image, and serves it. No API token is needed.
+The GPU wall is what is deployed, and it is static files — no server, no runtime
+compute, nothing to keep warm. It lives on **Cloudflare Pages** at
+[ditherwall.pages.dev](https://ditherwall.pages.dev).
+
+`.github/workflows/deploy.yml` runs on every push touching `gpu/`:
+
+```
+check   →  serve gpu/ locally, run the differential harness against real Chromium
+deploy  →  wrangler pages deploy gpu --project-name=ditherwall
+```
+
+`deploy` declares `needs: check`, so a shader that stops matching the NumPy
+reference blocks the release rather than shipping. That is not hypothetical — it
+has already caught a broken run.
+
+**Two repository secrets** (Settings → Secrets and variables → Actions):
+
+| Secret | Scope |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Account → Cloudflare Pages → **Edit**, and nothing else |
+| `CLOUDFLARE_ACCOUNT_ID` | From the dashboard URL |
+
+Wrangler reads both straight from the environment; neither is ever echoed. The
+workflow fails with an explicit message if either is missing, rather than letting
+wrangler produce something cryptic.
+
+`main` publishes to the production domain. Any other branch gets its own preview
+URL — `<branch>.ditherwall.pages.dev` — which is how this was reviewed before it
+had a trunk.
+
+**Cache rules** live in [`gpu/_headers`](gpu/_headers). Photographs, depth maps
+and the noise texture only change when the corpus is rebuilt, so they are
+immutable for a year; the entry point is held to a minute, because caching it
+hard would leave a deploy invisible until the edge expired it.
+
+Cloudflare Pages was chosen over the alternatives for one reason: this is an
+image-heavy site, and its free tier is the only one without a bandwidth cap.
+Since rendering happens on the viewer's GPU, there is no compute to pay for
+either — the whole thing runs at no cost.
+
+### Deploying the server-rendered gallery instead
+
+The `Dockerfile` and `render.yaml` at the root belong to [`web/`](web), the
+server-rendered gallery — a separate front end that predates the GPU port and is
+kept because it exercises the NumPy engine end to end. It is *not* what serves
+ditherwall.pages.dev.
 
 ```bash
 docker build -t ditherwall .
 docker run -p 8000:8000 ditherwall
 ```
 
-The photo corpus is baked into the image at build time. Fetching at boot would
-make every cold start wait on ~30 HTTP round trips, and a free instance cold-starts
-often.
+Deployment there is also a pull rather than a push: connect the repo in the
+Render dashboard (**New → Blueprint**) and it reads `render.yaml`. No token
+changes hands.
+
+The photo corpus is baked into the image at build time; fetching at boot would
+make every cold start wait on ~30 HTTP round trips.
 
 **Tuning knobs**, all environment variables, all read at startup:
 
@@ -259,12 +321,11 @@ often.
 The Blueprint sets 480px / 2 workers, because a free instance gets a fraction of
 a core and cost scales with area. On a paid plan, raise both.
 
-**The client throttles itself.** Refresh interval is derived from measured
+**That client throttles itself.** Refresh interval is derived from measured
 latency rather than fixed: N tiles refreshing every T seconds demand `N/T`
 renders per second against a capacity of about `workers/latency`. So on a fast
 machine tiles turn over every ~5s, and on a slow host the interval stretches
 toward its 90s ceiling instead of piling up a queue the server can never drain.
-The status line reports both the measured latency and the current interval.
 
 ## Notes on the implementation
 
@@ -303,11 +364,35 @@ about 11 seconds.
 ## Layout
 
 ```
-ditherwall/
-  fetch.py     photo corpus + caching
-  effects.py   all algorithms, plus the EFFECTS registry
-  layout.py    recursive canvas splitting, detail-seeking crops
-  render.py    composition and labelling
+ditherwall/          NumPy engine — posters, and the reference implementation
+  fetch.py             photo corpus + caching
+  effects.py           all algorithms, plus the EFFECTS registry
+  genres.py            style presets: palette, screen and finish per genre
+  layout.py            recursive canvas splitting, detail-seeking crops
+  render.py            composition and labelling
+
+gpu/                 WebGL2 wall — what ships to Cloudflare Pages
+  shaders.js           GLSL ports, 16 programs
+  presets.js           palettes, ramps and inks bound to those programs
+  layout.js            the splitting algorithm, ported
+  main.js              one context, tone measurement, morph, chrome
+  diff.html            headless bench the differential harness drives
+  _headers             Pages cache rules
+  photos/ depth/       bundled corpus and its depth maps
+  manifest.json        corpus index
+
+web/                 server-rendered gallery
+  server.py            http.server + a pre-rendering worker pool
+  static/              one HTML/CSS/JS file each
+  shoot.py             Chromium capture, doubles as a smoke test
+
+tools/
+  build_corpus.py      optimised photos, manifest, blue-noise texture
+  build_depth.py       monocular depth maps via ONNX Runtime
+  diff_harness.py      GPU vs NumPy, gates deployment
+
+.github/workflows/
+  deploy.yml           harness, then wrangler pages deploy
 ```
 
 Photographs are from Unsplash via Picsum and are credited in each tile's caption.
