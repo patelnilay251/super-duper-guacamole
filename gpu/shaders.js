@@ -86,6 +86,36 @@ float dotScreen(vec2 px, float coverage, float cell, float angle) {
   float dist = length(d) / (cell * 0.5);
   return step(dist, sqrt(clamp(coverage, 0.0, 1.0)) * 1.16);
 }
+
+// ---- noise -------------------------------------------------------------
+
+float hash11(float p) { return fract(sin(p * 127.1) * 43758.5453); }
+float hash21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+
+float valueNoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash21(i), hash21(i + vec2(1, 0)), f.x),
+             mix(hash21(i + vec2(0, 1)), hash21(i + vec2(1, 1)), f.x), f.y);
+}
+
+// ---- filtering ---------------------------------------------------------
+
+// The texture already carries a mipmap chain, so a blur is one biased fetch
+// rather than a multi-tap kernel. Far cheaper than a real Gaussian and
+// indistinguishable once it is used as a glow.
+vec3 blurred(vec2 uv, float lod) { return textureLod(uTex, srcUv(uv), lod).rgb; }
+
+float lumaAt(vec2 uv) { return luma(srcToned(uv)); }
+
+vec2 sobel(vec2 uv) {
+  vec2 t = 1.0 / uRes;
+  float tl = lumaAt(uv + vec2(-t.x,  t.y)), l = lumaAt(uv + vec2(-t.x, 0.0)), bl = lumaAt(uv - t);
+  float tr = lumaAt(uv + t),                r = lumaAt(uv + vec2( t.x, 0.0)), br = lumaAt(uv + vec2( t.x, -t.y));
+  float tp = lumaAt(uv + vec2(0.0,  t.y)),  b = lumaAt(uv - vec2(0.0, t.y));
+  return vec2((tr + 2.0 * r + br) - (tl + 2.0 * l + bl),
+              (bl + 2.0 * b + br) - (tl + 2.0 * tp + tr));
+}
 `;
 
 // --------------------------------------------------------------------------
@@ -164,5 +194,204 @@ void main() {
   out0 *= 1.0 - a * (1.0 - uInkA);                      // multiply onto paper
   out0 *= 1.0 - b * (1.0 - uInkB);
   fragColor = vec4(out0, 1.0);
+}`,
+
+  // Shadow-mask tube: scanlines, an RGB aperture stripe, and a roll bar
+  // drifting down the tile the way an out-of-sync tube does.
+  crt: COMMON + `
+uniform float uCurve;
+void main() {
+  vec2 uv = vUv;
+  vec2 c = uv - 0.5;
+  uv += c * dot(c, c) * uCurve;                          // barrel distortion
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { fragColor = vec4(0.02, 0.02, 0.03, 1.0); return; }
+
+  float disp = 0.0016 * (1.0 + uPointerAmt * 2.0 * length(uPointer));
+  vec3 col = vec3(srcToned(uv + vec2(disp, 0.0)).r, srcToned(uv).g, srcToned(uv - vec2(disp, 0.0)).b);
+
+  float scan = 0.72 + 0.28 * step(0.5, fract(gl_FragCoord.y / 3.0));
+  float roll = 1.0 + 0.11 * sin((uv.y + uTime * 0.12 + uSeed) * 40.0);
+  vec3 mask = vec3(1.0);
+  int stripe = int(mod(gl_FragCoord.x, 3.0));
+  if (stripe == 0) mask = vec3(1.32, 0.86, 0.86);
+  else if (stripe == 1) mask = vec3(0.86, 1.32, 0.86);
+  else mask = vec3(0.86, 0.86, 1.32);
+
+  col = clamp((col - 0.5) * 1.18 + 0.5, 0.0, 1.0);
+  fragColor = vec4(clamp(col * scan * roll * mask + 0.02, 0.0, 1.0), 1.0);
+}`,
+
+  // Radial lens dispersion. The amount breathes, and the pointer pulls it wider.
+  chromatic: COMMON + `
+uniform float uAmount;
+void main() {
+  float amt = uAmount * (1.0 + 0.4 * sin(uTime * 0.5 + uSeed * 6.28))
+                      * (1.0 + uPointerAmt * 2.2 * length(uPointer));
+  vec2 c = vUv - 0.5;
+  vec3 col;
+  col.r = srcToned(0.5 + c * (1.0 - amt)).r;
+  col.g = srcToned(vUv).g;
+  col.b = srcToned(0.5 + c * (1.0 + amt)).b;
+  fragColor = vec4(col, 1.0);
+}`,
+
+  // Highlights bleeding into a glow, taken from a mip level rather than a
+  // multi-tap kernel.
+  bloom: COMMON + `
+uniform float uThreshold;
+uniform float uStrength;
+void main() {
+  vec3 base = srcToned(vUv);
+  float th = uThreshold - 0.12 * sin(uTime * 0.4 + uSeed * 6.28) - uPointerAmt * 0.15 * length(uPointer);
+  vec3 wide = toneMap(blurred(vUv, 4.5));
+  vec3 glow = max(wide - th, vec3(0.0)) / max(1e-3, 1.0 - th);
+  fragColor = vec4(clamp(base + glow * uStrength, 0.0, 1.0), 1.0);
+}`,
+
+  // Jittered-grid Voronoi: each cell takes the colour at its own seed point.
+  // The seeds orbit, so the facets shift like slow-moving glass.
+  crystallize: COMMON + `
+uniform float uCell;
+void main() {
+  float cell = uCell * (1.0 + uPointerAmt * 1.5 * length(uPointer));
+  // Tile-local pixels, derived from vUv rather than gl_FragCoord. Every tile is
+  // drawn through its own gl.viewport, but gl_FragCoord stays in framebuffer
+  // coordinates -- feeding that back into a UV lands outside the texture and
+  // clamps to an edge pixel, which is why distant tiles came out flat.
+  vec2 px = vUv * uRes / cell;
+  vec2 base = floor(px);
+
+  float bestD = 1e9;
+  vec2 bestSeed = base;
+  for (int y = -1; y <= 1; y++) {
+    for (int x = -1; x <= 1; x++) {
+      vec2 g = base + vec2(float(x), float(y));
+      float h = hash21(g);
+      vec2 jitter = 0.5 + 0.45 * vec2(sin(uTime * 0.5 + h * 6.28), cos(uTime * 0.4 + h * 5.1));
+      vec2 seed = g + jitter;
+      float d = dot(seed - px, seed - px);
+      if (d < bestD) { bestD = d; bestSeed = seed; }
+    }
+  }
+  fragColor = vec4(srcToned(clamp(bestSeed * cell / uRes, 0.0, 1.0)), 1.0);
+}`,
+
+  // Painterly edge-preserving filter: take the mean of the flattest quadrant.
+  kuwahara: COMMON + `
+uniform float uRadius;
+void main() {
+  vec2 t = 1.0 / uRes;
+  float r = uRadius;
+  vec3 bestMean = vec3(0.0);
+  float bestVar = 1e9;
+
+  for (int q = 0; q < 4; q++) {
+    vec2 dir = vec2(q == 0 || q == 3 ? -1.0 : 1.0, q < 2 ? -1.0 : 1.0);
+    vec3 sum = vec3(0.0); float sum2 = 0.0; float n = 0.0;
+    for (int j = 0; j <= 3; j++) {
+      for (int i = 0; i <= 3; i++) {
+        vec2 o = dir * vec2(float(i), float(j)) * (r / 3.0) * t;
+        vec3 c = srcToned(vUv + o);
+        sum += c; sum2 += luma(c) * luma(c); n += 1.0;
+      }
+    }
+    vec3 mean = sum / n;
+    float variance = sum2 / n - luma(mean) * luma(mean);
+    if (variance < bestVar) { bestVar = variance; bestMean = mean; }
+  }
+  fragColor = vec4(clamp(bestMean, 0.0, 1.0), 1.0);
+}`,
+
+  // Monochrome terminal tube with glow bleed and a slow phosphor decay ripple.
+  phosphor: COMMON + `
+uniform vec3 uTint;
+void main() {
+  float g = luma(srcToned(vUv));
+  float glow = luma(toneMap(blurred(vUv, 3.5)));
+  g = clamp(g * 0.92 + glow * 0.28, 0.0, 1.0);
+  g *= 0.86 + 0.14 * sin((vUv.y + uTime * 0.2 + uSeed) * 26.0);
+
+  vec3 col = mix(vec3(0.02, 0.05, 0.03), uTint, pow(g, 1.15));
+  float scan = 0.62 + 0.38 * step(0.5, fract(gl_FragCoord.y / 3.0));
+  fragColor = vec4(clamp(col * scan, 0.0, 1.0), 1.0);
+}`,
+
+  // Photocopy: crushed tone curve, toner speckle, and dropout that reshuffles
+  // every second or so, as though the sheet were being fed again.
+  xerox: COMMON + `
+uniform float uBias;
+void main() {
+  float g = luma(srcToned(vUv));
+  float pass = floor(uTime * 0.8 + uSeed * 10.0);          // a new copy each pass
+  float hard = 1.0 / (1.0 + exp(-(g - uBias) * 13.0));
+  float speckle = (hash21(gl_FragCoord.xy + pass * 37.0) - 0.5) * 0.32;
+  hard = step(0.5, clamp(hard + speckle, 0.0, 1.0));
+  hard = clamp(hard + step(0.994, hash21(gl_FragCoord.xy * 1.7 + pass)), 0.0, 1.0);
+  fragColor = vec4(mix(vec3(0.09, 0.09, 0.11), vec3(0.94, 0.93, 0.90), hard), 1.0);
+}`,
+
+  // Engraving: successive line sets cut in as the tone darkens.
+  crosshatch: COMMON + `
+uniform float uSpacing;
+uniform vec3 uInk;
+uniform vec3 uStock;
+void main() {
+  float g = luma(toneMap(blurred(vUv, 1.5)));
+  float spacing = uSpacing * (1.0 + uPointerAmt * 1.4 * length(uPointer));
+  float drift = uTime * 0.15 + uSeed * 6.28;
+  float ink = 0.0;
+  for (int k = 0; k < 4; k++) {
+    float angle = float(k) * 0.7854 + 0.1 * sin(drift + float(k));
+    float cut = 0.82 - float(k) * 0.20;
+    float proj = gl_FragCoord.x * cos(angle) - gl_FragCoord.y * sin(angle);
+    if (g < cut && mod(proj, spacing) < 1.35) ink = 1.0;
+  }
+  fragColor = vec4(mix(uStock, uInk, ink), 1.0);
+}`,
+
+  // Sobel magnitude, drawn as light on dark.
+  edges: COMMON + `
+uniform float uGain;
+void main() {
+  vec2 g = sobel(vUv);
+  float m = clamp(length(g) * uGain * (1.0 + uPointerAmt * 1.5 * length(uPointer)), 0.0, 1.0);
+  m *= 0.85 + 0.15 * sin(uTime * 0.6 + uSeed * 6.28);
+  fragColor = vec4(vec3(m), 1.0);
+}`,
+
+  // Two-colour map with a posterised option, so the ramp shows as flat bands.
+  duotone: COMMON + `
+uniform vec3 uDark;
+uniform vec3 uLight;
+uniform float uLevels;
+void main() {
+  float g = luma(srcToned(vUv));
+  g = clamp(g + 0.08 * sin(uTime * 0.3 + uSeed * 6.28) + uPointerAmt * 0.2 * uPointer.x, 0.0, 1.0);
+  if (uLevels > 1.5) g = floor(g * uLevels) / (uLevels - 1.0);
+  fragColor = vec4(mix(uDark, uLight, clamp(g, 0.0, 1.0)), 1.0);
+}`,
+
+  // Warp along a smooth noise field: heat haze, or liquid, depending on speed.
+  displace: COMMON + `
+uniform float uAmount;
+void main() {
+  float amt = uAmount * (1.0 + uPointerAmt * 1.8 * length(uPointer));
+  vec2 p = vUv * 4.0 + uTime * 0.12;
+  vec2 flow = vec2(valueNoise(p), valueNoise(p + 31.4)) - 0.5;
+  fragColor = vec4(srcToned(clamp(vUv + flow * amt, 0.001, 0.999)), 1.0);
+}`,
+
+  // Horizontal datamosh: rows shift in blocks, re-cut a few times a second.
+  datamosh: COMMON + `
+uniform float uAmount;
+void main() {
+  float pass = floor(uTime * 1.6 + uSeed * 20.0);
+  float band = floor(gl_FragCoord.y / (6.0 + 26.0 * hash11(floor(gl_FragCoord.y / 24.0) + pass)));
+  float shift = (hash21(vec2(band, pass)) - 0.5) * uAmount
+              * (1.0 + uPointerAmt * 2.0 * abs(uPointer.x));
+  vec2 uv = vec2(fract(vUv.x + shift / uRes.x * 40.0), vUv.y);
+  vec3 col = srcToned(uv);
+  if (hash21(vec2(band, pass + 5.0)) > 0.88) col = col.gbr;   // channel swap
+  fragColor = vec4(col, 1.0);
 }`,
 };

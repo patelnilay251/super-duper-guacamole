@@ -47,6 +47,12 @@ function riso(label, a, b, cell, slip) {
 
 const INK = rgb(18, 16, 14), STOCK = rgb(247, 241, 226);
 
+const shader = (label, program, uniforms) => ({ label, program, uniforms });
+
+function duotone(label, dark, light, levels = 0) {
+  return shader(label, 'duotone', { uDark: dark, uLight: light, uLevels: levels });
+}
+
 export const PRESETS = {
   dither: [
     ordered('bayer 2×2', 'bayer2', 'mono', 1),
@@ -79,6 +85,48 @@ export const PRESETS = {
     riso(label, a, b, 5, 2),
     riso(`${label} · coarse`, a, b, 9, 3.5),
   ]),
+
+  signal: [
+    shader('crt', 'crt', { uCurve: 0.12 }),
+    shader('crt · flat', 'crt', { uCurve: 0.0 }),
+    shader('chromatic', 'chromatic', { uAmount: 0.02 }),
+    shader('chromatic · wide', 'chromatic', { uAmount: 0.05 }),
+    shader('bloom', 'bloom', { uThreshold: 0.62, uStrength: 0.9 }),
+    shader('bloom · heavy', 'bloom', { uThreshold: 0.48, uStrength: 1.4 }),
+    shader('datamosh', 'datamosh', { uAmount: 26 }),
+    shader('datamosh · violent', 'datamosh', { uAmount: 70 }),
+    shader('displace', 'displace', { uAmount: 0.05 }),
+    shader('displace · liquid', 'displace', { uAmount: 0.14 }),
+  ],
+
+  terminal: [
+    shader('p1 green', 'phosphor', { uTint: rgb(110, 255, 140) }),
+    shader('p3 amber', 'phosphor', { uTint: rgb(255, 182, 66) }),
+    shader('ice', 'phosphor', { uTint: rgb(150, 220, 255) }),
+    shader('vector', 'edges', { uGain: 0.85 }),
+    shader('vector · hot', 'edges', { uGain: 1.7 }),
+  ],
+
+  press: [
+    shader('engraving', 'crosshatch', { uSpacing: 7, uInk: INK, uStock: STOCK }),
+    shader('engraving fine', 'crosshatch', { uSpacing: 4, uInk: INK, uStock: STOCK }),
+    shader('engraving coarse', 'crosshatch', { uSpacing: 11, uInk: INK, uStock: STOCK }),
+    shader('xerox', 'xerox', { uBias: 0.5 }),
+    shader('xerox · overexposed', 'xerox', { uBias: 0.58 }),
+    shader('xerox · underexposed', 'xerox', { uBias: 0.42 }),
+    duotone('duotone · ink', rgb(16, 24, 52), rgb(236, 232, 220)),
+    duotone('duotone · rust', rgb(28, 14, 18), rgb(244, 186, 122)),
+    duotone('posterised · ink', rgb(16, 24, 52), rgb(236, 232, 220), 5),
+    duotone('posterised · rust', rgb(28, 14, 18), rgb(244, 186, 122), 4),
+  ],
+
+  painterly: [
+    shader('kuwahara', 'kuwahara', { uRadius: 5 }),
+    shader('kuwahara · heavy', 'kuwahara', { uRadius: 7 }),
+    shader('crystallize', 'crystallize', { uCell: 20 }),
+    shader('crystallize · fine', 'crystallize', { uCell: 9 }),
+    shader('crystallize · coarse', 'crystallize', { uCell: 26 }),
+  ],
 };
 
 export function pick(genre) {

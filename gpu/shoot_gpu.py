@@ -35,7 +35,7 @@ def chromium_path() -> str:
     raise SystemExit("no chromium found")
 
 
-def run(url: str, seconds: float, shots: int) -> int:
+def run(url: str, seconds: float, shots: int, genre: str | None = None) -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     problems: list[str] = []
 
@@ -59,11 +59,15 @@ def run(url: str, seconds: float, shots: int) -> int:
 
         page.wait_for_timeout(3500)   # textures + shader compile
 
+        if genre:
+            page.click(f'.chip:text-is("{genre}")')
+            page.wait_for_timeout(2500)
+
         # Sweep the pointer so the interactive uniforms are exercised.
         for i in range(shots):
             page.mouse.move(200 + i * 340, 300 + i * 120)
             page.wait_for_timeout(int(seconds * 1000 / max(1, shots)))
-            page.screenshot(path=OUT / f"gpu_{i}.png")
+            page.screenshot(path=OUT / f"gpu_{genre or 'all'}_{i}.png")
 
         stats = page.evaluate("""() => {
             const t = document.getElementById('status').textContent;
@@ -122,8 +126,9 @@ if __name__ == "__main__":
     ap.add_argument("--shots", type=int, default=3)
     ap.add_argument("--gif", action="store_true", help="record motion instead of stills")
     ap.add_argument("--frames", type=int, default=20)
+    ap.add_argument("--genre", help="click a genre chip before capturing")
     a = ap.parse_args()
     if a.gif:
         capture_gif(a.url, a.frames, 0.16, 1200, 760)
         sys.exit(0)
-    sys.exit(run(a.url, a.seconds, a.shots))
+    sys.exit(run(a.url, a.seconds, a.shots, a.genre))

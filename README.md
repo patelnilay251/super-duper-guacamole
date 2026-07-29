@@ -135,8 +135,20 @@ into an 8×8 canvas and reading it back. Doing that in the shader instead cost
 nine texture fetches on *every pixel* to recompute a value constant across the
 tile — removing it took the software-rendered frame rate from 5 fps to 13.
 
+Sixteen shader programs across eight genres, 61 presets: ordered dithering,
+halftone, gradient maps, riso, CRT, chromatic aberration, bloom, crystallize,
+kuwahara, phosphor, xerox, crosshatch, Sobel edges, duotone, displace, datamosh.
+
 Error diffusion does not port: it is sequential by construction. It stays on the
 CPU and is not part of the GPU wall.
+
+**`gl_FragCoord` is not tile-local.** Every tile is drawn through its own
+`gl.viewport`, but `gl_FragCoord` stays in framebuffer coordinates — a tile at
+x=900 sees `gl_FragCoord.x ≈ 900`, not 0. Screen-space patterns like halftone
+and Bayer are unaffected, and in fact look better for it, since the screen runs
+continuously across the whole wall. Anything that converts back to a UV must use
+`vUv` instead: crystallize did not, so its facets sampled far outside the texture
+and clamped to an edge pixel, leaving distant tiles flat black.
 
 ## Deploying
 
