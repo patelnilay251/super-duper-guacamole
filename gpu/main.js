@@ -30,6 +30,39 @@ if (!gl) {
 // alpha, so the change reads as a dissolve rather than a cut.
 const MORPH_MIN = 6, MORPH_SPREAD = 14, MORPH_SECONDS = 1.8;
 
+// A style change ripples outward from wherever it was triggered rather than
+// cutting. Each tile reuses the cross-fade it already has; only the start time
+// differs, so the wall dissolves into the new style in a wave.
+const RIPPLE_SECONDS = 0.9, RIPPLE_JITTER = 0.25;
+
+// Focus: one tile grows to fill the canvas while the rest are pushed back.
+const FOCUS_INSET = 26;          // px of canvas left visible around the tile
+const FOCUS_COARSEN = 3.2;       // how much the unfocused processes enlarge
+const FOCUS_DIM = 0.62;
+
+// Critically-damped-ish spring. Chosen over an eased tween because it is
+// interruptible: clicking another tile mid-flight redirects instead of snapping.
+//
+// Integrated in fixed sub-steps rather than one step of dt. Explicit Euler
+// diverges once damping * dt exceeds 2 -- about 74ms here, so any frame below
+// ~14fps sends it running away instead of settling. It reached 2.35 on a
+// software rasteriser, which drove the dim past 1 and rendered the wall black.
+const SPRING_H = 1 / 240;
+
+function springStep(s, target, dt) {
+  const k = 190, c = 27;
+  const steps = Math.min(32, Math.max(1, Math.ceil(dt / SPRING_H)));
+  const h = dt / steps;
+  for (let i = 0; i < steps; i++) {
+    s.v += (-k * (s.x - target) - c * s.v) * h;
+    s.x += s.v * h;
+  }
+  if (Math.abs(s.x - target) < 0.0005 && Math.abs(s.v) < 0.0025) { s.x = target; s.v = 0; }
+  // Clamped regardless: everything downstream lerps on the assumption of 0..1.
+  s.x = Math.min(1, Math.max(0, s.x));
+  return s.x;
+}
+
 const state = {
   tiles: [],
   photos: [],
@@ -42,6 +75,7 @@ const state = {
   paused: false,
   genre: 'everything',
   dpr: Math.min(devicePixelRatio || 1, 2),
+  focus: { tile: null, s: { x: 0, v: 0 } },
 };
 
 // -------------------------------------------------------------- gl helpers
@@ -184,6 +218,11 @@ function buildTiles() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   const rects = splitCanvas(w, h, tileTarget(w, h));
 
+  state.focus.tile = null;
+  state.focus.s.x = 0;
+  state.focus.s.v = 0;
+  document.body.classList.remove('focused');
+
   state.tiles = rects.map((r) => {
     const photo = Math.floor(Math.random() * state.photos.length);
     const place = pickPlacement();
@@ -206,6 +245,13 @@ function buildTiles() {
 function tileTarget(w, h) {
   const area = w * h;
   return Math.max(8, Math.min(40, Math.round(area / 46000)));
+}
+
+function positionLabel(t, view) {
+  if (!t.label) return;
+  t.label.style.left = `${view.x}px`;
+  t.label.style.top = `${view.y + view.h}px`;
+  t.label.style.width = `${view.w}px`;
 }
 
 function renderLabels() {
@@ -235,17 +281,19 @@ function resize() {
 
 // --------------------------------------------------------------- rendering
 
-function drawTile(t, fx, time, alpha) {
+// `view` carries the geometry and treatment for this draw, which may be the
+// tile's resting values or an interpolation toward its focused ones.
+function drawTile(t, fx, time, alpha, view) {
   const { p, uniforms: u } = state.programs[fx.program];
   gl.useProgram(p);
 
   const d = state.dpr;
   // gl.viewport origin is bottom-left; the layout is top-left.
   gl.viewport(
-    Math.round(t.x * d),
-    Math.round((canvas.clientHeight - t.y - t.h) * d),
-    Math.round(t.w * d),
-    Math.round(t.h * d),
+    Math.round(view.x * d),
+    Math.round((canvas.clientHeight - view.y - view.h) * d),
+    Math.round(view.w * d),
+    Math.round(view.h * d),
   );
 
   const photo = state.photos[t.photo];
@@ -260,14 +308,16 @@ function drawTile(t, fx, time, alpha) {
   gl.bindTexture(gl.TEXTURE_2D, state.depth[t.photo]);
   gl.uniform1i(u.uDepthTex, 2);
 
-  gl.uniform4f(u.uCrop, t.crop[0], t.crop[1], t.crop[2], t.crop[3]);
-  gl.uniform1f(u.uCropGamma, t.tone.gamma);
-  gl.uniform2f(u.uRes, t.w * d, t.h * d);
+  gl.uniform4f(u.uCrop, view.crop[0], view.crop[1], view.crop[2], view.crop[3]);
+  gl.uniform1f(u.uCropGamma, view.gamma);
+  gl.uniform2f(u.uRes, view.w * d, view.h * d);
   gl.uniform1f(u.uTime, time);
   gl.uniform1f(u.uSeed, t.seed);
   gl.uniform2f(u.uPointer, state.pointer.x, state.pointer.y);
   gl.uniform1f(u.uPointerAmt, state.pointer.active);
-  gl.uniform2f(u.uTone, t.tone.lo, t.tone.hi);
+  gl.uniform2f(u.uTone, view.lo, view.hi);
+  gl.uniform1f(u.uCoarsen, view.coarsen);
+  gl.uniform1f(u.uDim, view.dim);
 
   if (u.uAlpha) gl.uniform1f(u.uAlpha, alpha);
 
@@ -288,6 +338,81 @@ function drawTile(t, fx, time, alpha) {
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
+// Cover-fit a photo into an arbitrary aspect at zoom 1, centred: the framing a
+// tile relaxes into when it is focused.
+function fullCrop(t, w, h) {
+  const meta = state.photos[t.photo];
+  const target = w / h, photo = meta.w / meta.h;
+  let cw = 1, ch = 1;
+  if (photo > target) cw = target / photo; else ch = photo / target;
+  return [(1 - cw) * 0.5, (1 - ch) * 0.5, cw, ch];
+}
+
+const lerp = (a, b, k) => a + (b - a) * k;
+
+function viewFor(t, k) {
+  // k is this tile's focus weight: 1 fully focused, 0 fully at rest.
+  if (k <= 0) {
+    const away = state.focus.s.x;   // how focused *something else* is
+    return {
+      x: t.x, y: t.y, w: t.w, h: t.h, crop: t.crop,
+      lo: t.tone.lo, hi: t.tone.hi, gamma: t.tone.gamma,
+      coarsen: lerp(1, FOCUS_COARSEN, away),
+      dim: lerp(0, FOCUS_DIM, away),
+    };
+  }
+
+  const cw = canvas.clientWidth, chh = canvas.clientHeight;
+  const fx = FOCUS_INSET, fy = FOCUS_INSET;
+  const fw = cw - FOCUS_INSET * 2, fh = chh - FOCUS_INSET * 2;
+
+  const x = lerp(t.x, fx, k), y = lerp(t.y, fy, k);
+  const w = lerp(t.w, fw, k), h = lerp(t.h, fh, k);
+
+  // The crop relaxes out of its tight framing into the whole photograph as the
+  // tile grows, so focusing reveals the frame rather than just magnifying it.
+  const target = t.focusCrop || t.crop;
+  const crop = t.crop.map((v, i) => lerp(v, target[i], k));
+  const tone = t.focusTone || t.tone;
+
+  return {
+    x, y, w, h, crop,
+    lo: lerp(t.tone.lo, tone.lo, k),
+    hi: lerp(t.tone.hi, tone.hi, k),
+    gamma: lerp(t.tone.gamma, tone.gamma, k),
+    coarsen: 1,
+    dim: 0,
+  };
+}
+
+function focusTile(t) {
+  const f = state.focus;
+  if (f.tile === t) { f.tile = null; return; }
+  if (t) {
+    // One readback, when focus begins -- not thirty-five, and not per frame.
+    const cw = canvas.clientWidth - FOCUS_INSET * 2;
+    const chh = canvas.clientHeight - FOCUS_INSET * 2;
+    t.focusCrop = fullCrop(t, cw, chh);
+    t.focusTone = cropTone(state.images[t.photo], ...t.focusCrop);
+  }
+  f.tile = t;
+}
+
+// A style change does not rebuild the wall. Layout, photographs and crops stay
+// put -- only the effect changes, staggered by distance from the origin, so the
+// tone measurements are not redone and nothing jumps.
+function restyle(originX, originY) {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const far = Math.hypot(w, h);
+  for (const t of state.tiles) {
+    const dx = t.x + t.w / 2 - originX;
+    const dy = t.y + t.h / 2 - originY;
+    const d = Math.hypot(dx, dy) / far;
+    t.restyleAt = performance.now() / 1000
+      + d * RIPPLE_SECONDS + Math.random() * RIPPLE_JITTER;
+  }
+}
+
 let last = performance.now(), acc = 0, accFrames = 0;
 
 function frame(now) {
@@ -303,20 +428,41 @@ function frame(now) {
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-  for (const t of state.tiles) {
-    if (!t.next && time >= t.swapAt) {
+  springStep(state.focus.s, state.focus.tile ? 1 : 0, dt);
+  const focused = state.focus.tile;
+  // Ease the spring's output so the growth reads as motion rather than a scale.
+  const fk = state.focus.s.x;
+  const focusK = fk * fk * (3 - 2 * fk);
+
+  // The focused tile is drawn last so it lands on top of everything else.
+  const order = focused
+    ? [...state.tiles.filter(t => t !== focused), focused]
+    : state.tiles;
+
+  for (const t of order) {
+    // A restyle fires on its own staggered clock, independent of the ambient
+    // swap cycle, so a style change ripples rather than waiting its turn.
+    if (t.restyleAt && time >= t.restyleAt && !t.next) {
+      t.next = pickEffect(state.genre);
+      t.morph = 0;
+      t.restyleAt = 0;
+      if (t.label) t.label.querySelector('.effect').textContent = t.next.label;
+    } else if (!t.next && !t.restyleAt && time >= t.swapAt) {
       t.next = pickEffect(state.genre);
       t.morph = 0;
       if (t.label) t.label.querySelector('.effect').textContent = t.next.label;
     }
 
-    drawTile(t, t.fx, time, 1);
+    const view = viewFor(t, t === focused ? focusK : 0);
+    if (t === focused) positionLabel(t, view);
+
+    drawTile(t, t.fx, time, 1, view);
 
     if (t.next) {
       t.morph = Math.min(1, t.morph + dt / MORPH_SECONDS);
       // Smoothstep: a linear fade spends too long looking like a double exposure.
       const a = t.morph * t.morph * (3 - 2 * t.morph);
-      drawTile(t, t.next, time, a);
+      drawTile(t, t.next, time, a, view);
       if (t.morph >= 1) {
         t.fx = t.next;
         t.next = null;
@@ -324,6 +470,9 @@ function frame(now) {
       }
     }
   }
+
+  // Once the collapse has fully settled, drop the focus geometry.
+  if (!focused && state.focus.s.x === 0) document.body.classList.remove('focused');
 
   state.frames++;
   accFrames++;
@@ -373,9 +522,20 @@ function wake() {
 // cover more of the wall than the header ever did.
 let nearTile = null;
 
+// Tiles are inset by the gutter, so their rectangles do not quite tile the
+// canvas. Hit-testing against them literally means clicks landing in a gap
+// match nothing. Expanding by half the gutter makes the wall contiguous.
+const HIT_PAD = 4;
+
+function tileAt(x, y) {
+  return state.tiles.find(t =>
+    x >= t.x - HIT_PAD && x <= t.x + t.w + HIT_PAD &&
+    y >= t.y - HIT_PAD && y <= t.y + t.h + HIT_PAD);
+}
+
 function captionUnder(x, y) {
-  if (labels.classList.contains('pinned')) return;
-  const hit = state.tiles.find(t => x >= t.x && x <= t.x + t.w && y >= t.y && y <= t.y + t.h);
+  if (labels.classList.contains('pinned') || state.focus.tile) return;
+  const hit = tileAt(x, y);
   if (hit === nearTile) return;
   if (nearTile && nearTile.label) nearTile.label.classList.remove('near');
   if (hit && hit.label) hit.label.classList.add('near');
@@ -384,15 +544,15 @@ function captionUnder(x, y) {
 
 // ----------------------------------------------------------------- genres
 
-function setGenre(name) {
+function setGenre(name, originX, originY) {
   if (!GENRES.includes(name)) return;
   state.genre = name;
   currentGenre.textContent = name;
   for (const li of genreList.children) {
     li.setAttribute('aria-selected', String(li.dataset.genre === name));
   }
-  buildTiles();
-  nearTile = null;
+  // Ripple out of the corner the control lives in, unless told otherwise.
+  restyle(originX ?? 0, originY ?? canvas.clientHeight);
 }
 
 for (const [i, name] of GENRES.entries()) {
@@ -401,7 +561,7 @@ for (const [i, name] of GENRES.entries()) {
   li.setAttribute('role', 'option');
   li.setAttribute('aria-selected', String(name === state.genre));
   li.innerHTML = `<span class="key">${KEYS[i] ?? ''}</span><span>${name}</span>`;
-  li.onclick = () => { setGenre(name); openList(false); };
+  li.onclick = (e) => { setGenre(name, e.clientX, e.clientY); openList(false); };
   genreList.appendChild(li);
 }
 
@@ -426,8 +586,24 @@ addEventListener('pointermove', (e) => {
 addEventListener('pointerleave', () => { state.pointer.active = 0; });
 
 addEventListener('pointerdown', (e) => {
-  // Clicking the wall itself dismisses the list rather than doing nothing.
-  if (!hud.contains(e.target)) openList(false);
+  if (hud.contains(e.target) || help.contains(e.target)) return;
+  openList(false);
+
+  const hit = tileAt(e.clientX, e.clientY);
+
+  if (state.focus.tile && hit !== state.focus.tile) {
+    focusTile(null);              // clicking elsewhere while focused collapses
+  } else if (hit) {
+    focusTile(hit);
+    document.body.classList.add('focused');
+  }
+
+  if (state.focus.tile) {
+    // Only the focused tile keeps a caption.
+    if (nearTile && nearTile.label) nearTile.label.classList.remove('near');
+    nearTile = state.focus.tile;
+    if (nearTile.label) nearTile.label.classList.add('near');
+  }
 });
 
 // --------------------------------------------------------------- keyboard
@@ -446,7 +622,11 @@ const ACTIONS = {
   },
   h: () => document.body.classList.toggle('bare'),
   '?': () => { help.hidden = !help.hidden; },
-  escape: () => { openList(false); help.hidden = true; },
+  escape: () => {
+    if (state.focus.tile) { focusTile(null); return; }
+    openList(false);
+    help.hidden = true;
+  },
 };
 
 addEventListener('keydown', (e) => {

@@ -199,6 +199,35 @@ tile hovered. `L` pins them all on for reading the wall.
 `window.setGenre(name)` is exposed so the capture and test scripts can drive the
 wall without depending on chrome that is usually invisible.
 
+## Focus and motion
+
+Clicking a tile expands it to fill the canvas. Because tiles are `gl.viewport`
+rectangles rather than DOM elements, that is interpolated numbers — no layout, no
+reflow. The crop interpolates at the same time, so the tile relaxes out of its
+tight framing into the whole photograph as it grows: focusing *reveals* the frame
+rather than just magnifying it.
+
+**The rest of the wall coarsens rather than blurring.** Blurring a live one-bit
+dither turns it to grey mush and throws away the pattern, which is the thing
+worth looking at. Instead every screen-space process enlarges — bigger cells,
+chunkier matrices, sparser screens — through a single `uCoarsen` uniform that
+divides the coordinate `screenPx()` returns. It reads as depth of field
+expressed in print, costs one uniform, and needs no framebuffer.
+
+**Style changes ripple.** A genre switch no longer rebuilds the wall. Layout,
+photographs and crops stay put; only the effect changes, staggered by distance
+from wherever the change was triggered, reusing the per-tile cross-fade that
+already existed. Nothing is re-measured, so nothing jumps.
+
+**Motion runs on springs, not eased tweens**, because springs are interruptible —
+clicking another tile mid-flight redirects rather than snapping.
+
+They are integrated in fixed sub-steps rather than one step of the frame time.
+Explicit Euler diverges once `damping × dt` passes 2 — around 74ms here — so on a
+slow frame the value ran away instead of settling. It reached 2.35 on a software
+rasteriser, which pushed the dim past 1 and rendered the whole wall black. Fixed
+sub-stepping converges identically from 120fps down to 6.
+
 ## Morph transitions
 
 Tiles hold a process for a while, then cross-fade into another. Both are drawn

@@ -121,6 +121,8 @@ window.renderCase = async function (spec) {
   gl.uniform2f(u.uTone, tone[0], tone[1]);
   if (u.uCropGamma) gl.uniform1f(u.uCropGamma, gamma);
   if (u.uAlpha) gl.uniform1f(u.uAlpha, 1);
+  if (u.uCoarsen) gl.uniform1f(u.uCoarsen, 1);
+  if (u.uDim) gl.uniform1f(u.uDim, 0);
 
   if (u.uPalette && palette) {
     gl.uniform3fv(u.uPalette, palette.flat());

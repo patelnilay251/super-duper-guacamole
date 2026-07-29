@@ -150,3 +150,7 @@ body.bare .hud, body.bare .help, body.bare .labels { opacity: 0; pointer-events:
 @media (prefers-reduced-motion: reduce) {
   .hud, .label, .current .caret { transition: none; }
 }
+
+/* While a tile owns the screen the wall behind it is inert. */
+body.focused .label { transition: opacity .25s ease; }
+body.focused .hint { opacity: 0; }

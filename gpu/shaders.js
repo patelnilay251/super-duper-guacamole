@@ -33,8 +33,19 @@ uniform float uCropGamma;    // per-tile exposure, computed on the CPU
 uniform vec3  uPalette[8];
 uniform int   uPaletteLen;
 uniform float uAlpha;       // morph blend weight; 1 when not transitioning
+uniform float uCoarsen;     // >1 enlarges the process; how a tile is "defocused"
+uniform float uDim;         // 0..1 toward the ground colour
 
 const float PI = 3.14159265;
+
+// Screen-space processes read pixels through here rather than gl_FragCoord
+// directly. Dividing enlarges every cell, dot and matrix at once, which is what
+// pushing a tile back looks like in this medium -- blurring a one-bit dither
+// just turns it to grey mush and throws away the pattern entirely.
+vec2 screenPx() { return gl_FragCoord.xy / max(uCoarsen, 0.001); }
+
+// Applied to every fragment on the way out.
+vec3 finish(vec3 c) { return mix(c, vec3(0.045, 0.045, 0.055), clamp(uDim, 0.0, 1.0)); }
 
 float luma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
@@ -143,10 +154,10 @@ uniform float uScale;
 void main() {
   float pulse = 1.0 + 0.35 * sin(uTime * 0.6 + uSeed * 6.28);
   float zoom = uScale * pulse * (1.0 + uPointerAmt * 0.9 * length(uPointer));
-  vec2 px = gl_FragCoord.xy / max(zoom, 0.35);
+  vec2 px = screenPx() / max(zoom, 0.35);
   px += vec2(uTime * 3.0 * uSeed, uTime * 1.7);         // crawl
   float g = luma(srcToned(vUv));
-  fragColor = vec4(rampDither(g, threshold(px, uKind)), uAlpha);
+  fragColor = vec4(finish(rampDither(g, threshold(px, uKind))), uAlpha);
 }`,
 
   // Rotated halftone screen. The screen angle rotates continuously, which is
@@ -160,8 +171,8 @@ void main() {
   float cell = uCell * (1.0 + 0.25 * sin(uTime * 0.4 + uSeed * 3.0));
   cell *= 1.0 + uPointerAmt * 1.6 * length(uPointer);
   float g = luma(srcToned(vUv));
-  float ink = dotScreen(gl_FragCoord.xy, 1.0 - g, max(cell, 2.0), angle);
-  fragColor = vec4(mix(uStock, uInk, ink), uAlpha);
+  float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
+  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
 }`,
 
   // False-colour ramp. Animating the ramp offset makes heat appear to flow.
@@ -177,7 +188,7 @@ void main() {
   float f = fract(pos);
   vec3 a = uRamp[0], b = uRamp[0];
   for (int k = 0; k < 6; k++) { if (k == i) a = uRamp[k]; if (k == i + 1) b = uRamp[k]; }
-  fragColor = vec4(mix(a, b, f), uAlpha);
+  fragColor = vec4(finish(mix(a, b, f)), uAlpha);
 }`,
 
   // Two-ink screen print. Each ink has its own screen angle and its own
@@ -199,13 +210,13 @@ void main() {
   float density = 1.0 - luma(ca);                       // first ink: overall tone
   float chroma  = clamp((cb.r - cb.b) * 1.6 + 0.5, 0.0, 1.0) * 0.85;
 
-  float a = dotScreen(gl_FragCoord.xy + slipA, density * 0.95, cell, 0.35);
-  float b = dotScreen(gl_FragCoord.xy + slipB, chroma,         cell, 1.20);
+  float a = dotScreen(screenPx() + slipA, density * 0.95, cell, 0.35);
+  float b = dotScreen(screenPx() + slipB, chroma,         cell, 1.20);
 
   vec3 out0 = vec3(1.0);
   out0 *= 1.0 - a * (1.0 - uInkA);                      // multiply onto paper
   out0 *= 1.0 - b * (1.0 - uInkB);
-  fragColor = vec4(out0, uAlpha);
+  fragColor = vec4(finish(out0), uAlpha);
 }`,
 
   // Shadow-mask tube: scanlines, an RGB aperture stripe, and a roll bar
@@ -216,7 +227,7 @@ void main() {
   vec2 uv = vUv;
   vec2 c = uv - 0.5;
   uv += c * dot(c, c) * uCurve;                          // barrel distortion
-  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { fragColor = vec4(0.02, 0.02, 0.03, uAlpha); return; }
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { fragColor = vec4(finish(vec3(0.02, 0.02, 0.03)), uAlpha); return; }
 
   float disp = 0.0016 * (1.0 + uPointerAmt * 2.0 * length(uPointer));
   vec3 col = vec3(srcToned(uv + vec2(disp, 0.0)).r, srcToned(uv).g, srcToned(uv - vec2(disp, 0.0)).b);
@@ -230,7 +241,7 @@ void main() {
   else mask = vec3(0.86, 0.86, 1.32);
 
   col = clamp((col - 0.5) * 1.18 + 0.5, 0.0, 1.0);
-  fragColor = vec4(clamp(col * scan * roll * mask + 0.02, 0.0, 1.0), uAlpha);
+  fragColor = vec4(finish(clamp(col * scan * roll * mask + 0.02, 0.0, 1.0)), uAlpha);
 }`,
 
   // Radial lens dispersion. The amount breathes, and the pointer pulls it wider.
@@ -244,7 +255,7 @@ void main() {
   col.r = srcToned(0.5 + c * (1.0 - amt)).r;
   col.g = srcToned(vUv).g;
   col.b = srcToned(0.5 + c * (1.0 + amt)).b;
-  fragColor = vec4(col, uAlpha);
+  fragColor = vec4(finish(col), uAlpha);
 }`,
 
   // Highlights bleeding into a glow, taken from a mip level rather than a
@@ -257,7 +268,7 @@ void main() {
   float th = uThreshold - 0.12 * sin(uTime * 0.4 + uSeed * 6.28) - uPointerAmt * 0.15 * length(uPointer);
   vec3 wide = toneMap(blurred(vUv, 4.5));
   vec3 glow = max(wide - th, vec3(0.0)) / max(1e-3, 1.0 - th);
-  fragColor = vec4(clamp(base + glow * uStrength, 0.0, 1.0), uAlpha);
+  fragColor = vec4(finish(clamp(base + glow * uStrength, 0.0, 1.0)), uAlpha);
 }`,
 
   // Jittered-grid Voronoi: each cell takes the colour at its own seed point.
@@ -270,7 +281,7 @@ void main() {
   // drawn through its own gl.viewport, but gl_FragCoord stays in framebuffer
   // coordinates -- feeding that back into a UV lands outside the texture and
   // clamps to an edge pixel, which is why distant tiles came out flat.
-  vec2 px = vUv * uRes / cell;
+  vec2 px = vUv * uRes / (cell * max(uCoarsen, 0.001));
   vec2 base = floor(px);
 
   float bestD = 1e9;
@@ -285,7 +296,7 @@ void main() {
       if (d < bestD) { bestD = d; bestSeed = seed; }
     }
   }
-  fragColor = vec4(srcToned(clamp(bestSeed * cell / uRes, 0.0, 1.0)), uAlpha);
+  fragColor = vec4(finish(srcToned(clamp(bestSeed * cell / uRes, 0.0, 1.0))), uAlpha);
 }`,
 
   // Painterly edge-preserving filter: take the mean of the flattest quadrant.
@@ -311,7 +322,7 @@ void main() {
     float variance = sum2 / n - luma(mean) * luma(mean);
     if (variance < bestVar) { bestVar = variance; bestMean = mean; }
   }
-  fragColor = vec4(clamp(bestMean, 0.0, 1.0), uAlpha);
+  fragColor = vec4(finish(clamp(bestMean, 0.0, 1.0)), uAlpha);
 }`,
 
   // Monochrome terminal tube with glow bleed and a slow phosphor decay ripple.
@@ -325,7 +336,7 @@ void main() {
 
   vec3 col = mix(vec3(0.02, 0.05, 0.03), uTint, pow(g, 1.15));
   float scan = 0.62 + 0.38 * step(0.5, fract(gl_FragCoord.y / 3.0));
-  fragColor = vec4(clamp(col * scan, 0.0, 1.0), uAlpha);
+  fragColor = vec4(finish(clamp(col * scan, 0.0, 1.0)), uAlpha);
 }`,
 
   // Photocopy: crushed tone curve, toner speckle, and dropout that reshuffles
@@ -336,10 +347,10 @@ void main() {
   float g = luma(srcToned(vUv));
   float pass = floor(uTime * 0.8 + uSeed * 10.0);          // a new copy each pass
   float hard = 1.0 / (1.0 + exp(-(g - uBias) * 13.0));
-  float speckle = (hash21(gl_FragCoord.xy + pass * 37.0) - 0.5) * 0.32;
+  float speckle = (hash21(screenPx() + pass * 37.0) - 0.5) * 0.32;
   hard = step(0.5, clamp(hard + speckle, 0.0, 1.0));
-  hard = clamp(hard + step(0.994, hash21(gl_FragCoord.xy * 1.7 + pass)), 0.0, 1.0);
-  fragColor = vec4(mix(vec3(0.09, 0.09, 0.11), vec3(0.94, 0.93, 0.90), hard), uAlpha);
+  hard = clamp(hard + step(0.994, hash21(screenPx() * 1.7 + pass)), 0.0, 1.0);
+  fragColor = vec4(finish(mix(vec3(0.09, 0.09, 0.11), vec3(0.94, 0.93, 0.90), hard)), uAlpha);
 }`,
 
   // Engraving: successive line sets cut in as the tone darkens.
@@ -358,7 +369,7 @@ void main() {
     float proj = gl_FragCoord.x * cos(angle) - gl_FragCoord.y * sin(angle);
     if (g < cut && mod(proj, spacing) < 1.35) ink = 1.0;
   }
-  fragColor = vec4(mix(uStock, uInk, ink), uAlpha);
+  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
 }`,
 
   // Sobel magnitude, drawn as light on dark.
@@ -368,7 +379,7 @@ void main() {
   vec2 g = sobel(vUv);
   float m = clamp(length(g) * uGain * (1.0 + uPointerAmt * 1.5 * length(uPointer)), 0.0, 1.0);
   m *= 0.85 + 0.15 * sin(uTime * 0.6 + uSeed * 6.28);
-  fragColor = vec4(vec3(m), uAlpha);
+  fragColor = vec4(finish(vec3(m)), uAlpha);
 }`,
 
   // Two-colour map with a posterised option, so the ramp shows as flat bands.
@@ -380,7 +391,7 @@ void main() {
   float g = luma(srcToned(vUv));
   g = clamp(g + 0.08 * sin(uTime * 0.3 + uSeed * 6.28) + uPointerAmt * 0.2 * uPointer.x, 0.0, 1.0);
   if (uLevels > 1.5) g = floor(g * uLevels) / (uLevels - 1.0);
-  fragColor = vec4(mix(uDark, uLight, clamp(g, 0.0, 1.0)), uAlpha);
+  fragColor = vec4(finish(mix(uDark, uLight, clamp(g, 0.0, 1.0))), uAlpha);
 }`,
 
   // Warp along a smooth noise field: heat haze, or liquid, depending on speed.
@@ -390,7 +401,7 @@ void main() {
   float amt = uAmount * (1.0 + uPointerAmt * 1.8 * length(uPointer));
   vec2 p = vUv * 4.0 + uTime * 0.12;
   vec2 flow = vec2(valueNoise(p), valueNoise(p + 31.4)) - 0.5;
-  fragColor = vec4(srcToned(clamp(vUv + flow * amt, 0.001, 0.999)), uAlpha);
+  fragColor = vec4(finish(srcToned(clamp(vUv + flow * amt, 0.001, 0.999))), uAlpha);
 }`,
 
   // Horizontal datamosh: rows shift in blocks, re-cut a few times a second.
@@ -404,7 +415,7 @@ void main() {
   vec2 uv = vec2(fract(vUv.x + shift / uRes.x * 40.0), vUv.y);
   vec3 col = srcToned(uv);
   if (hash21(vec2(band, pass + 5.0)) > 0.88) col = col.gbr;   // channel swap
-  fragColor = vec4(col, uAlpha);
+  fragColor = vec4(finish(col), uAlpha);
 }`,
 
   // ---- depth-aware ------------------------------------------------------
@@ -427,9 +438,9 @@ void main() {
   float scale = mix(uFar, uNear, sharp);
   scale *= 1.0 + 0.15 * sin(uTime * 0.5 + uSeed * 6.28);
 
-  vec2 px = gl_FragCoord.xy / max(scale, 0.35);
+  vec2 px = screenPx() / max(scale, 0.35);
   px += vec2(uTime * 2.0 * uSeed, uTime * 1.1);
-  fragColor = vec4(rampDither(luma(srcToned(vUv)), threshold(px, uKind)), uAlpha);
+  fragColor = vec4(finish(rampDither(luma(srcToned(vUv)), threshold(px, uKind))), uAlpha);
 }`,
 
   // Halftone whose screen ruling opens up with distance, like a print fading
@@ -448,8 +459,8 @@ void main() {
   float g = luma(srcToned(vUv));
   g = mix(min(g + 0.32, 1.0), g, d);
 
-  float ink = dotScreen(gl_FragCoord.xy, 1.0 - g, max(cell, 2.0), angle);
-  fragColor = vec4(mix(uStock, uInk, ink), uAlpha);
+  float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
+  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
 }`,
 
   // Depth cut into flat planes, each printed in its own ink -- a separation by
@@ -463,14 +474,14 @@ void main() {
 
   // Tone still dithers inside each plane, so the image survives the banding.
   float g = luma(srcToned(vUv));
-  vec2 px = gl_FragCoord.xy / (1.0 + plane * 0.9);
+  vec2 px = screenPx() / (1.0 + plane * 0.9);
   float t = threshold(px, 2);
   float lit = step(t, g);
 
   int idx = int(min(plane, float(uPaletteLen - 1)));
   vec3 ink = uPalette[0];
   for (int k = 0; k < 8; k++) { if (k == idx) ink = uPalette[k]; }
-  fragColor = vec4(mix(ink * 0.35, ink, lit), uAlpha);
+  fragColor = vec4(finish(mix(ink * 0.35, ink, lit)), uAlpha);
 }`,
 
   // Parallax: the pointer shifts near pixels more than far ones, so a flat
@@ -490,7 +501,7 @@ void main() {
   uv = clamp(vUv - drive * uAmount * d, 0.0, 1.0);
 
   float g = luma(srcToned(uv));
-  fragColor = vec4(rampDither(g, threshold(gl_FragCoord.xy, uKind)), uAlpha);
+  fragColor = vec4(finish(rampDither(g, threshold(screenPx(), uKind))), uAlpha);
 }`,
 
   // Atmosphere: the process holds near, then dissolves into fog with distance.
@@ -504,9 +515,9 @@ void main() {
 
   float g = luma(srcToned(vUv));
   float cell = mix(4.0, 13.0, t);
-  float ink = dotScreen(gl_FragCoord.xy, (1.0 - g) * (1.0 - t * 0.75), cell, 0.6);
+  float ink = dotScreen(screenPx(), (1.0 - g) * (1.0 - t * 0.75), cell, 0.6);
 
   vec3 near = mix(vec3(1.0), vec3(0.06, 0.06, 0.08), ink);
-  fragColor = vec4(mix(near, uFog, t * 0.85), uAlpha);
+  fragColor = vec4(finish(mix(near, uFog, t * 0.85)), uAlpha);
 }`,
 };
