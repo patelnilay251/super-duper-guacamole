@@ -1,0 +1,66 @@
+name: deploy gpu wall
+
+# Deploys the static GPU wall to Cloudflare Pages.
+#
+# Requires two repository secrets (Settings -> Secrets and variables -> Actions):
+#   CLOUDFLARE_API_TOKEN   scoped to Account -> Cloudflare Pages -> Edit
+#   CLOUDFLARE_ACCOUNT_ID  from the dashboard URL; not secret, but kept together
+#
+# The token is never printed: wrangler reads it straight from the environment.
+
+on:
+  push:
+    branches: [claude/yoo-noihyd, main]
+    paths:
+      - 'gpu/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check secrets are present
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          missing=0
+          [ -z "$TOKEN" ]   && { echo "::error::CLOUDFLARE_API_TOKEN is not set";  missing=1; }
+          [ -z "$ACCOUNT" ] && { echo "::error::CLOUDFLARE_ACCOUNT_ID is not set"; missing=1; }
+          [ "$missing" = "1" ] && exit 1
+          echo "both secrets present"
+
+      - name: Verify the corpus shipped
+        run: |
+          test -f gpu/manifest.json || { echo "::error::gpu/manifest.json missing"; exit 1; }
+          count=$(ls gpu/photos/*.jpg 2>/dev/null | wc -l)
+          echo "manifest present, $count photographs, $(du -sh gpu | cut -f1) total"
+          [ "$count" -gt 0 ] || { echo "::error::no photographs in gpu/photos"; exit 1; }
+
+      # Creating the project is idempotent in practice: it fails harmlessly when
+      # the project already exists, which is the normal case after the first run.
+      - name: Ensure the Pages project exists
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@latest pages project create ditherwall --production-branch=main
+
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@latest pages deploy gpu --project-name=ditherwall --commit-dirty=true
