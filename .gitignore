@@ -1,9 +1,10 @@
 # Downloaded photographs — re-fetched on demand by ditherwall/fetch.py
 cache/
 
-# Renders, except the committed showcase image
+# Renders, except the committed showcase images
 out/*
 !out/wall.png
+!out/genres.jpg
 
 __pycache__/
 *.pyc

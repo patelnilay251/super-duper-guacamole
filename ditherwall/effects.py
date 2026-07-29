@@ -181,6 +181,54 @@ def error_diffuse(rgb: np.ndarray, pal: np.ndarray, kernel: str, serpentine: boo
 
 
 # --------------------------------------------------------------------------
+# ramp dithering
+# --------------------------------------------------------------------------
+
+# Palettes that are tonal ramps rather than scattered colours. These must be
+# dithered in luminance: nearest-colour matching in RGB collapses a green photo
+# onto the light end of the Game Boy palette and returns a flat field.
+RAMP_PALETTES = {"mono", "gameboy", "cyanotype", "sepia", "ember"}
+
+
+def ramp_error_diffuse(rgb: np.ndarray, ramp: np.ndarray, kernel: str, serpentine: bool = True) -> np.ndarray:
+    """Error diffusion in luminance, quantised to an ordered colour ramp."""
+    offsets, divisor = KERNELS[kernel]
+    g = luma(normalize_tone(rgb))
+    h, w = g.shape
+    n = len(ramp) - 1
+
+    buf = (g * n).tolist()          # work in level units, so error is per-step
+    idx = [[0] * w for _ in range(h)]
+
+    for y in range(h):
+        cols = range(w) if (not serpentine or y % 2 == 0) else range(w - 1, -1, -1)
+        flip = serpentine and y % 2 == 1
+        row = buf[y]
+        for x in cols:
+            old = row[x]
+            q = int(round(old))
+            q = 0 if q < 0 else (n if q > n else q)
+            idx[y][x] = q
+            err = old - q
+            for dx, dy, wgt in offsets:
+                sx = x - dx if flip else x + dx
+                sy = y + dy
+                if 0 <= sx < w and 0 <= sy < h:
+                    buf[sy][sx] += err * wgt / divisor
+    return ramp[np.array(idx)]
+
+
+def ramp_ordered(rgb: np.ndarray, ramp: np.ndarray, thresh: np.ndarray) -> np.ndarray:
+    """Ordered dithering in luminance against an ordered colour ramp."""
+    g = luma(normalize_tone(rgb))
+    h, w = g.shape
+    n = len(ramp) - 1
+    tiled = np.tile(thresh, (h // thresh.shape[0] + 1, w // thresh.shape[1] + 1))[:h, :w]
+    level = np.clip(np.floor(g * n + tiled), 0, n).astype(int)
+    return ramp[level]
+
+
+# --------------------------------------------------------------------------
 # ordered / threshold dithering
 # --------------------------------------------------------------------------
 
@@ -236,19 +284,28 @@ def ordered_dither(rgb: np.ndarray, pal: np.ndarray, thresh: np.ndarray, strengt
 # --------------------------------------------------------------------------
 
 
-def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
-    """Rotated dot screen -- dot area tracks local darkness."""
-    g = luma(rgb)
-    h, w = g.shape
+def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
+    """Binary rotated dot screen. 1 where ink lands.
+
+    `coverage` is desired ink fraction in [0, 1]. Dot radius scales as its
+    square root so printed *area* tracks coverage linearly, which is what keeps
+    midtones from going muddy.
+    """
+    h, w = coverage.shape
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
     ca, sa = np.cos(angle), np.sin(angle)
     u, v = xx * ca - yy * sa, xx * sa + yy * ca
-    # distance from the centre of the nearest screen cell
     du = (u % cell) - cell / 2
     dv = (v % cell) - cell / 2
     dist = np.hypot(du, dv) / (cell / 2)
-    coarse = box_blur(g[..., None], cell // 2)[..., 0]
-    dots = (dist > (1.0 - coarse) ** 0.7).astype(float)
+    radius = np.sqrt(np.clip(coverage, 0, 1)) * 1.16
+    return (dist < radius).astype(float)
+
+
+def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
+    """Rotated dot screen -- dot area tracks local darkness."""
+    coarse = box_blur(luma(rgb)[..., None], max(1, cell // 2))[..., 0]
+    dots = 1.0 - dot_screen(1.0 - coarse, cell, angle)
     return np.repeat(dots[..., None], 3, axis=2)
 
 
@@ -416,18 +473,134 @@ def scanline_slice(rgb: np.ndarray, rng: np.random.Generator) -> np.ndarray:
 
 
 # --------------------------------------------------------------------------
+# print & process simulation (used by the genre presets)
+# --------------------------------------------------------------------------
+
+
+def gradient_map(rgb: np.ndarray, stops: list[tuple]) -> np.ndarray:
+    """Remap luminance through a colour ramp -- thermal, phosphor, false colour."""
+    g = luma(normalize_tone(rgb))
+    ramp = np.array(stops, dtype=float) / 255.0
+    n = len(ramp) - 1
+    pos = np.clip(g, 0, 1) * n
+    i = np.clip(pos.astype(int), 0, n - 1)
+    f = (pos - i)[..., None]
+    return ramp[i] * (1 - f) + ramp[i + 1] * f
+
+
+def pixelate(rgb: np.ndarray, block: int) -> np.ndarray:
+    h, w = rgb.shape[:2]
+    small = box_blur(rgb, max(1, block // 2))[:: block, :: block]
+    return np.repeat(np.repeat(small, block, axis=0), block, axis=1)[:h, :w]
+
+
+def grain(rgb: np.ndarray, rng: np.random.Generator, amount: float = 0.05) -> np.ndarray:
+    return np.clip(rgb + rng.normal(0, amount, rgb.shape[:2])[..., None], 0, 1)
+
+
+def misregister(rgb: np.ndarray, rng: np.random.Generator, amount: int = 3) -> np.ndarray:
+    """Offset channels independently, as a misaligned print run would."""
+    out = np.empty_like(rgb)
+    for ch in range(3):
+        dy, dx = rng.integers(-amount, amount + 1, 2)
+        out[..., ch] = np.roll(np.roll(rgb[..., ch], dy, axis=0), dx, axis=1)
+    return out
+
+
+def riso(
+    rgb: np.ndarray,
+    inks: list[tuple],
+    rng: np.random.Generator,
+    cell: int = 5,
+    slip: int = 2,
+) -> np.ndarray:
+    """Spot-colour screen print.
+
+    Each ink gets its own tonal separation, its own screen angle, and a small
+    registration error, then multiplies onto paper white -- which is why the
+    overlaps darken and colour-shift the way a real two-pass print does.
+    """
+    norm = normalize_tone(rgb)
+    g = luma(norm)
+    # First ink carries overall density; the second follows the warm/cool axis.
+    seps = [1.0 - g]
+    if len(inks) > 1:
+        chroma = norm[..., 0] - norm[..., 2]
+        lo, hi = np.percentile(chroma, 3), np.percentile(chroma, 97)
+        seps.append(np.clip((chroma - lo) / (hi - lo + 1e-6), 0, 1) * 0.85)
+    for extra in range(2, len(inks)):
+        seps.append(np.clip(1.0 - np.abs(g - 0.45 + 0.2 * extra) * 2.4, 0, 1))
+
+    out = np.ones_like(norm)
+    for idx, (ink, sep) in enumerate(zip(inks, seps)):
+        colour = np.array(ink, dtype=float) / 255.0
+        dots = dot_screen(sep * 0.95, cell, 0.35 + idx * 0.85)
+        if slip:
+            dy, dx = rng.integers(-slip, slip + 1, 2)
+            dots = np.roll(np.roll(dots, dy, axis=0), dx, axis=1)
+        out = out * (1.0 - dots[..., None] * (1.0 - colour))
+    return np.clip(out, 0, 1)
+
+
+def xerox(rgb: np.ndarray, rng: np.random.Generator, bias: float = 0.5) -> np.ndarray:
+    """Degraded photocopy: crushed tone curve, toner speckle, dropout."""
+    g = luma(normalize_tone(rgb))
+    hard = 1.0 / (1.0 + np.exp(-(g - bias) * 13.0))          # steep sigmoid
+    speckle = rng.normal(0, 0.16, g.shape)
+    hard = np.clip(hard + speckle, 0, 1)
+    hard = (hard > 0.5).astype(float)
+    hard = np.clip(hard + (rng.random(g.shape) < 0.006), 0, 1)  # toner dropout
+    paper = np.array([0.94, 0.93, 0.90])
+    ink = np.array([0.09, 0.09, 0.11])
+    return ink + (paper - ink) * hard[..., None]
+
+
+def phosphor(rgb: np.ndarray, tint: tuple = (110, 255, 140)) -> np.ndarray:
+    """CRT phosphor: monochrome tint, scanlines, and glow bleed."""
+    g = normalize_tone(rgb)
+    mono = gradient_map(g, [(0, 4, 2), (6, 40, 18), tuple(int(c * 0.55) for c in tint), tint])
+    mono = np.clip(mono + gaussian_blur(mono, 10) * 0.45, 0, 1)
+    scan = 0.62 + 0.38 * (np.arange(mono.shape[0]) % 3 != 0)
+    return np.clip(mono * scan[:, None, None], 0, 1)
+
+
+def paper_finish(rgb: np.ndarray, rng: np.random.Generator, tone: tuple = (250, 246, 236)) -> np.ndarray:
+    """Warm the whites and add fibre texture, so ink sits on stock not on screen."""
+    stock = np.array(tone, dtype=float) / 255.0
+    out = rgb * stock
+    fibre = gaussian_blur(rng.random(rgb.shape[:2] + (1,)), 3)[..., 0]
+    return np.clip(out + (fibre - fibre.mean())[..., None] * 0.09, 0, 1)
+
+
+# --------------------------------------------------------------------------
 # registry
 # --------------------------------------------------------------------------
 
 
+def dither(rgb: np.ndarray, pal: str, kernel: str) -> np.ndarray:
+    """Error-diffuse against a named palette, in luminance if it is a ramp."""
+    ramp = palette_array(pal)
+    if pal in RAMP_PALETTES:
+        return ramp_error_diffuse(rgb, ramp, kernel)
+    return error_diffuse(normalize_tone(rgb), ramp, kernel)
+
+
+def dither_ordered(rgb: np.ndarray, pal: str, matrix: np.ndarray) -> np.ndarray:
+    """Ordered-dither against a named palette, in luminance if it is a ramp."""
+    ramp = palette_array(pal)
+    if pal in RAMP_PALETTES:
+        return ramp_ordered(rgb, ramp, matrix)
+    return ordered_dither(normalize_tone(rgb), ramp, matrix)
+
+
 def _ed(kernel: str, pal: str):
-    return lambda img, rng: error_diffuse(normalize_tone(img), palette_array(pal), kernel)
+    return lambda img, rng: dither(img, pal, kernel)
 
 
 def _ord(matrix, pal: str, strength: float = 1.0):
     def run(img, rng):
         m = matrix(img, rng) if callable(matrix) else matrix
-        return ordered_dither(normalize_tone(img), palette_array(pal), m, strength)
+        return dither_ordered(img, pal, m)
     return run
 
 
@@ -476,8 +649,8 @@ EFFECTS: dict[str, tuple] = {
     "duotone · ink": (lambda img, rng: duotone(img, (16, 24, 52), (236, 232, 220)), "shader"),
     "duotone · rust": (lambda img, rng: duotone(img, (28, 14, 18), (244, 186, 122)), "shader"),
     # --- composites -------------------------------------------------------
-    "bloom → atkinson": (lambda img, rng: error_diffuse(normalize_tone(bloom(img, 0.75, 0.55)), palette_array("mono"), "atkinson"), "composite"),
-    "kuwahara → bayer": (lambda img, rng: ordered_dither(normalize_tone(kuwahara(img, 5)), palette_array("ember"), bayer(4)), "composite"),
+    "bloom → atkinson": (lambda img, rng: dither(bloom(img, 0.75, 0.55), "mono", "atkinson"), "composite"),
+    "kuwahara → bayer": (lambda img, rng: dither_ordered(kuwahara(img, 5), "ember", bayer(4)), "composite"),
     "crt → halftone": (lambda img, rng: halftone(normalize_tone(crt(img)), cell=5), "composite"),
     "crystallize → floyd": (lambda img, rng: error_diffuse(normalize_tone(crystallize(img, 14, rng)), palette_array("c64"), "floyd_steinberg"), "composite"),
 }

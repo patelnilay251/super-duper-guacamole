@@ -11,6 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 from effects import EFFECTS
+from genres import GENRES
 from fetch import fetch
 from layout import organic_crop, photo_detail, split_canvas
 
@@ -35,7 +36,7 @@ def load_font(size: int):
     return ImageFont.load_default()
 
 
-def label_tile(draw: ImageDraw.ImageDraw, rect, text: str, credit: str) -> None:
+def label_tile(draw: ImageDraw.ImageDraw, rect, text: str, credit: str, ink=(255, 255, 255)) -> None:
     """Caption in the corner: algorithm name, plus photographer in smaller type."""
     size = max(11, min(15, rect.w // 26))
     font = load_font(size)
@@ -45,11 +46,16 @@ def label_tile(draw: ImageDraw.ImageDraw, rect, text: str, credit: str) -> None:
     x = rect.x + pad
     y = rect.y + rect.h - pad - size - (size - 2)
 
+    # Plate contrasts against the caption ink, so light-stock genres stay legible.
+    dark_ink = sum(ink) < 380
+    plate_fill = (255, 255, 255, 200) if dark_ink else (0, 0, 0, 190)
+    muted = tuple(int(c * 0.45 + 90) for c in ink[:3])
+
     box = draw.textbbox((x, y), text, font=font)
     plate = [box[0] - 5, box[1] - 4, box[2] + 6, y + size + (size - 2) + 3]
-    draw.rectangle(plate, fill=(0, 0, 0, 190))
-    draw.text((x, y), text, font=font, fill=(255, 255, 255))
-    draw.text((x, y + size + 2), credit, font=small, fill=(165, 165, 165))
+    draw.rectangle(plate, fill=plate_fill)
+    draw.text((x, y), text, font=font, fill=tuple(ink))
+    draw.text((x, y + size + 2), credit, font=small, fill=muted)
 
 
 def build(
@@ -60,11 +66,21 @@ def build(
     gutter: int = 6,
     labels: bool = True,
     out_name: str = "wall.png",
+    genre: str | None = None,
 ) -> Path:
     rng = random.Random(seed)
     nprng = np.random.default_rng(seed)
 
-    names = list(EFFECTS.keys())
+    if genre:
+        preset = GENRES[genre]
+        palette = {k: (fn, genre) for k, fn in preset.effects.items()}
+        background, finish, ink = preset.background, preset.finish, preset.label_ink
+        print(f"genre: {preset.name} — {preset.blurb}")
+    else:
+        palette = EFFECTS
+        background, finish, ink = (10, 10, 12), None, (255, 255, 255)
+
+    names = list(palette.keys())
     rng.shuffle(names)
 
     print(f"fetching photos ...")
@@ -83,12 +99,12 @@ def build(
     for slot, idx in enumerate(order):
         assignment[idx] = slot % len(photos)
 
-    canvas = Image.new("RGB", (width, height), (10, 10, 12))
+    canvas = Image.new("RGB", (width, height), background)
     started = time.time()
 
     for i, rect in enumerate(rects):
         name = names[i % len(names)]
-        fn, _category = EFFECTS[name]
+        fn, _category = palette[name]
         photo = photos[assignment[i]]
 
         inner_w = max(8, rect.w - gutter)
@@ -100,6 +116,9 @@ def build(
         except Exception as exc:
             print(f"  ! {name}: {exc}")
             result = src
+
+        if finish is not None:
+            result = finish(np.clip(result, 0, 1), nprng)
 
         arr = (np.clip(result, 0, 1) * 255).astype(np.uint8)
         canvas.paste(Image.fromarray(arr), (rect.x + gutter // 2, rect.y + gutter // 2))
@@ -114,6 +133,7 @@ def build(
                 rect,
                 names[i % len(names)],
                 f"photo · {photos[assignment[i]]['author']}",
+                ink,
             )
         canvas = Image.alpha_composite(canvas.convert("RGBA"), overlay).convert("RGB")
 
@@ -132,6 +152,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=11)
     ap.add_argument("--no-labels", action="store_true")
     ap.add_argument("--out", default="wall.png")
+    ap.add_argument("--genre", choices=sorted(GENRES), help="style preset")
     args = ap.parse_args()
 
     build(
@@ -141,6 +162,7 @@ def main() -> None:
         seed=args.seed,
         labels=not args.no_labels,
         out_name=args.out,
+        genre=args.genre,
     )
 
 
