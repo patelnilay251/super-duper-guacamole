@@ -332,49 +332,160 @@ function frame(now) {
   if (acc > 500) {
     state.fps = Math.round((accFrames * 1000) / acc);
     acc = 0; accFrames = 0;
-    statusEl.textContent =
-      `${state.tiles.length} tiles · ${state.fps} fps · ${state.photos.length} photos · gpu`;
+    statusEl.textContent = `${state.tiles.length} · ${state.fps}fps`;
   }
 }
 
 // ------------------------------------------------------------------ events
 
+const hud = document.getElementById('hud');
+const genreList = document.getElementById('genres');
+const toggle = document.getElementById('toggle');
+const currentGenre = document.getElementById('currentGenre');
+const help = document.getElementById('help');
+
+const GENRES = ['everything', ...Object.keys(PRESETS)];
+const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+
+// Chrome rests nearly transparent and wakes on any pointer movement, so the
+// wall is never permanently covered but the controls are never more than a
+// twitch away.
+const WAKE_MS = 2600;
+let sleepTimer;
+
+function wake() {
+  hud.classList.add('awake');
+  clearTimeout(sleepTimer);
+  sleepTimer = setTimeout(() => {
+    // Stay awake while the list is open or something inside has focus.
+    if (genreList.classList.contains('open') || hud.contains(document.activeElement)) return;
+    hud.classList.remove('awake');
+    // The caption goes with it. Leaving one tile labelled after everything else
+    // has faded looks like a stuck element rather than a deliberate state.
+    if (nearTile && nearTile.label) nearTile.label.classList.remove('near');
+    nearTile = null;
+  }, WAKE_MS);
+}
+
+// --------------------------------------------------------------- captions
+
+// Only the tile under the pointer is captioned. Thirty-five permanent labels
+// cover more of the wall than the header ever did.
+let nearTile = null;
+
+function captionUnder(x, y) {
+  if (labels.classList.contains('pinned')) return;
+  const hit = state.tiles.find(t => x >= t.x && x <= t.x + t.w && y >= t.y && y <= t.y + t.h);
+  if (hit === nearTile) return;
+  if (nearTile && nearTile.label) nearTile.label.classList.remove('near');
+  if (hit && hit.label) hit.label.classList.add('near');
+  nearTile = hit || null;
+}
+
+// ----------------------------------------------------------------- genres
+
+function setGenre(name) {
+  if (!GENRES.includes(name)) return;
+  state.genre = name;
+  currentGenre.textContent = name;
+  for (const li of genreList.children) {
+    li.setAttribute('aria-selected', String(li.dataset.genre === name));
+  }
+  buildTiles();
+  nearTile = null;
+}
+
+for (const [i, name] of GENRES.entries()) {
+  const li = document.createElement('li');
+  li.dataset.genre = name;
+  li.setAttribute('role', 'option');
+  li.setAttribute('aria-selected', String(name === state.genre));
+  li.innerHTML = `<span class="key">${KEYS[i] ?? ''}</span><span>${name}</span>`;
+  li.onclick = () => { setGenre(name); openList(false); };
+  genreList.appendChild(li);
+}
+
+function openList(open) {
+  genreList.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  if (open) wake();
+}
+
+toggle.addEventListener('click', () => openList(!genreList.classList.contains('open')));
+
+// ---------------------------------------------------------------- pointer
+
 addEventListener('pointermove', (e) => {
   state.pointer.x = (e.clientX / innerWidth) * 2 - 1;
   state.pointer.y = (e.clientY / innerHeight) * 2 - 1;
   state.pointer.active = 1;
+  wake();
+  captionUnder(e.clientX, e.clientY);
 });
+
 addEventListener('pointerleave', () => { state.pointer.active = 0; });
+
+addEventListener('pointerdown', (e) => {
+  // Clicking the wall itself dismisses the list rather than doing nothing.
+  if (!hud.contains(e.target)) openList(false);
+});
+
+// --------------------------------------------------------------- keyboard
+
+const ACTIONS = {
+  ' ': () => { state.paused = !state.paused; },
+  r: () => buildTiles(),
+  l: () => {
+    const pinned = labels.classList.toggle('pinned');
+    if (pinned && nearTile && nearTile.label) nearTile.label.classList.remove('near');
+    nearTile = null;
+  },
+  f: () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen?.();
+  },
+  h: () => document.body.classList.toggle('bare'),
+  '?': () => { help.hidden = !help.hidden; },
+  escape: () => { openList(false); help.hidden = true; },
+};
+
+addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+  const idx = KEYS.indexOf(e.key);
+  if (idx >= 0 && idx < GENRES.length) {
+    setGenre(GENRES[idx]);
+    wake();
+    e.preventDefault();
+    return;
+  }
+
+  const action = ACTIONS[e.key.toLowerCase()] ?? ACTIONS[e.key];
+  if (action) {
+    action();
+    wake();
+    e.preventDefault();
+  }
+});
+
+// ------------------------------------------------------------------ misc
 
 let resizeTimer;
 addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(resize, 200);
+  resizeTimer = setTimeout(() => { resize(); nearTile = null; }, 200);
 });
 
 document.addEventListener('visibilitychange', () => { state.paused = document.hidden; });
 
-document.getElementById('shuffle').addEventListener('click', buildTiles);
-document.getElementById('freeze').addEventListener('click', (e) => {
-  state.paused = !state.paused;
-  e.currentTarget.textContent = state.paused ? '▶ resume' : '⏸ freeze';
-});
+// Lets the capture and test scripts drive the wall without depending on the
+// chrome being visible, which it usually is not.
+window.setGenre = setGenre;
+window.__wall = state;
 
-const chips = document.getElementById('genres');
-for (const name of ['everything', ...Object.keys(PRESETS)]) {
-  const b = document.createElement('button');
-  b.className = 'chip';
-  b.textContent = name;
-  b.setAttribute('aria-pressed', String(name === state.genre));
-  b.onclick = () => {
-    state.genre = name;
-    [...chips.children].forEach(c => c.setAttribute('aria-pressed', String(c === b)));
-    buildTiles();
-  };
-  chips.appendChild(b);
-}
-
-boot().catch(err => {
-  statusEl.textContent = `failed: ${err.message}`;
-  console.error(err);
-});
+boot()
+  .then(() => wake())
+  .catch(err => {
+    statusEl.textContent = `failed: ${err.message}`;
+    console.error(err);
+  });

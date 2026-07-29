@@ -156,6 +156,33 @@ python3 tools/build_depth.py     # downloads the model on first run
 | `parallax` | Near pixels shift further than far ones, so a flat photograph gains volume while the dither grain stays put |
 | `fog` | The process holds near and dissolves into haze with distance |
 
+## Chrome
+
+The wall is the page; the interface stays out of it.
+
+There is no header. A small block sits in the bottom-left corner — current
+style, tile count, frame rate — resting at low opacity and waking on any pointer
+movement. The style list grows *upward* out of that corner, so the wall below it
+stays clear.
+
+Captions were the bigger intrusion: thirty-five permanent labels covered more of
+the wall than any header did. Only the tile under the pointer is captioned now,
+and the caption fades out with the chrome rather than staying stuck to the last
+tile hovered. `L` pins them all on for reading the wall.
+
+| Key | |
+|---|---|
+| `1`–`9`, `0` | style |
+| `space` | freeze |
+| `r` | shuffle |
+| `l` | pin captions |
+| `f` | fullscreen |
+| `h` | hide all chrome |
+| `?` | keys |
+
+`window.setGenre(name)` is exposed so the capture and test scripts can drive the
+wall without depending on chrome that is usually invisible.
+
 ## Morph transitions
 
 Tiles hold a process for a while, then cross-fade into another. Both are drawn

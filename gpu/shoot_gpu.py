@@ -61,7 +61,7 @@ def run(url: str, seconds: float, shots: int, genre: str | None = None) -> int:
         page.wait_for_timeout(3500)   # textures + shader compile
 
         if genre:
-            page.click(f'.chip:text-is("{genre}")')
+            page.evaluate("g => window.setGenre(g)", genre)
             page.wait_for_timeout(2500)
 
         # Sweep the pointer so the interactive uniforms are exercised.
