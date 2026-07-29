@@ -7,7 +7,8 @@
    "author": "Rafael Souza",
    "link": "https://unsplash.com/photos/QxkBP3A9XmU",
    "lo": 0.0392,
-   "hi": 0.7137
+   "hi": 0.7137,
+   "depth": "depth/92.jpg"
   },
   {
    "src": "photos/41.jpg",
@@ -16,7 +17,8 @@
    "author": "Nithya Ramanujam",
    "link": "https://unsplash.com/photos/fTKetYpEKNQ",
    "lo": 0.1647,
-   "hi": 0.7412
+   "hi": 0.7412,
+   "depth": "depth/41.jpg"
   },
   {
    "src": "photos/113.jpg",
@@ -25,7 +27,8 @@
    "author": "Zugr",
    "link": "https://unsplash.com/photos/yZf1quatKCA",
    "lo": 0.098,
-   "hi": 0.9961
+   "hi": 0.9961,
+   "depth": "depth/113.jpg"
   },
   {
    "src": "photos/182.jpg",
@@ -34,7 +37,8 @@
    "author": "Andrea Boldizsar",
    "link": "https://unsplash.com/photos/BwgKUh9tN84",
    "lo": 0.2275,
-   "hi": 0.9373
+   "hi": 0.9373,
+   "depth": "depth/182.jpg"
   },
   {
    "src": "photos/12.jpg",
@@ -43,7 +47,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/I_9ILwtsl_k",
    "lo": 0.0235,
-   "hi": 0.9176
+   "hi": 0.9176,
+   "depth": "depth/12.jpg"
   },
   {
    "src": "photos/18.jpg",
@@ -52,7 +57,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/Ps2n0rShqaM",
    "lo": 0.1098,
-   "hi": 0.7333
+   "hi": 0.7333,
+   "depth": "depth/18.jpg"
   },
   {
    "src": "photos/152.jpg",
@@ -61,7 +67,8 @@
    "author": "Steven Spassov",
    "link": "https://unsplash.com/photos/tVIqMgGlAG0",
    "lo": 0.2275,
-   "hi": 0.7922
+   "hi": 0.7922,
+   "depth": "depth/152.jpg"
   },
   {
    "src": "photos/25.jpg",
@@ -70,7 +77,8 @@
    "author": "Alejandro Escamilla",
    "link": "https://unsplash.com/photos/Iuq0EL4EINY",
    "lo": 0.1294,
-   "hi": 0.9804
+   "hi": 0.9804,
+   "depth": "depth/25.jpg"
   },
   {
    "src": "photos/104.jpg",
@@ -79,7 +87,8 @@
    "author": "Dyaa Eldin",
    "link": "https://unsplash.com/photos/2fl-ocJ5MOA",
    "lo": 0.2667,
-   "hi": 0.9804
+   "hi": 0.9804,
+   "depth": "depth/104.jpg"
   },
   {
    "src": "photos/165.jpg",
@@ -88,7 +97,8 @@
    "author": "Linh Nguyen",
    "link": "https://unsplash.com/photos/xjXz8GKXcTI",
    "lo": 0.1686,
-   "hi": 0.7922
+   "hi": 0.7922,
+   "depth": "depth/165.jpg"
   },
   {
    "src": "photos/14.jpg",
@@ -97,7 +107,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/IQ1kOQTJrOQ",
    "lo": 0.0549,
-   "hi": 0.9412
+   "hi": 0.9412,
+   "depth": "depth/14.jpg"
   },
   {
    "src": "photos/142.jpg",
@@ -106,7 +117,8 @@
    "author": "Vadim Sherbakov",
    "link": "https://unsplash.com/photos/KSyemQIWwP8",
    "lo": 0.2118,
-   "hi": 0.7294
+   "hi": 0.7294,
+   "depth": "depth/142.jpg"
   },
   {
    "src": "photos/58.jpg",
@@ -115,7 +127,8 @@
    "author": "Tony Naccarato",
    "link": "https://unsplash.com/photos/-kEr-QltARg",
    "lo": 0.1216,
-   "hi": 0.9882
+   "hi": 0.9882,
+   "depth": "depth/58.jpg"
   },
   {
    "src": "photos/9.jpg",
@@ -124,7 +137,8 @@
    "author": "Alejandro Escamilla",
    "link": "https://unsplash.com/photos/ABDTiLqDhJA",
    "lo": 0.0,
-   "hi": 0.8549
+   "hi": 0.8549,
+   "depth": "depth/9.jpg"
   },
   {
    "src": "photos/22.jpg",
@@ -133,7 +147,8 @@
    "author": "Alejandro Escamilla",
    "link": "https://unsplash.com/photos/du_OrQAA4r0",
    "lo": 0.1882,
-   "hi": 0.9059
+   "hi": 0.9059,
+   "depth": "depth/22.jpg"
   },
   {
    "src": "photos/123.jpg",
@@ -142,7 +157,8 @@
    "author": "Mark Doda",
    "link": "https://unsplash.com/photos/tS9hJOnmKK8",
    "lo": 0.0627,
-   "hi": 0.6118
+   "hi": 0.6118,
+   "depth": "depth/123.jpg"
   },
   {
    "src": "photos/119.jpg",
@@ -151,7 +167,8 @@
    "author": "Nadir Balcikli",
    "link": "https://unsplash.com/photos/wE9nUW7tMmk",
    "lo": 0.2588,
-   "hi": 0.9255
+   "hi": 0.9255,
+   "depth": "depth/119.jpg"
   },
   {
    "src": "photos/17.jpg",
@@ -160,7 +177,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/Ven2CV8IJ5A",
    "lo": 0.0706,
-   "hi": 0.749
+   "hi": 0.749,
+   "depth": "depth/17.jpg"
   },
   {
    "src": "photos/65.jpg",
@@ -169,7 +187,8 @@
    "author": "Alexander Shustov",
    "link": "https://unsplash.com/photos/2FrX56QL7P8",
    "lo": 0.102,
-   "hi": 0.9725
+   "hi": 0.9725,
+   "depth": "depth/65.jpg"
   },
   {
    "src": "photos/24.jpg",
@@ -178,7 +197,8 @@
    "author": "Alejandro Escamilla",
    "link": "https://unsplash.com/photos/cZhUxIQjILg",
    "lo": 0.0902,
-   "hi": 0.9373
+   "hi": 0.9373,
+   "depth": "depth/24.jpg"
   },
   {
    "src": "photos/157.jpg",
@@ -187,7 +207,8 @@
    "author": "koichi nakajima",
    "link": "https://unsplash.com/photos/HFbRnCjWHsk",
    "lo": 0.2902,
-   "hi": 0.9098
+   "hi": 0.9098,
+   "depth": "depth/157.jpg"
   },
   {
    "src": "photos/120.jpg",
@@ -196,7 +217,8 @@
    "author": "Guillaume",
    "link": "https://unsplash.com/photos/_DA3D5P71qs",
    "lo": 0.0196,
-   "hi": 0.2549
+   "hi": 0.2549,
+   "depth": "depth/120.jpg"
   },
   {
    "src": "photos/15.jpg",
@@ -205,7 +227,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/NYDo21ssGao",
    "lo": 0.102,
-   "hi": 0.8745
+   "hi": 0.8745,
+   "depth": "depth/15.jpg"
   },
   {
    "src": "photos/160.jpg",
@@ -214,7 +237,8 @@
    "author": "Thom",
    "link": "https://unsplash.com/photos/Zdcq3iKly6g",
    "lo": 0.0392,
-   "hi": 1.0
+   "hi": 1.0,
+   "depth": "depth/160.jpg"
   },
   {
    "src": "photos/33.jpg",
@@ -223,7 +247,8 @@
    "author": "Alejandro Escamilla",
    "link": "https://unsplash.com/photos/LBI7cgq3pbM",
    "lo": 0.0,
-   "hi": 0.9922
+   "hi": 0.9922,
+   "depth": "depth/33.jpg"
   },
   {
    "src": "photos/61.jpg",
@@ -232,7 +257,8 @@
    "author": "Alex",
    "link": "https://unsplash.com/photos/zMz14hsbpuU",
    "lo": 0.1059,
-   "hi": 0.9922
+   "hi": 0.9922,
+   "depth": "depth/61.jpg"
   },
   {
    "src": "photos/177.jpg",
@@ -241,7 +267,8 @@
    "author": "Danka & Peter",
    "link": "https://unsplash.com/photos/tvicgTdh7Fg",
    "lo": 0.1059,
-   "hi": 0.9647
+   "hi": 0.9647,
+   "depth": "depth/177.jpg"
   },
   {
    "src": "photos/176.jpg",
@@ -250,7 +277,8 @@
    "author": "Good Free Photos",
    "link": "https://unsplash.com/photos/WO4bxwzHRe8",
    "lo": 0.051,
-   "hi": 0.8039
+   "hi": 0.8039,
+   "depth": "depth/176.jpg"
   },
   {
    "src": "photos/196.jpg",
@@ -259,7 +287,8 @@
    "author": "Dyaa Eldin Moustafa",
    "link": "https://unsplash.com/photos/mR_HR8NZwg8",
    "lo": 0.2941,
-   "hi": 0.8588
+   "hi": 0.8588,
+   "depth": "depth/196.jpg"
   },
   {
    "src": "photos/202.jpg",
@@ -268,7 +297,8 @@
    "author": "Glen Carrie",
    "link": "https://unsplash.com/photos/xlAmGyZE7Zg",
    "lo": 0.0275,
-   "hi": 0.9843
+   "hi": 0.9843,
+   "depth": "depth/202.jpg"
   },
   {
    "src": "photos/163.jpg",
@@ -277,7 +307,8 @@
    "author": "Linh Nguyen",
    "link": "https://unsplash.com/photos/oFAVqfTSby8",
    "lo": 0.0863,
-   "hi": 0.8627
+   "hi": 0.8627,
+   "depth": "depth/163.jpg"
   },
   {
    "src": "photos/178.jpg",
@@ -286,7 +317,8 @@
    "author": "Thanun Buranapong",
    "link": "https://unsplash.com/photos/JbeBraLha7U",
    "lo": 0.1373,
-   "hi": 0.9529
+   "hi": 0.9529,
+   "depth": "depth/178.jpg"
   },
   {
    "src": "photos/203.jpg",
@@ -295,7 +327,8 @@
    "author": "Diogo Tavares",
    "link": "https://unsplash.com/photos/PFZTiiJnjag",
    "lo": 0.0863,
-   "hi": 0.9961
+   "hi": 0.9961,
+   "depth": "depth/203.jpg"
   },
   {
    "src": "photos/201.jpg",
@@ -304,7 +337,8 @@
    "author": "Craig Garner",
    "link": "https://unsplash.com/photos/YoadQb46v6k",
    "lo": 0.1647,
-   "hi": 0.9529
+   "hi": 0.9529,
+   "depth": "depth/201.jpg"
   },
   {
    "src": "photos/60.jpg",
@@ -313,7 +347,8 @@
    "author": "Vadim Sherbakov",
    "link": "https://unsplash.com/photos/Hi9GSwWkCJk",
    "lo": 0.1333,
-   "hi": 0.8078
+   "hi": 0.8078,
+   "depth": "depth/60.jpg"
   },
   {
    "src": "photos/11.jpg",
@@ -322,7 +357,8 @@
    "author": "Paul Jarvis",
    "link": "https://unsplash.com/photos/Cm7oKel-X2Q",
    "lo": 0.1176,
-   "hi": 0.9725
+   "hi": 0.9725,
+   "depth": "depth/11.jpg"
   }
  ]
 }

@@ -120,6 +120,31 @@ export const PRESETS = {
     duotone('posterised · rust', rgb(28, 14, 18), rgb(244, 186, 122), 4),
   ],
 
+  // Processes that vary through the scene rather than uniformly over the frame,
+  // driven by a depth map estimated offline.
+  depth: [
+    { label: 'depth dither', program: 'depthDither', kind: KIND.bayer8,
+      palette: PALETTES.mono, uniforms: { uNear: 1.0, uFar: 3.6 } },
+    { label: 'depth dither · game boy', program: 'depthDither', kind: KIND.bayer4,
+      palette: PALETTES.gameboy, uniforms: { uNear: 1.0, uFar: 4.2 } },
+    { label: 'depth dither · ember', program: 'depthDither', kind: KIND.blue,
+      palette: PALETTES.ember, uniforms: { uNear: 1.0, uFar: 3.0 } },
+    shader('depth screen', 'depthHalftone', { uNear: 4, uFar: 15, uInk: INK, uStock: STOCK }),
+    shader('depth screen · fine', 'depthHalftone', { uNear: 3, uFar: 9, uInk: INK, uStock: STOCK }),
+    { label: 'depth planes', program: 'depthPlanes',
+      palette: PALETTES.ember, uniforms: { uPlanes: 5 } },
+    { label: 'depth planes · cyanotype', program: 'depthPlanes',
+      palette: PALETTES.cyanotype, uniforms: { uPlanes: 5 } },
+    { label: 'parallax', program: 'depthParallax', kind: KIND.bayer8,
+      palette: PALETTES.mono, uniforms: { uAmount: 0.07 } },
+    { label: 'parallax · deep', program: 'depthParallax', kind: KIND.blue,
+      palette: PALETTES.mono, uniforms: { uAmount: 0.14 } },
+    { label: 'parallax · sepia', program: 'depthParallax', kind: KIND.bayer4,
+      palette: PALETTES.sepia, uniforms: { uAmount: 0.10 } },
+    shader('fog', 'depthFog', { uFog: rgb(236, 238, 242), uDensity: 1.6 }),
+    shader('fog · dusk', 'depthFog', { uFog: rgb(58, 44, 78), uDensity: 1.2 }),
+  ],
+
   painterly: [
     shader('kuwahara', 'kuwahara', { uRadius: 5 }),
     shader('kuwahara · heavy', 'kuwahara', { uRadius: 7 }),
@@ -129,15 +154,23 @@ export const PRESETS = {
   ],
 };
 
-export function pick(genre) {
+// Effect and placement are picked separately: a morph swaps the effect while
+// holding the crop fixed, so the image stays put and only the process changes.
+export function pickEffect(genre) {
   const pool = genre === 'everything'
     ? Object.values(PRESETS).flat()
     : PRESETS[genre] || Object.values(PRESETS).flat();
-  const base = pool[Math.floor(Math.random() * pool.length)];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+export function pickPlacement() {
   return {
-    ...base,
     zoom: 1 + Math.random() * 1.2,
     cropX: Math.random(),
     cropY: Math.random() * 0.85,
   };
+}
+
+export function pick(genre) {
+  return { ...pickEffect(genre), ...pickPlacement() };
 }

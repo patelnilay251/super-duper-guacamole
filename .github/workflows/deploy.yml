@@ -21,7 +21,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Compares every ported shader against the NumPy reference before anything
+  # ships. This is what caught the flipped texture axis, which had rendered
+  # every photograph upside down without being visible by eye.
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: |
+          pip install --quiet numpy pillow playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Serve the wall
+        run: |
+          python -m http.server 8123 --bind 127.0.0.1 --directory gpu &
+          for _ in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8123/ && break; sleep 1; done
+
+      - name: Differential harness
+        run: python3 tools/diff_harness.py --url http://127.0.0.1:8123/diff.html
+
   deploy:
+    needs: check
     runs-on: ubuntu-latest
     permissions:
       contents: read

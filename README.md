@@ -135,6 +135,61 @@ into an 8×8 canvas and reading it back. Doing that in the shader instead cost
 nine texture fetches on *every pixel* to recompute a value constant across the
 tile — removing it took the software-rendered frame rate from 5 fps to 13.
 
+## Depth-aware processes
+
+A photographic process is normally applied uniformly across a frame. With a depth
+map it can vary *through the scene* instead.
+
+Monocular depth is estimated offline — Depth Anything V2 (small, quantised) via
+ONNX Runtime — and shipped as a greyscale image beside each photograph, so at
+runtime it is just another texture and costs nothing. 36 maps come to 0.6 MB.
+
+```bash
+python3 tools/build_depth.py     # downloads the model on first run
+```
+
+| Preset | What varies with distance |
+|---|---|
+| `depth dither` | Matrix resolution: fine near, coarse far. The pointer sweeps the plane of best resolution through the scene |
+| `depth screen` | Halftone ruling opens up with distance, and tone washes out — atmospheric perspective, in dots |
+| `depth planes` | Depth cut into flat bands, each printed in its own ink: a separation by distance rather than by colour |
+| `parallax` | Near pixels shift further than far ones, so a flat photograph gains volume while the dither grain stays put |
+| `fog` | The process holds near and dissolves into haze with distance |
+
+## Morph transitions
+
+Tiles hold a process for a while, then cross-fade into another. Both are drawn
+and the incoming one composites over the outgoing at rising alpha, smoothstepped
+— a linear fade spends too long looking like a double exposure. Timings are
+staggered per tile, so the wall never changes all at once.
+
+## Differential harness
+
+`tools/diff_harness.py` renders every ported effect in real Chromium and compares
+it against the NumPy reference. It does not compare pixels — the two will never
+match exactly — but the properties that break when a shader is wrong:
+
+| Metric | Catches |
+|---|---|
+| **structure** | Both downsampled to 32×32 and correlated. Collapses when a shader samples the wrong region or renders a flat field |
+| **exposure** | Mean luminance. Catches clipping to black or white |
+| **ink** | Fraction of dark pixels. Catches a dither losing its tone curve |
+
+It earned its keep immediately. Structure came back at ~0.35 across the board,
+with **negative** correlation on two cases — a sign of geometry, not tuning.
+WebGL's texture origin is bottom-left while an image uploads top row first, so
+`vUv.y = 0` was sampling the top of the photograph: **every image on the wall had
+been rendering upside down since the first commit**, invisible because tight
+crops of dithered texture have few orientation cues. After the fix, structure
+runs 0.94–0.999.
+
+It also exposed a real quality gap. The shader was stretching tone by whole-photo
+percentiles while the reference used per-crop ones, so a tight crop got the wrong
+normalisation. Both now measure the crop, and the remaining error falls under
+0.01 on most cases.
+
+The harness runs in CI and gates deployment.
+
 Sixteen shader programs across eight genres, 61 presets: ordered dithering,
 halftone, gradient maps, riso, CRT, chromatic aberration, bloom, crystallize,
 kuwahara, phosphor, xerox, crosshatch, Sobel edges, duotone, displace, datamosh.
