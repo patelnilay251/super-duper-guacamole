@@ -1,0 +1,22 @@
+# Render Blueprint. In the Render dashboard: New -> Blueprint -> connect this
+# repo. Render reads this file, builds the Dockerfile, and deploys. No API
+# token or credential needs to leave your machine.
+services:
+  - type: web
+    name: ditherwall
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      # A free instance gets a fraction of a core. These keep each tile cheap;
+      # raise DW_MAX_EDGE and DW_WORKERS on a paid plan for sharper tiles.
+      - key: DW_WORKERS
+        value: "2"
+      - key: DW_MAX_EDGE
+        value: "480"
+      - key: DW_CACHE_DEPTH
+        value: "3"
+      - key: DW_PHOTOS
+        value: "32"

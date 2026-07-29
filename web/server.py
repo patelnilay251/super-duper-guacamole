@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import os
 import random
 import sys
 import threading
@@ -40,10 +41,20 @@ from layout import organic_crop                  # noqa: E402
 
 STATIC = ROOT / "static"
 
+
+def _env(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, default))
+    except ValueError:
+        return default
+
+
 # Requested sizes are rounded to this grid so the cache has few distinct keys.
 SIZE_BUCKET = 80
-MAX_EDGE = 720
-CACHE_DEPTH = 4
+# Defaults are deliberately conservative: a free container may get a fraction
+# of a core, and every one of these knobs trades image size for CPU per tile.
+MAX_EDGE = _env("DW_MAX_EDGE", 720)
+CACHE_DEPTH = _env("DW_CACHE_DEPTH", 4)
 
 
 def effect_table(genre: str | None) -> dict:
@@ -160,6 +171,13 @@ class Handler(BaseHTTPRequestHandler):
         if url.path == "/app.js":
             return self._serve_static("app.js", "text/javascript; charset=utf-8")
 
+        if url.path == "/healthz":
+            ready = sum(len(q) for q in self.factory.cache.values())
+            body = json.dumps({"ok": True, "photos": len(self.factory.photos),
+                               "effects": len(effect_table("everything")),
+                               "cached_tiles": ready}).encode()
+            return self._send(200, body, "application/json")
+
         if url.path == "/api/genres":
             body = json.dumps({
                 "genres": [
@@ -197,10 +215,11 @@ class Handler(BaseHTTPRequestHandler):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Serve the live dither gallery.")
-    ap.add_argument("--port", type=int, default=8000)
-    ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--photos", type=int, default=44)
-    ap.add_argument("--workers", type=int, default=3)
+    # PORT and HOST come from the environment on most hosts.
+    ap.add_argument("--port", type=int, default=_env("PORT", 8000))
+    ap.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
+    ap.add_argument("--photos", type=int, default=_env("DW_PHOTOS", 44))
+    ap.add_argument("--workers", type=int, default=_env("DW_WORKERS", 3))
     args = ap.parse_args()
 
     print(f"loading {args.photos} photos ...")
@@ -211,7 +230,8 @@ def main() -> None:
     Handler.factory = TileFactory(photos, workers=args.workers)
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     print(f"gallery on http://{args.host}:{args.port}  ({len(photos)} photos, "
-          f"{len(effect_table('everything'))} effects)")
+          f"{len(effect_table('everything'))} effects, {args.workers} workers, "
+          f"max edge {MAX_EDGE}px)", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

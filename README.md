@@ -103,6 +103,40 @@ Values are percent-encoded on the way out and decoded in the client.
 and doubles as a smoke test — it fails on console errors, failed requests, or
 tiles that never finish loading.
 
+## Deploying
+
+The repo carries a `Dockerfile` and a Render Blueprint. Deployment is a pull, not
+a push — connect the repo in the Render dashboard (**New → Blueprint**), and it
+reads `render.yaml`, builds the image, and serves it. No API token is needed.
+
+```bash
+docker build -t ditherwall .
+docker run -p 8000:8000 ditherwall
+```
+
+The photo corpus is baked into the image at build time. Fetching at boot would
+make every cold start wait on ~30 HTTP round trips, and a free instance cold-starts
+often.
+
+**Tuning knobs**, all environment variables, all read at startup:
+
+| Variable | Default | Effect |
+|---|---|---|
+| `DW_WORKERS` | 3 | Render threads. More than the core count just adds contention |
+| `DW_MAX_EDGE` | 720 | Longest tile edge. Cost is roughly quadratic in this |
+| `DW_PHOTOS` | 44 | Corpus size — memory and image size |
+| `DW_CACHE_DEPTH` | 4 | Pre-rendered tiles held per size bucket |
+
+The Blueprint sets 480px / 2 workers, because a free instance gets a fraction of
+a core and cost scales with area. On a paid plan, raise both.
+
+**The client throttles itself.** Refresh interval is derived from measured
+latency rather than fixed: N tiles refreshing every T seconds demand `N/T`
+renders per second against a capacity of about `workers/latency`. So on a fast
+machine tiles turn over every ~5s, and on a slow host the interval stretches
+toward its 90s ceiling instead of piling up a queue the server can never drain.
+The status line reports both the measured latency and the current interval.
+
 ## Notes on the implementation
 
 Three things turned out to matter more than the algorithms themselves.

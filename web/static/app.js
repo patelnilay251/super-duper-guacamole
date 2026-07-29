@@ -17,7 +17,20 @@ const state = {
   paused: false,
   tiles: [],
   rendered: 0,
+  latency: 400,        // EWMA of observed render+transfer time, ms
 };
+
+// Refresh rate is derived from measured latency rather than fixed, so the wall
+// self-throttles instead of queueing: on a fast machine tiles turn over every
+// few seconds, on a fraction-of-a-core host they slow down until the server
+// keeps up. N tiles refreshing every T seconds demand N/T renders per second,
+// against a capacity of roughly WORKERS/latency.
+const WORKERS = 2, HEADROOM = 1.6;
+function refreshInterval() {
+  const n = Math.max(1, state.tiles.length);
+  const base = (n * state.latency / WORKERS) * HEADROOM;
+  return Math.min(90000, Math.max(4500, base));
+}
 
 const rand = (lo, hi) => lo + Math.random() * (hi - lo);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -71,6 +84,7 @@ class Tile {
     const { w, h } = this.targetSize();
     const url = `/api/tile.png?genre=${encodeURIComponent(state.genre)}&w=${w}&h=${h}&_=${Math.random()}`;
     this.el.classList.add('loading');
+    const started = performance.now();
     try {
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(res.status);
@@ -98,6 +112,8 @@ class Tile {
       this.img.classList.add('ready');
       this.el.classList.remove('loading');
 
+      // Blend into the latency estimate that drives the refresh rate.
+      state.latency = state.latency * 0.8 + (performance.now() - started) * 0.2;
       state.rendered++;
       updateStatus();
     } catch (err) {
@@ -109,8 +125,9 @@ class Tile {
   schedule() {
     clearTimeout(this.timer);
     if (state.paused) return;
-    // Wide jitter, so tiles never fall into step with each other.
-    this.timer = setTimeout(() => this.load(), rand(5000, 15000));
+    // Wide jitter around the adaptive interval, so tiles never fall into step.
+    const t = refreshInterval();
+    this.timer = setTimeout(() => this.load(), rand(t * 0.7, t * 1.5));
   }
 
   stop() { clearTimeout(this.timer); }
@@ -124,7 +141,10 @@ class Tile {
 
 function updateStatus() {
   const label = state.paused ? 'paused' : 'live';
-  statusEl.textContent = `${state.tiles.length} tiles · ${label} · ${state.rendered} renders`;
+  const every = Math.round(refreshInterval() / 1000);
+  statusEl.textContent =
+    `${state.tiles.length} tiles · ${label} · ${state.rendered} renders · `
+    + `${Math.round(state.latency)}ms · ~${every}s`;
 }
 
 // Fill the viewport plus a little, so there is something below the fold.
