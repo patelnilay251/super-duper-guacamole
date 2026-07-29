@@ -8,6 +8,7 @@ in a way that says nothing useful.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -15,7 +16,11 @@ from playwright.sync_api import sync_playwright
 
 OUT = Path(__file__).resolve().parent.parent / "out"
 
-FLAGS = [
+# Outbound traffic in this environment goes through a local CONNECT proxy that
+# Chromium does not pick up from the environment the way curl does.
+_PROXY = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
+
+FLAGS = ([f"--proxy-server={_PROXY}"] if _PROXY else []) + [
     "--use-gl=angle",
     "--use-angle=swiftshader",
     "--enable-unsafe-swiftshader",
