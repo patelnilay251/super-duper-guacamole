@@ -175,12 +175,16 @@ def run(url: str, photo_index: int) -> int:
     mean = float(np.clip(post.mean(), 0.02, 0.98))
     gamma = float(np.clip(np.log(0.48) / np.log(mean), 0.5, 2.0))
 
+    # This sandbox ships a browser at a fixed path; a CI runner lets Playwright
+    # manage its own. Fall back to Playwright's resolution when the former is absent.
     chromium = next(iter(sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux/chrome"))), None)
-    flags = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    launch = {"args": ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]}
+    if chromium:
+        launch["executable_path"] = str(chromium)
 
     rows, failures = [], 0
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(executable_path=str(chromium), args=flags)
+        browser = pw.chromium.launch(**launch)
         page = browser.new_page()
         page.goto(url, wait_until="load", timeout=60_000)
         page.wait_for_function("window.__ready === true", timeout=60_000)

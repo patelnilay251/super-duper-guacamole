@@ -29,10 +29,11 @@ FLAGS = ([f"--proxy-server={_PROXY}"] if _PROXY else []) + [
 ]
 
 
-def chromium_path() -> str:
+def chromium_path() -> str | None:
+    """Preinstalled browser if present; otherwise let Playwright resolve its own."""
     for exe in sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux/chrome")):
         return str(exe)
-    raise SystemExit("no chromium found")
+    return None
 
 
 def run(url: str, seconds: float, shots: int, genre: str | None = None) -> int:
@@ -40,7 +41,7 @@ def run(url: str, seconds: float, shots: int, genre: str | None = None) -> int:
     problems: list[str] = []
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(executable_path=chromium_path(), args=FLAGS)
+        browser = pw.chromium.launch(args=FLAGS, **({'executable_path': chromium_path()} if chromium_path() else {}))
         page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=1)
         page.on("console", lambda m: problems.append(f"{m.type}: {m.text}") if m.type == "error" else None)
         page.on("pageerror", lambda e: problems.append(f"pageerror: {e}"))
@@ -95,7 +96,7 @@ def capture_gif(url: str, frames: int, interval: float, width: int, height: int)
     OUT.mkdir(parents=True, exist_ok=True)
     shots = []
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(executable_path=chromium_path(), args=FLAGS)
+        browser = pw.chromium.launch(args=FLAGS, **({'executable_path': chromium_path()} if chromium_path() else {}))
         page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
         page.goto(url, wait_until="load", timeout=60_000)
         page.wait_for_timeout(4000)
