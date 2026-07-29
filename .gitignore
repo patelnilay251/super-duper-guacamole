@@ -5,6 +5,8 @@ cache/
 out/*
 !out/wall.png
 !out/genres.jpg
+!out/web_desktop.png
+!out/web_mobile.png
 
 __pycache__/
 *.pyc

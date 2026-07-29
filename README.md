@@ -59,6 +59,50 @@ diffusion kernel can target any palette.
 Everything is plain NumPy — no GPU, no shader compiler. The "shader" effects are
 the same operations a fragment shader would do, computed on the CPU.
 
+## Live gallery
+
+A web front end over the same engine. Every tile independently pulls its own
+random photograph and its own random effect, rendered server-side, and refreshes
+on its own jittered timer — so the wall changes continuously and unevenly rather
+than blinking over all at once.
+
+```bash
+python3 web/server.py --port 8000     # then open http://127.0.0.1:8000
+```
+
+| | |
+|---|---|
+| ![desktop](out/web_desktop.png) | ![mobile](out/web_mobile.png) |
+
+No framework and no build step — `http.server` with a thread pool on the back,
+one HTML/CSS/JS file each on the front. Genre chips switch the whole wall between
+the eight presets or the full 135-effect mix.
+
+**Responsive.** A CSS grid of `auto-fill / minmax(min(--tile, 46vw), 1fr))`, with
+tiles spanning a random number of 10px rows so heights stay uneven. Tile count is
+derived from the viewport. Captions reveal on hover on desktop but are pinned on
+under `@media (hover: none)`, since a touch screen has no hover.
+
+**Tiles are requested at device pixels.** A tile asks for `CSS size × devicePixelRatio`
+and the image is `image-rendering: pixelated`. Dithering is a per-pixel pattern —
+letting the browser resample it turns the whole point of the exercise to mush.
+
+**Pre-rendering.** An effect costs 20ms to about a second, too slow to sit inside
+a request on a phone. Worker threads render ahead of demand into a per-size cache,
+so a request normally pops a finished tile — measured 0.55s cold, under 5ms warm.
+Requested dimensions are rounded to an 80px grid to keep the number of cache keys
+small; `object-fit: cover` absorbs the difference.
+
+**Percent-encoded metadata headers.** The effect name and photographer ride back
+on `X-Effect` / `X-Author`. `http.server` encodes headers as latin-1, which cannot
+represent the en-dash in `floyd–steinberg` or the arrow in `bloom → atkinson`;
+before this was fixed roughly a third of requests died with `UnicodeEncodeError`.
+Values are percent-encoded on the way out and decoded in the client.
+
+`web/shoot.py` drives the page in real Chromium at desktop and mobile viewports,
+and doubles as a smoke test — it fails on console errors, failed requests, or
+tiles that never finish loading.
+
 ## Notes on the implementation
 
 Three things turned out to matter more than the algorithms themselves.
