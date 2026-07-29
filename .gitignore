@@ -7,6 +7,8 @@ out/*
 !out/genres.jpg
 !out/web_desktop.png
 !out/web_mobile.png
+!out/gpu_motion.gif
+!out/gpu_1.png
 
 __pycache__/
 *.pyc

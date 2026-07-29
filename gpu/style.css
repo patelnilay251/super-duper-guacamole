@@ -1,0 +1,30 @@
+:root { --ink:#f2f2f5; --muted:#8b8b98; --accent:#d8ff4f; --line:#24242c; --panel:#141419; }
+* { box-sizing:border-box; }
+html,body { margin:0; height:100%; background:#0b0b0e; color:var(--ink);
+  font:13px/1.4 ui-monospace,"DejaVu Sans Mono",Menlo,monospace; overflow:hidden; }
+
+/* The canvas is the wall; everything else floats over it. */
+#stage { position:fixed; inset:0; display:block; }
+
+.labels { position:fixed; inset:0; pointer-events:none; }
+.label { position:absolute; transform:translateY(-100%); padding:18px 9px 7px;
+  display:flex; flex-direction:column; gap:1px; text-shadow:0 1px 3px rgba(0,0,0,.95);
+  /* tiles range from near-black to paper white, so the caption carries its own backdrop */
+  background:linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,0)); }
+.label .effect { font-size:11px; font-weight:600; color:#fff; }
+.label .credit { font-size:10px; color:#c9c9d2; }
+
+.bar { position:fixed; top:0; left:0; right:0; z-index:5;
+  display:flex; align-items:center; gap:8px 16px; flex-wrap:wrap;
+  padding:8px 12px; background:rgba(11,11,14,.72); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line); }
+.bar h1 { margin:0; font-size:14px; letter-spacing:.06em; text-transform:uppercase; }
+.tag { color:var(--accent); margin-left:6px; font-size:10px; letter-spacing:.12em; }
+.bar p { margin:0; color:var(--muted); font-size:11px; min-width:16ch; }
+
+.chips { display:flex; gap:6px; margin-left:auto; }
+button, .chip { font:inherit; font-size:11px; color:var(--ink); background:var(--panel);
+  border:1px solid var(--line); border-radius:999px; padding:5px 11px; cursor:pointer; }
+button:hover,.chip:hover { border-color:#3a3a46; }
+.chip[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:#10100a; font-weight:600; }
+.buttons { display:flex; gap:6px; }

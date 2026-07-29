@@ -103,6 +103,41 @@ Values are percent-encoded on the way out and decoded in the client.
 and doubles as a smoke test — it fails on console errors, failed requests, or
 tiles that never finish loading.
 
+## GPU wall
+
+A second front end that renders the effects as WebGL2 fragment shaders on the
+viewer's own GPU. No server compute at all, so it deploys as static files — and
+because it runs at frame rate, the effects can *move*: screen angles rotate,
+dither grain crawls, riso registration drifts, and everything responds to the
+pointer.
+
+![gpu wall in motion](out/gpu_motion.gif)
+
+```bash
+python3 tools/build_corpus.py     # optimised photos + manifest + blue noise
+cd gpu && python3 -m http.server 8123
+```
+
+**One context, not one per tile.** Browsers cap concurrent WebGL contexts at
+roughly 8–16, so a canvas per tile fails outright past a dozen. The canvas covers
+the page instead, and each tile is drawn by setting `gl.viewport` to its rectangle
+and running a full-screen quad through that tile's program.
+
+**Photographs ship with the site.** WebGL textures must be same-origin or
+CORS-enabled, and Picsum sends no CORS header. Serving a bundled corpus sidesteps
+the question and removes any runtime dependency on a third-party CDN or its rate
+limits — 36 photographs at 1024px come to 3.9 MB.
+
+**Statistics the shader cannot compute are precomputed.** `normalize_tone` needs
+luminance percentiles over the image; those go in the manifest at build time. The
+per-crop exposure gamma is measured on the CPU once per tile by drawing the crop
+into an 8×8 canvas and reading it back. Doing that in the shader instead cost
+nine texture fetches on *every pixel* to recompute a value constant across the
+tile — removing it took the software-rendered frame rate from 5 fps to 13.
+
+Error diffusion does not port: it is sequential by construction. It stays on the
+CPU and is not part of the GPU wall.
+
 ## Deploying
 
 The repo carries a `Dockerfile` and a Render Blueprint. Deployment is a pull, not

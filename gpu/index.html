@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ditherwall — gpu</title>
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%230b0b0e'/%3E%3Cg fill='%23d8ff4f'%3E%3Crect x='0' y='0' width='2' height='2'/%3E%3Crect x='4' y='0' width='2' height='2'/%3E%3Crect x='2' y='2' width='2' height='2'/%3E%3Crect x='6' y='2' width='2' height='2'/%3E%3Crect x='0' y='4' width='2' height='2'/%3E%3Crect x='4' y='4' width='2' height='2'/%3E%3Crect x='2' y='6' width='2' height='2'/%3E%3Crect x='6' y='6' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div id="labels" class="labels"></div>
+
+<header class="bar">
+  <h1>ditherwall<span class="tag">gpu</span></h1>
+  <p id="status">compiling shaders…</p>
+  <div class="chips" id="genres"></div>
+  <div class="buttons">
+    <button id="shuffle" type="button">↻ shuffle</button>
+    <button id="freeze" type="button">⏸ freeze</button>
+  </div>
+</header>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
