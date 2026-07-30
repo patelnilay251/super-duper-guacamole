@@ -302,6 +302,35 @@ Two harnesses, two questions: `diff_harness.py` asks whether the GPU and the
 reference **agree**, `tone_fidelity.py` asks whether they are **right**. Both
 gate deployment.
 
+## Antialiased screens
+
+The dot and line screens resolve their edges against the pixel instead of
+thresholding. A hard edge can only place whole pixels, so a cell owing 43%
+coverage lands on 3 pixels out of 7 — worst where the cells are smallest, which
+is most of the wall. The antialiasing width is derived analytically rather than
+from `fwidth` of the screen coordinate itself, which wraps: `mod` makes it spike
+at every cell boundary. Reading `fwidth(px.x)` instead gives the exact pixel
+scale under coarsen and any caller-side zoom.
+
+Turning it on made the tone *worse* — halftone's residual went −0.020 → −0.061,
+crosshatch's −0.002 → −0.024, both over-inked. The screens were fine; measuring
+their coverage transfer function showed it barely moved. The problem was one
+step later. Soft edges produce partially covered pixels for the first time, and
+the shaders were compositing ink over paper in sRGB, where a half-covered pixel
+becomes 0.5 — a reflectance of 0.21, not the 0.5 it owes. `lay()` now does that
+blend in linear light on both sides. Same lesson as the quantiser, one stage
+downstream, and invisible until the edges went soft.
+
+| | hard edge | antialiased |
+|---|---|---|
+| halftone residual | −0.020 | −0.016 |
+| halftone structure | 0.970 | 0.981 |
+| crosshatch structure | 0.958 | 0.972 |
+| crosshatch exposure | 0.061 | 0.031 |
+
+Ordered dithering is deliberately left alone: one threshold per pixel is the
+definition of the process, and there is no sub-pixel geometry to resolve.
+
 Sixteen shader programs across eight genres, 61 presets: ordered dithering,
 halftone, gradient maps, riso, CRT, chromatic aberration, bloom, crystallize,
 kuwahara, phosphor, xerox, crosshatch, Sobel edges, duotone, displace, datamosh.

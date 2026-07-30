@@ -33,8 +33,19 @@ sys.path.insert(0, str(ROOT / "ditherwall"))
 
 from effects import (  # noqa: E402
     bayer, crosshatch, dither_ordered, duotone, edges, gradient_map, halftone,
-    kuwahara, luma, normalize_tone, palette_array, riso, xerox,
+    kuwahara, lay, luma, normalize_tone, palette_array, riso, srgb_to_linear,
+    xerox,
 )
+
+
+def inked(grey: np.ndarray, stock: tuple, ink: tuple) -> np.ndarray:
+    """Re-lay a black-on-white screen in the given ink, the way the shader does.
+
+    The screens return a linear-light composite of ink over paper, so coverage
+    comes back out of the grey exactly. Routing it through `duotone` instead
+    would apply that effect's contrast curve, which the shader does not.
+    """
+    return lay(stock, ink, 1.0 - srgb_to_linear(grey[..., 0]))
 
 SIZE = 256
 
@@ -88,7 +99,7 @@ CASES = {
     ),
     "halftone": (
         {"program": "halftone", "uniforms": {"uCell": 7, "uInk": INK, "uStock": STOCK}},
-        lambda img: duotone(halftone(normalize_tone(img), 7, 0.5), (18, 16, 14), (247, 241, 226)),
+        lambda img: inked(halftone(normalize_tone(img), 7, 0.5), (247, 241, 226), (18, 16, 14)),
     ),
     "gradient · ironbow": (
         {"program": "gradient", "uniforms": {"uRamp": IRONBOW}},
@@ -105,7 +116,7 @@ CASES = {
     ),
     "crosshatch": (
         {"program": "crosshatch", "uniforms": {"uSpacing": 7, "uInk": INK, "uStock": STOCK}},
-        lambda img: duotone(crosshatch(normalize_tone(img), 7), (18, 16, 14), (247, 241, 226)),
+        lambda img: inked(crosshatch(normalize_tone(img), 7), (247, 241, 226), (18, 16, 14)),
     ),
     "duotone": (
         {"program": "duotone", "uniforms": {"uDark": rgbf(16, 24, 52), "uLight": rgbf(236, 232, 220), "uLevels": 0}},

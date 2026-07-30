@@ -344,12 +344,38 @@ def ordered_dither(rgb: np.ndarray, pal: np.ndarray, thresh: np.ndarray, strengt
 # --------------------------------------------------------------------------
 
 
+def smoothstep(lo, hi, x: np.ndarray) -> np.ndarray:
+    t = np.clip((x - lo) / np.maximum(hi - lo, 1e-9), 0.0, 1.0)
+    return t * t * (3.0 - 2.0 * t)
+
+
+def lay(stock: tuple, ink: tuple, coverage: np.ndarray) -> np.ndarray:
+    """Ink laid over paper at a fractional coverage, composited in linear light.
+
+    A pixel half covered by ink reflects half the light, which is not the
+    halfway point between the two sRGB values -- sRGB 0.5 is a reflectance of
+    0.21. This only started to matter once the screens got soft edges: a hard
+    screen never lands between paper and ink, so every pixel was one or the
+    other.
+    """
+    a = srgb_to_linear(np.array(stock, dtype=float) / 255)
+    b = srgb_to_linear(np.array(ink, dtype=float) / 255)
+    c = np.clip(coverage, 0, 1)[..., None]
+    return linear_to_srgb(np.clip(a + (b - a) * c, 0, 1))
+
+
 def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
-    """Binary rotated dot screen. 1 where ink lands.
+    """Rotated dot screen. Returns ink coverage per pixel in [0, 1].
 
     `coverage` is desired ink fraction in [0, 1]. Dot radius scales as its
     square root so printed *area* tracks coverage linearly, which is what keeps
     midtones from going muddy.
+
+    The edge is resolved against the pixel rather than thresholded. A hard edge
+    can only place whole pixels, so a cell owing 43% coverage lands on 3 pixels
+    out of 7 and prints the wrong tone -- worst where the cells are smallest.
+    The guard on `radius` keeps highlights clean: without it a coverage of zero
+    still leaves half a pixel of ink at every cell centre.
     """
     h, w = coverage.shape
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
@@ -359,7 +385,8 @@ def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.nd
     dv = (v % cell) - cell / 2
     dist = np.hypot(du, dv) / (cell / 2)
     radius = np.sqrt(np.clip(coverage, 0, 1)) * 1.16
-    return (dist < radius).astype(float)
+    aa = 1.0 / cell            # half a pixel, in the units dist is measured in
+    return (1.0 - smoothstep(radius - aa, radius + aa, dist)) * smoothstep(0.0, aa, radius)
 
 
 def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
@@ -369,8 +396,8 @@ def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
     to the intensity the dots average out to.
     """
     coarse = box_blur(light(rgb)[..., None], max(1, cell // 2))[..., 0]
-    dots = 1.0 - dot_screen(1.0 - coarse, cell, angle)
-    return np.repeat(dots[..., None], 3, axis=2)
+    ink = dot_screen(1.0 - coarse, cell, angle)
+    return lay((255, 255, 255), (0, 0, 0), ink)
 
 
 HATCH_COVERAGE = 0.45   # coverage of one line set at full width
@@ -393,15 +420,21 @@ def crosshatch(rgb: np.ndarray, spacing: int = 6) -> np.ndarray:
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
     ink = np.zeros_like(g)
     remain = np.ones_like(g)               # paper still white after the sets so far
+    aa = 0.5                               # half a pixel; proj is a unit projection
     for angle in (0.0, np.pi / 4, np.pi / 2, 3 * np.pi / 4):
         f = np.clip((1.0 - (1.0 - target) / remain) / c, 0.0, 1.0)
         proj = xx * np.cos(angle) - yy * np.sin(angle)
-        ink = np.maximum(ink, ((proj % spacing) < spacing * c * f).astype(float))
+        # Measured from the centre of the line rather than its leading edge, so
+        # the stroke thickens symmetrically and one edge pair resolves it.
+        m = np.abs((proj % spacing) - spacing * 0.5)
+        half_w = spacing * c * f * 0.5
+        ink = np.maximum(ink, (1.0 - smoothstep(half_w - aa, half_w + aa, m))
+                              * smoothstep(0.0, aa, half_w))
         remain *= 1.0 - c * f
     # Past what four sets can carry the shadow goes solid, as an engraving does.
     floor_cov = (1.0 - c) ** 4
     ink = np.maximum(ink, np.clip((target - (1.0 - floor_cov)) / floor_cov, 0.0, 1.0))
-    return np.repeat((1.0 - ink)[..., None], 3, axis=2)
+    return lay((255, 255, 255), (0, 0, 0), ink)
 
 
 # --------------------------------------------------------------------------

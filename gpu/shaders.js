@@ -138,13 +138,37 @@ vec3 rampDither(float gLin, float t) {
   return uPalette[0];
 }
 
+// Ink laid over paper at a fractional coverage, composited in linear light. A
+// pixel half covered by ink reflects half the light, which is not the halfway
+// point between the two sRGB values -- sRGB 0.5 is a reflectance of 0.21. This
+// only started to matter once the screens got soft edges: a hard screen never
+// lands between paper and ink, so every pixel was one or the other.
+vec3 lay(vec3 stock, vec3 ink, float coverage) {
+  return linearToSrgb(mix(srgbToLinear(stock), srgbToLinear(ink),
+                          clamp(coverage, 0.0, 1.0)));
+}
+
+// One screen pixel, in the units of whatever coordinate the caller screens in.
+// Read off px.x rather than the rotated coordinate: px.x depends only on
+// gl_FragCoord.x, so this is exact under coarsen and any caller-side scaling,
+// where fwidth of a rotated or wrapped value would be biased or spike.
+float pixelStep(vec2 px) { return max(fwidth(px.x), 1e-5); }
+
 // Screened dot: radius scales as sqrt(coverage) so printed area tracks tone.
+//
+// The edge is resolved against the pixel rather than thresholded. A hard edge
+// can only place whole pixels, so a cell owing 43% coverage lands on 3 pixels
+// out of 7 and prints the wrong tone -- worst where the cells are smallest,
+// which is most of the wall. The guard on rad keeps highlights clean: without
+// it a coverage of zero still leaves half a pixel of ink at every cell centre.
 float dotScreen(vec2 px, float coverage, float cell, float angle) {
   float ca = cos(angle), sa = sin(angle);
   vec2 r = vec2(px.x * ca - px.y * sa, px.x * sa + px.y * ca);
   vec2 d = mod(r, cell) - cell * 0.5;
   float dist = length(d) / (cell * 0.5);
-  return step(dist, sqrt(clamp(coverage, 0.0, 1.0)) * 1.16);
+  float aa = pixelStep(px) / cell;          // half a pixel, in dist units
+  float rad = sqrt(clamp(coverage, 0.0, 1.0)) * 1.16;
+  return (1.0 - smoothstep(rad - aa, rad + aa, dist)) * smoothstep(0.0, aa, rad);
 }
 
 // ---- noise -------------------------------------------------------------
@@ -208,7 +232,7 @@ void main() {
   cell *= 1.0 + uPointerAmt * 1.6 * length(uPointer);
   float g = light(srcToned(vUv));
   float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
-  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
+  fragColor = vec4(finish(lay(uStock, uInk, ink)), uAlpha);
 }`,
 
   // False-colour ramp. Animating the ramp offset makes heat appear to flow.
@@ -411,19 +435,25 @@ void main() {
   float spacing = uSpacing * (1.0 + uPointerAmt * 1.4 * length(uPointer));
   float drift = uTime * 0.15 + uSeed * 6.28;
   vec2 px = screenPx();
+  float aa = 0.5 * pixelStep(px);   // half a pixel; proj is a unit projection
   float remain = 1.0;         // paper still white after the sets so far
   float ink = 0.0;
   for (int k = 0; k < 4; k++) {
     float f = clamp((1.0 - (1.0 - target) / remain) / HATCH_C, 0.0, 1.0);
     float angle = float(k) * 0.7854 + 0.1 * sin(drift + float(k));
     float proj = px.x * cos(angle) - px.y * sin(angle);
-    if (mod(proj, spacing) < spacing * HATCH_C * f) ink = 1.0;
+    // Measured from the centre of the line rather than its leading edge, so the
+    // stroke thickens symmetrically and only one edge pair needs resolving.
+    float m = abs(mod(proj, spacing) - spacing * 0.5);
+    float halfW = spacing * HATCH_C * f * 0.5;
+    ink = max(ink, (1.0 - smoothstep(halfW - aa, halfW + aa, m))
+                   * smoothstep(0.0, aa, halfW));
     remain *= 1.0 - HATCH_C * f;
   }
   // Past what four sets can carry the shadow goes solid, as an engraving does.
   float floorCov = pow(1.0 - HATCH_C, 4.0);
   ink = max(ink, clamp((target - (1.0 - floorCov)) / floorCov, 0.0, 1.0));
-  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
+  fragColor = vec4(finish(lay(uStock, uInk, ink)), uAlpha);
 }`,
 
   // Sobel magnitude, drawn as light on dark.
@@ -514,7 +544,7 @@ void main() {
   g = mix(min(g + 0.32, 1.0), g, d);
 
   float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
-  fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
+  fragColor = vec4(finish(lay(uStock, uInk, ink)), uAlpha);
 }`,
 
   // Depth cut into flat planes, each printed in its own ink -- a separation by
@@ -570,7 +600,7 @@ void main() {
   float cell = mix(4.0, 13.0, t);
   float ink = dotScreen(screenPx(), (1.0 - g) * (1.0 - t * 0.75), cell, 0.6);
 
-  vec3 near = mix(vec3(1.0), vec3(0.06, 0.06, 0.08), ink);
+  vec3 near = lay(vec3(1.0), vec3(0.06, 0.06, 0.08), ink);
   fragColor = vec4(finish(mix(near, uFog, t * 0.85)), uAlpha);
 }`,
 };
