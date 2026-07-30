@@ -18,8 +18,42 @@ import numpy as np
 
 
 def luma(rgb: np.ndarray) -> np.ndarray:
-    """Rec. 601 luminance."""
+    """Rec. 601 luma of a gamma-encoded image. Perceptual, not photometric."""
     return rgb @ np.array([0.299, 0.587, 0.114])
+
+
+# --------------------------------------------------------------------------
+# light vs. encoding
+# --------------------------------------------------------------------------
+#
+# Dithering works by area-averaging *light*: a checkerboard of black and white
+# is perceived as the mean of the two intensities. Light adds linearly, but
+# sRGB is encoded with roughly a 2.2 gamma, so a pattern that is 50% white
+# pixels does not read as 50% grey -- it reads considerably lighter.
+#
+# Every threshold, coverage fraction and average therefore has to be computed
+# on linear values. Only the final colours stay in sRGB, because that is what
+# gets written to a file or a framebuffer.
+
+
+def srgb_to_linear(c: np.ndarray) -> np.ndarray:
+    c = np.clip(c, 0.0, 1.0)
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+
+
+def linear_to_srgb(c: np.ndarray) -> np.ndarray:
+    c = np.clip(c, 0.0, 1.0)
+    return np.where(c <= 0.0031308, c * 12.92, 1.055 * c ** (1 / 2.4) - 0.055)
+
+
+def luma_linear(rgb: np.ndarray) -> np.ndarray:
+    """Rec. 709 luminance of linear-light values. This is the photometric one."""
+    return rgb @ np.array([0.2126, 0.7152, 0.0722])
+
+
+def light(rgb: np.ndarray) -> np.ndarray:
+    """Luminance of a gamma-encoded image, in linear light."""
+    return luma_linear(srgb_to_linear(rgb))
 
 
 def box_blur(img: np.ndarray, radius: int) -> np.ndarray:
@@ -119,9 +153,10 @@ def nearest(pixel: tuple[float, float, float], pal: np.ndarray) -> np.ndarray:
 
 
 def quantize_to(rgb: np.ndarray, pal: np.ndarray) -> np.ndarray:
-    """Nearest-palette-colour with no dithering, vectorised."""
-    flat = rgb.reshape(-1, 3)
-    d = ((flat[:, None, :] - pal[None, :, :]) ** 2).sum(axis=2)
+    """Nearest palette colour, measured in linear light rather than in sRGB."""
+    flat = srgb_to_linear(rgb).reshape(-1, 3)
+    pal_lin = srgb_to_linear(pal)
+    d = ((flat[:, None, :] - pal_lin[None, :, :]) ** 2).sum(axis=2)
     return pal[np.argmin(d, axis=1)].reshape(rgb.shape)
 
 
@@ -152,22 +187,25 @@ def error_diffuse(rgb: np.ndarray, pal: np.ndarray, kernel: str, serpentine: boo
     """Classic error-diffusion dithering against an arbitrary palette."""
     offsets, divisor = KERNELS[kernel]
     h, w = rgb.shape[:2]
-    # Python lists beat ndarray scalar indexing for this access pattern.
-    buf = rgb.astype(float).tolist()
-    pal_list = [tuple(c) for c in pal]
+    # Diffused in linear light: the error being propagated is an error in
+    # intensity, and intensity is what the eye integrates across the pattern.
+    buf = srgb_to_linear(rgb).tolist()
+    pal_lin = [tuple(c) for c in srgb_to_linear(pal)]
+    chosen = [[0] * w for _ in range(h)]
 
     for y in range(h):
         row = range(w) if (not serpentine or y % 2 == 0) else range(w - 1, -1, -1)
         flip = serpentine and y % 2 == 1
         for x in row:
             old = buf[y][x]
-            best, best_d = pal_list[0], 1e9
-            for c in pal_list:
+            best, best_d = 0, 1e9
+            for i, c in enumerate(pal_lin):
                 d = (old[0] - c[0]) ** 2 + (old[1] - c[1]) ** 2 + (old[2] - c[2]) ** 2
                 if d < best_d:
-                    best, best_d = c, d
-            buf[y][x] = list(best)
-            er, eg, eb = old[0] - best[0], old[1] - best[1], old[2] - best[2]
+                    best, best_d = i, d
+            chosen[y][x] = best
+            c = pal_lin[best]
+            er, eg, eb = old[0] - c[0], old[1] - c[1], old[2] - c[2]
             for dx, dy, wgt in offsets:
                 sx = x - dx if flip else x + dx
                 sy = y + dy
@@ -177,7 +215,8 @@ def error_diffuse(rgb: np.ndarray, pal: np.ndarray, kernel: str, serpentine: boo
                     t[0] += er * f
                     t[1] += eg * f
                     t[2] += eb * f
-    return np.clip(np.array(buf), 0, 1)
+    # Output the palette's own sRGB values; only the decision was linear.
+    return pal[np.array(chosen)]
 
 
 # --------------------------------------------------------------------------
@@ -193,11 +232,15 @@ RAMP_PALETTES = {"mono", "gameboy", "cyanotype", "sepia", "ember"}
 def ramp_error_diffuse(rgb: np.ndarray, ramp: np.ndarray, kernel: str, serpentine: bool = True) -> np.ndarray:
     """Error diffusion in luminance, quantised to an ordered colour ramp."""
     offsets, divisor = KERNELS[kernel]
-    g = luma(normalize_tone(rgb))
+    g = light(normalize_tone(rgb))          # linear luminance target
+    levels = luma_linear(srgb_to_linear(ramp)).tolist()
     h, w = g.shape
     n = len(ramp) - 1
 
-    buf = (g * n).tolist()          # work in level units, so error is per-step
+    # Error is carried in linear luminance, not in level units: the ramp's
+    # entries are not evenly spaced in light, so a per-step error would
+    # distribute the wrong amount between them.
+    buf = g.tolist()
     idx = [[0] * w for _ in range(h)]
 
     for y in range(h):
@@ -206,10 +249,13 @@ def ramp_error_diffuse(rgb: np.ndarray, ramp: np.ndarray, kernel: str, serpentin
         row = buf[y]
         for x in cols:
             old = row[x]
-            q = int(round(old))
-            q = 0 if q < 0 else (n if q > n else q)
+            q, qd = 0, 1e9
+            for i, lv in enumerate(levels):
+                d = abs(old - lv)
+                if d < qd:
+                    q, qd = i, d
             idx[y][x] = q
-            err = old - q
+            err = old - levels[q]
             for dx, dy, wgt in offsets:
                 sx = x - dx if flip else x + dx
                 sy = y + dy
@@ -219,13 +265,23 @@ def ramp_error_diffuse(rgb: np.ndarray, ramp: np.ndarray, kernel: str, serpentin
 
 
 def ramp_ordered(rgb: np.ndarray, ramp: np.ndarray, thresh: np.ndarray) -> np.ndarray:
-    """Ordered dithering in luminance against an ordered colour ramp."""
-    g = luma(normalize_tone(rgb))
+    """Ordered dithering against a ramp, deciding in linear light.
+
+    The two ramp entries bracketing the target intensity are found by their own
+    luminance, and the threshold picks between them in proportion to where the
+    target sits between the pair. That is what makes the dithered area average
+    to the intended intensity; quantising evenly over the ramp's *indices*
+    assumes the entries are evenly spaced in light, and they are not.
+    """
+    g = light(normalize_tone(rgb))
+    levels = luma_linear(srgb_to_linear(ramp))
     h, w = g.shape
-    n = len(ramp) - 1
     tiled = np.tile(thresh, (h // thresh.shape[0] + 1, w // thresh.shape[1] + 1))[:h, :w]
-    level = np.clip(np.floor(g * n + tiled), 0, n).astype(int)
-    return ramp[level]
+
+    i = np.clip(np.searchsorted(levels, g, side="right") - 1, 0, len(levels) - 2)
+    lo, hi = levels[i], levels[i + 1]
+    frac = np.clip((g - lo) / np.maximum(hi - lo, 1e-6), 0, 1)
+    return ramp[i + (frac > tiled).astype(int)]
 
 
 # --------------------------------------------------------------------------
@@ -275,8 +331,12 @@ def ordered_dither(rgb: np.ndarray, pal: np.ndarray, thresh: np.ndarray, strengt
     h, w = rgb.shape[:2]
     tiled = np.tile(thresh, (h // thresh.shape[0] + 1, w // thresh.shape[1] + 1))[:h, :w]
     spread = strength / max(len(pal) - 1, 1)
-    nudged = np.clip(rgb + (tiled[..., None] - 0.5) * spread, 0, 1)
-    return quantize_to(nudged, pal)
+    # Nudge in linear light, then match there too.
+    lin = np.clip(srgb_to_linear(rgb) + (tiled[..., None] - 0.5) * spread, 0, 1)
+    pal_lin = srgb_to_linear(pal)
+    flat = lin.reshape(-1, 3)
+    d = ((flat[:, None, :] - pal_lin[None, :, :]) ** 2).sum(axis=2)
+    return pal[np.argmin(d, axis=1)].reshape(rgb.shape)
 
 
 # --------------------------------------------------------------------------
@@ -303,24 +363,45 @@ def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.nd
 
 
 def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
-    """Rotated dot screen -- dot area tracks local darkness."""
-    coarse = box_blur(luma(rgb)[..., None], max(1, cell // 2))[..., 0]
+    """Rotated dot screen -- dot area tracks local darkness.
+
+    Coverage is taken from linear luminance: the ink fraction has to correspond
+    to the intensity the dots average out to.
+    """
+    coarse = box_blur(light(rgb)[..., None], max(1, cell // 2))[..., 0]
     dots = 1.0 - dot_screen(1.0 - coarse, cell, angle)
     return np.repeat(dots[..., None], 3, axis=2)
 
 
+HATCH_COVERAGE = 0.45   # coverage of one line set at full width
+
+
 def crosshatch(rgb: np.ndarray, spacing: int = 6) -> np.ndarray:
-    """Engraving-style hatching: darker regions accumulate more line sets."""
-    g = box_blur(luma(rgb)[..., None], 2)[..., 0]
+    """Engraving-style hatching, with the line widths solved for tone.
+
+    Hatching is a coverage process: what the burin clears has to add up to the
+    light the tone is short of. The sets go down in order and each one can only
+    darken the paper the previous sets left, so the width that carries a given
+    tone falls off as (1 - c)^k rather than in equal steps of grey. Thresholding
+    at four fixed cuts -- which is what this did -- put down about a third of the
+    ink the photograph owed.
+    """
+    c = HATCH_COVERAGE
+    g = box_blur(light(rgb)[..., None], 2)[..., 0]
+    target = 1.0 - g                       # ink the tone owes
     h, w = g.shape
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
-    out = np.ones_like(g)
-    for level, angle in enumerate((0.7, -0.7, 0.0, 1.57)):
-        cut = 0.82 - level * 0.20
+    ink = np.zeros_like(g)
+    remain = np.ones_like(g)               # paper still white after the sets so far
+    for angle in (0.0, np.pi / 4, np.pi / 2, 3 * np.pi / 4):
+        f = np.clip((1.0 - (1.0 - target) / remain) / c, 0.0, 1.0)
         proj = xx * np.cos(angle) - yy * np.sin(angle)
-        lines = (proj % spacing) < 1.35
-        out[np.logical_and(lines, g < cut)] = 0.0
-    return np.repeat(out[..., None], 3, axis=2)
+        ink = np.maximum(ink, ((proj % spacing) < spacing * c * f).astype(float))
+        remain *= 1.0 - c * f
+    # Past what four sets can carry the shadow goes solid, as an engraving does.
+    floor_cov = (1.0 - c) ** 4
+    ink = np.maximum(ink, np.clip((target - (1.0 - floor_cov)) / floor_cov, 0.0, 1.0))
+    return np.repeat((1.0 - ink)[..., None], 3, axis=2)
 
 
 # --------------------------------------------------------------------------
@@ -329,8 +410,14 @@ def crosshatch(rgb: np.ndarray, spacing: int = 6) -> np.ndarray:
 
 
 def kuwahara(rgb: np.ndarray, radius: int = 4) -> np.ndarray:
-    """Painterly edge-preserving filter: take the mean of the flattest quadrant."""
-    g = luma(rgb)
+    """Painterly edge-preserving filter: take the mean of the flattest quadrant.
+
+    Averaged in linear light. Taking means of gamma-encoded values is the same
+    error as blurring in sRGB: the result comes out darker than the light it is
+    supposed to represent.
+    """
+    rgb = srgb_to_linear(rgb)
+    g = luma_linear(rgb)
     mean = box_blur(rgb, radius)
     sq = box_blur((g ** 2)[..., None], radius)[..., 0]
     var = sq - box_blur(g[..., None], radius)[..., 0] ** 2
@@ -347,7 +434,7 @@ def kuwahara(rgb: np.ndarray, radius: int = 4) -> np.ndarray:
                 take = v < best_var
                 best_var = np.where(take, v, best_var)
                 best_mean = np.where(take[..., None], m, best_mean)
-    return np.clip(best_mean, 0, 1)
+    return linear_to_srgb(np.clip(best_mean, 0, 1))
 
 
 def chromatic(rgb: np.ndarray, amount: float = 0.012) -> np.ndarray:
@@ -375,8 +462,10 @@ def crt(rgb: np.ndarray) -> np.ndarray:
 
 
 def bloom(rgb: np.ndarray, threshold: float = 0.68, strength: float = 0.9) -> np.ndarray:
-    bright = np.clip(rgb - threshold, 0, 1) / max(1e-6, 1 - threshold)
-    return np.clip(rgb + gaussian_blur(bright, 14) * strength, 0, 1)
+    """Glow accumulates in linear light -- it is added light, not added encoding."""
+    lin = srgb_to_linear(rgb)
+    bright = np.clip(lin - srgb_to_linear(np.array(threshold)), 0, 1)
+    return linear_to_srgb(np.clip(lin + gaussian_blur(bright, 14) * strength, 0, 1))
 
 
 def edges(rgb: np.ndarray) -> np.ndarray:
@@ -437,11 +526,12 @@ def crystallize(rgb: np.ndarray, cell: int = 22, rng: np.random.Generator | None
     return rgb[best_y, best_x]
 
 
-def duotone(rgb: np.ndarray, dark: tuple, light: tuple) -> np.ndarray:
+def duotone(rgb: np.ndarray, dark: tuple, light_c: tuple) -> np.ndarray:
+    """Two-colour map, blended in linear light."""
     g = contrast(luma(rgb)[..., None], 1.25)
-    a = np.array(dark, dtype=float) / 255
-    b = np.array(light, dtype=float) / 255
-    return a + (b - a) * g
+    a = srgb_to_linear(np.array(dark, dtype=float) / 255)
+    b = srgb_to_linear(np.array(light_c, dtype=float) / 255)
+    return linear_to_srgb(np.clip(a + (b - a) * g, 0, 1))
 
 
 def posterize(rgb: np.ndarray, levels: int = 5) -> np.ndarray:
@@ -478,14 +568,19 @@ def scanline_slice(rgb: np.ndarray, rng: np.random.Generator) -> np.ndarray:
 
 
 def gradient_map(rgb: np.ndarray, stops: list[tuple]) -> np.ndarray:
-    """Remap luminance through a colour ramp -- thermal, phosphor, false colour."""
+    """Remap luminance through a colour ramp -- thermal, phosphor, false colour.
+
+    Position along the ramp stays perceptual, since that is the artistic
+    mapping, but the blend *between* stops happens in linear light -- mixing
+    saturated pairs in sRGB muddies the midpoint.
+    """
     g = luma(normalize_tone(rgb))
-    ramp = np.array(stops, dtype=float) / 255.0
+    ramp = srgb_to_linear(np.array(stops, dtype=float) / 255.0)
     n = len(ramp) - 1
     pos = np.clip(g, 0, 1) * n
     i = np.clip(pos.astype(int), 0, n - 1)
     f = (pos - i)[..., None]
-    return ramp[i] * (1 - f) + ramp[i + 1] * f
+    return linear_to_srgb(ramp[i] * (1 - f) + ramp[i + 1] * f)
 
 
 def pixelate(rgb: np.ndarray, block: int) -> np.ndarray:
@@ -521,25 +616,28 @@ def riso(
     overlaps darken and colour-shift the way a real two-pass print does.
     """
     norm = normalize_tone(rgb)
-    g = luma(norm)
+    g = light(norm)
     # First ink carries overall density; the second follows the warm/cool axis.
     seps = [1.0 - g]
     if len(inks) > 1:
-        chroma = norm[..., 0] - norm[..., 2]
+        lin = srgb_to_linear(norm)
+        chroma = lin[..., 0] - lin[..., 2]
         lo, hi = np.percentile(chroma, 3), np.percentile(chroma, 97)
         seps.append(np.clip((chroma - lo) / (hi - lo + 1e-6), 0, 1) * 0.85)
     for extra in range(2, len(inks)):
         seps.append(np.clip(1.0 - np.abs(g - 0.45 + 0.2 * extra) * 2.4, 0, 1))
 
+    # Inks multiply in linear light, which is how transmittance actually
+    # composites; multiplying sRGB values darkens overprints too much.
     out = np.ones_like(norm)
     for idx, (ink, sep) in enumerate(zip(inks, seps)):
-        colour = np.array(ink, dtype=float) / 255.0
+        colour = srgb_to_linear(np.array(ink, dtype=float) / 255.0)
         dots = dot_screen(sep * 0.95, cell, 0.35 + idx * 0.85)
         if slip:
             dy, dx = rng.integers(-slip, slip + 1, 2)
             dots = np.roll(np.roll(dots, dy, axis=0), dx, axis=1)
         out = out * (1.0 - dots[..., None] * (1.0 - colour))
-    return np.clip(out, 0, 1)
+    return linear_to_srgb(np.clip(out, 0, 1))
 
 
 def xerox(rgb: np.ndarray, rng: np.random.Generator, bias: float = 0.5) -> np.ndarray:

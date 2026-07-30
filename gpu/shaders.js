@@ -49,6 +49,28 @@ vec3 finish(vec3 c) { return mix(c, vec3(0.045, 0.045, 0.055), clamp(uDim, 0.0, 
 
 float luma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 
+// ---- light vs. encoding -------------------------------------------------
+//
+// Dithering area-averages *light*. Light adds linearly; sRGB does not. A
+// pattern that is 50% white pixels therefore does not read as sRGB 0.5 -- it
+// reads as sRGB 0.74. Every threshold, coverage fraction and average has to be
+// computed on linear values; only the output colours stay encoded.
+
+vec3 srgbToLinear(vec3 c) {
+  c = clamp(c, 0.0, 1.0);
+  return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(vec3(0.04045), c));
+}
+
+vec3 linearToSrgb(vec3 c) {
+  c = clamp(c, 0.0, 1.0);
+  return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), c));
+}
+
+float lumaLinear(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+
+// Luminance of an encoded colour, in linear light.
+float light(vec3 srgb) { return lumaLinear(srgbToLinear(srgb)); }
+
 // WebGL's texture origin is bottom-left, but an image uploads top row first, so
 // t=0 is the top of the photograph while vUv.y=0 is the bottom of the viewport.
 // Without flipping y here the whole frame renders upside down -- which it did,
@@ -90,14 +112,29 @@ float threshold(vec2 px, int kind) {
   return fract(sin(dot(px, vec2(12.9898, 78.233))) * 43758.5453);  // white
 }
 
-// Ordered dithering against a palette treated as a tonal ramp: quantise in
-// luminance, not by nearest colour in RGB. Matching in RGB collapses a green
-// photograph onto the light end of a four-green palette.
-vec3 rampDither(float g, float t) {
+// Ordered dithering against a palette treated as a tonal ramp.
+//
+// Two things matter here. Quantise in luminance rather than by nearest colour
+// in RGB, or a green photograph collapses onto the light end of a four-green
+// palette. And bracket by each entry's *linear* luminance, choosing between the
+// pair in proportion to where the target sits between them -- quantising evenly
+// over the ramp's indices assumes its entries are evenly spaced in light, and
+// they are not.
+vec3 rampDither(float gLin, float t) {
   int n = uPaletteLen - 1;
-  float lvl = clamp(floor(g * float(n) + t), 0.0, float(n));
-  int i = int(lvl);
-  for (int k = 0; k < 8; k++) { if (k == i) return uPalette[k]; }
+
+  int i = 0;
+  for (int k = 0; k < 7; k++) {
+    if (k + 1 <= n && lumaLinear(srgbToLinear(uPalette[k + 1])) <= gLin) i = k + 1;
+  }
+  i = min(i, n - 1);
+
+  float lo = lumaLinear(srgbToLinear(uPalette[i]));
+  float hi = lumaLinear(srgbToLinear(uPalette[i + 1]));
+  float frac = clamp((gLin - lo) / max(hi - lo, 1e-6), 0.0, 1.0);
+
+  int sel = frac > t ? i + 1 : i;
+  for (int k = 0; k < 8; k++) { if (k == sel) return uPalette[k]; }
   return uPalette[0];
 }
 
@@ -156,8 +193,7 @@ void main() {
   float zoom = uScale * pulse * (1.0 + uPointerAmt * 0.9 * length(uPointer));
   vec2 px = screenPx() / max(zoom, 0.35);
   px += vec2(uTime * 3.0 * uSeed, uTime * 1.7);         // crawl
-  float g = luma(srcToned(vUv));
-  fragColor = vec4(finish(rampDither(g, threshold(px, uKind))), uAlpha);
+  fragColor = vec4(finish(rampDither(light(srcToned(vUv)), threshold(px, uKind))), uAlpha);
 }`,
 
   // Rotated halftone screen. The screen angle rotates continuously, which is
@@ -170,7 +206,7 @@ void main() {
   float angle = 0.5 + 0.25 * sin(uTime * 0.25 + uSeed * 6.28);
   float cell = uCell * (1.0 + 0.25 * sin(uTime * 0.4 + uSeed * 3.0));
   cell *= 1.0 + uPointerAmt * 1.6 * length(uPointer);
-  float g = luma(srcToned(vUv));
+  float g = light(srcToned(vUv));
   float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
   fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
 }`,
@@ -188,7 +224,9 @@ void main() {
   float f = fract(pos);
   vec3 a = uRamp[0], b = uRamp[0];
   for (int k = 0; k < 6; k++) { if (k == i) a = uRamp[k]; if (k == i + 1) b = uRamp[k]; }
-  fragColor = vec4(finish(mix(a, b, f)), uAlpha);
+  // Position along the ramp stays perceptual; the blend between stops is
+  // linear, because mixing saturated pairs in sRGB muddies the midpoint.
+  fragColor = vec4(finish(linearToSrgb(mix(srgbToLinear(a), srgbToLinear(b), f))), uAlpha);
 }`,
 
   // Two-ink screen print. Each ink has its own screen angle and its own
@@ -207,16 +245,18 @@ void main() {
   vec3 ca = srcToned(vUv + slipA / uRes);
   vec3 cb = srcToned(vUv + slipB / uRes);
 
-  float density = 1.0 - luma(ca);                       // first ink: overall tone
-  float chroma  = clamp((cb.r - cb.b) * 1.6 + 0.5, 0.0, 1.0) * 0.85;
+  float density = 1.0 - light(ca);                      // first ink: overall tone
+  vec3 cbLin = srgbToLinear(cb);
+  float chroma = clamp((cbLin.r - cbLin.b) * 1.6 + 0.5, 0.0, 1.0) * 0.85;
 
   float a = dotScreen(screenPx() + slipA, density * 0.95, cell, 0.35);
   float b = dotScreen(screenPx() + slipB, chroma,         cell, 1.20);
 
+  // Inks multiply in linear light: that is how transmittance composites.
   vec3 out0 = vec3(1.0);
-  out0 *= 1.0 - a * (1.0 - uInkA);                      // multiply onto paper
-  out0 *= 1.0 - b * (1.0 - uInkB);
-  fragColor = vec4(finish(out0), uAlpha);
+  out0 *= 1.0 - a * (1.0 - srgbToLinear(uInkA));
+  out0 *= 1.0 - b * (1.0 - srgbToLinear(uInkB));
+  fragColor = vec4(finish(linearToSrgb(out0)), uAlpha);
 }`,
 
   // Shadow-mask tube: scanlines, an RGB aperture stripe, and a roll bar
@@ -264,11 +304,11 @@ void main() {
 uniform float uThreshold;
 uniform float uStrength;
 void main() {
-  vec3 base = srcToned(vUv);
+  vec3 base = srgbToLinear(srcToned(vUv));
   float th = uThreshold - 0.12 * sin(uTime * 0.4 + uSeed * 6.28) - uPointerAmt * 0.15 * length(uPointer);
-  vec3 wide = toneMap(blurred(vUv, 4.5));
-  vec3 glow = max(wide - th, vec3(0.0)) / max(1e-3, 1.0 - th);
-  fragColor = vec4(finish(clamp(base + glow * uStrength, 0.0, 1.0)), uAlpha);
+  vec3 wide = srgbToLinear(toneMap(blurred(vUv, 4.5)));
+  vec3 glow = max(wide - srgbToLinear(vec3(th)), vec3(0.0));
+  fragColor = vec4(finish(linearToSrgb(clamp(base + glow * uStrength, 0.0, 1.0))), uAlpha);
 }`,
 
   // Jittered-grid Voronoi: each cell takes the colour at its own seed point.
@@ -314,15 +354,16 @@ void main() {
     for (int j = 0; j <= 3; j++) {
       for (int i = 0; i <= 3; i++) {
         vec2 o = dir * vec2(float(i), float(j)) * (r / 3.0) * t;
-        vec3 c = srcToned(vUv + o);
-        sum += c; sum2 += luma(c) * luma(c); n += 1.0;
+        vec3 c = srgbToLinear(srcToned(vUv + o));
+        float l = lumaLinear(c);
+        sum += c; sum2 += l * l; n += 1.0;
       }
     }
     vec3 mean = sum / n;
-    float variance = sum2 / n - luma(mean) * luma(mean);
+    float variance = sum2 / n - lumaLinear(mean) * lumaLinear(mean);
     if (variance < bestVar) { bestVar = variance; bestMean = mean; }
   }
-  fragColor = vec4(finish(clamp(bestMean, 0.0, 1.0)), uAlpha);
+  fragColor = vec4(finish(linearToSrgb(clamp(bestMean, 0.0, 1.0))), uAlpha);
 }`,
 
   // Monochrome terminal tube with glow bleed and a slow phosphor decay ripple.
@@ -354,21 +395,34 @@ void main() {
 }`,
 
   // Engraving: successive line sets cut in as the tone darkens.
+  //
+  // Hatching is a coverage process, so the widths are solved rather than
+  // guessed. Each set can only darken the paper the sets before it left, which
+  // makes the width that carries a given tone fall off as (1 - c)^k -- not in
+  // equal steps of grey. Four fixed cuts, which is what this used to do, laid
+  // down about a third of the ink the photograph owed.
   crosshatch: COMMON + `
 uniform float uSpacing;
 uniform vec3 uInk;
 uniform vec3 uStock;
+const float HATCH_C = 0.45;   // coverage of one line set at full width
 void main() {
-  float g = luma(toneMap(blurred(vUv, 1.5)));
+  float target = 1.0 - light(toneMap(blurred(vUv, 1.5)));   // ink the tone owes
   float spacing = uSpacing * (1.0 + uPointerAmt * 1.4 * length(uPointer));
   float drift = uTime * 0.15 + uSeed * 6.28;
+  vec2 px = screenPx();
+  float remain = 1.0;         // paper still white after the sets so far
   float ink = 0.0;
   for (int k = 0; k < 4; k++) {
+    float f = clamp((1.0 - (1.0 - target) / remain) / HATCH_C, 0.0, 1.0);
     float angle = float(k) * 0.7854 + 0.1 * sin(drift + float(k));
-    float cut = 0.82 - float(k) * 0.20;
-    float proj = gl_FragCoord.x * cos(angle) - gl_FragCoord.y * sin(angle);
-    if (g < cut && mod(proj, spacing) < 1.35) ink = 1.0;
+    float proj = px.x * cos(angle) - px.y * sin(angle);
+    if (mod(proj, spacing) < spacing * HATCH_C * f) ink = 1.0;
+    remain *= 1.0 - HATCH_C * f;
   }
+  // Past what four sets can carry the shadow goes solid, as an engraving does.
+  float floorCov = pow(1.0 - HATCH_C, 4.0);
+  ink = max(ink, clamp((target - (1.0 - floorCov)) / floorCov, 0.0, 1.0));
   fragColor = vec4(finish(mix(uStock, uInk, ink)), uAlpha);
 }`,
 
@@ -391,7 +445,7 @@ void main() {
   float g = luma(srcToned(vUv));
   g = clamp(g + 0.08 * sin(uTime * 0.3 + uSeed * 6.28) + uPointerAmt * 0.2 * uPointer.x, 0.0, 1.0);
   if (uLevels > 1.5) g = floor(g * uLevels) / (uLevels - 1.0);
-  fragColor = vec4(finish(mix(uDark, uLight, clamp(g, 0.0, 1.0))), uAlpha);
+  fragColor = vec4(finish(linearToSrgb(mix(srgbToLinear(uDark), srgbToLinear(uLight), clamp(g, 0.0, 1.0)))), uAlpha);
 }`,
 
   // Warp along a smooth noise field: heat haze, or liquid, depending on speed.
@@ -440,7 +494,7 @@ void main() {
 
   vec2 px = screenPx() / max(scale, 0.35);
   px += vec2(uTime * 2.0 * uSeed, uTime * 1.1);
-  fragColor = vec4(finish(rampDither(luma(srcToned(vUv)), threshold(px, uKind))), uAlpha);
+  fragColor = vec4(finish(rampDither(light(srcToned(vUv)), threshold(px, uKind))), uAlpha);
 }`,
 
   // Halftone whose screen ruling opens up with distance, like a print fading
@@ -456,7 +510,7 @@ void main() {
   float angle = 0.5 + 0.2 * sin(uTime * 0.2 + uSeed * 6.28);
 
   // Distance also washes the tone out, so far dots are small as well as sparse.
-  float g = luma(srcToned(vUv));
+  float g = light(srcToned(vUv));
   g = mix(min(g + 0.32, 1.0), g, d);
 
   float ink = dotScreen(screenPx(), 1.0 - g, max(cell, 2.0), angle);
@@ -500,8 +554,7 @@ void main() {
   d = depthAt(clamp(uv, 0.0, 1.0));
   uv = clamp(vUv - drive * uAmount * d, 0.0, 1.0);
 
-  float g = luma(srcToned(uv));
-  fragColor = vec4(finish(rampDither(g, threshold(screenPx(), uKind))), uAlpha);
+  fragColor = vec4(finish(rampDither(light(srcToned(uv)), threshold(screenPx(), uKind))), uAlpha);
 }`,
 
   // Atmosphere: the process holds near, then dissolves into fog with distance.
@@ -513,7 +566,7 @@ void main() {
   float t = clamp(pow(1.0 - d, uDensity) + 0.1 * sin(uTime * 0.25 + uSeed * 6.28)
                   + uPointerAmt * 0.2 * uPointer.y, 0.0, 1.0);
 
-  float g = luma(srcToned(vUv));
+  float g = light(srcToned(vUv));
   float cell = mix(4.0, 13.0, t);
   float ink = dotScreen(screenPx(), (1.0 - g) * (1.0 - t * 0.75), cell, 0.6);
 

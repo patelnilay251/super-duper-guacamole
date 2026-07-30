@@ -48,6 +48,11 @@ jobs:
       - name: Differential harness
         run: python3 tools/diff_harness.py --url http://127.0.0.1:8123/diff.html
 
+      # The harness above only checks the two implementations agree. This checks
+      # they are right: a dithered tile has to reflect the light its source did.
+      - name: Tone fidelity
+        run: python3 tools/tone_fidelity.py --url http://127.0.0.1:8123/diff.html
+
   deploy:
     needs: check
     runs-on: ubuntu-latest

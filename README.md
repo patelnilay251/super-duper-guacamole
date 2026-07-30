@@ -262,6 +262,46 @@ normalisation. Both now measure the crop, and the remaining error falls under
 
 The harness runs in CI and gates deployment.
 
+## Linear light
+
+A dither is a physical claim: cover *x*% of the paper in ink and the tile, seen
+from far enough away that the dots blur together, reflects what the original
+reflected. Blurring is an average of **light**, so the claim only holds if the
+quantiser decides on light too. Both implementations were deciding in sRGB — the
+storage encoding, which is roughly a square root — so a midtone of 0.5 asked for
+50% coverage when it owed 79%.
+
+Every process that maps tone to ink now converts through sRGB↔linear and
+measures with Rec.709 luminance: ordered and depth dithers, halftone, riso ink
+multiply, kuwahara and bloom averaging, gradient and duotone stop blending, and
+the ramp palettes, which bracket by linear luminance rather than nearest RGB.
+
+`tools/tone_fidelity.py` measures the claim directly, with no reference
+implementation involved: render a tile, average it in linear light, compare
+against the source crop averaged the same way.
+
+| Process | Residual before | After |
+|---|---|---|
+| bayer 8×8 · mono | +0.194 | −0.005 |
+| bayer 4×4 · mono | +0.193 | −0.005 |
+| bayer 2×2 · mono | +0.194 | −0.009 |
+| halftone | +0.173 | −0.020 |
+| crosshatch | +0.379 | −0.002 |
+
+Crosshatch is the interesting one, because the differential harness had always
+passed it — the two implementations agreed with each other while both were
+wrong by a third of the tonal range. Hatching is a coverage process, and the
+line widths were never solved for it: four fixed cuts at 0.82/0.62/0.42/0.22
+with a constant 1.35px line. Each set can only darken the paper the previous
+sets left, so the width carrying a given tone falls off as (1 − *c*)^*k*, not in
+equal steps of grey. The sets are now solved against the ink the tone owes, and
+the deepest shadows go solid past what four sets can carry — as an engraving
+does.
+
+Two harnesses, two questions: `diff_harness.py` asks whether the GPU and the
+reference **agree**, `tone_fidelity.py` asks whether they are **right**. Both
+gate deployment.
+
 Sixteen shader programs across eight genres, 61 presets: ordered dithering,
 halftone, gradient maps, riso, CRT, chromatic aberration, bloom, crystallize,
 kuwahara, phosphor, xerox, crosshatch, Sobel edges, duotone, displace, datamosh.
@@ -286,12 +326,14 @@ compute, nothing to keep warm. It lives on **Cloudflare Pages** at
 `.github/workflows/deploy.yml` runs on every push touching `gpu/`:
 
 ```
-check   →  serve gpu/ locally, run the differential harness against real Chromium
+check   →  serve gpu/ locally, run the differential harness and the tone
+           fidelity check against real Chromium
 deploy  →  wrangler pages deploy gpu --project-name=ditherwall
 ```
 
 `deploy` declares `needs: check`, so a shader that stops matching the NumPy
-reference blocks the release rather than shipping. That is not hypothetical — it
+reference — or stops reproducing the light it claims to — blocks the release
+rather than shipping. That is not hypothetical — it
 has already caught a broken run.
 
 **Two repository secrets** (Settings → Secrets and variables → Actions):
@@ -419,6 +461,7 @@ tools/
   build_corpus.py      optimised photos, manifest, blue-noise texture
   build_depth.py       monocular depth maps via ONNX Runtime
   diff_harness.py      GPU vs NumPy, gates deployment
+  tone_fidelity.py     rendered light vs source light, gates deployment
 
 .github/workflows/
   deploy.yml           harness, then wrangler pages deploy

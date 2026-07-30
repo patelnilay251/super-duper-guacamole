@@ -43,8 +43,13 @@ SIZE = 256
 MIN_STRUCTURE = 0.70
 STOCHASTIC = {"xerox"}          # independent noise; judged on a looser bar
 MIN_STRUCTURE_STOCHASTIC = 0.45
-MAX_EXPOSURE_DELTA = 0.22
-MAX_INK_DELTA = 0.28
+# Set from what the two implementations actually achieve when both are correct
+# (worst observed: 0.050 exposure, 0.072 ink), with roughly 2x headroom. The
+# original values were guesses made before they had ever agreed, and were loose
+# enough that moving Python to linear light -- a 38x jump in exposure error on
+# the mono dither -- still passed. A tolerance that cannot fail is not a test.
+MAX_EXPOSURE_DELTA = 0.10
+MAX_INK_DELTA = 0.13
 
 
 def rgbf(*c):
