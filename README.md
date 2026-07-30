@@ -529,6 +529,16 @@ tools/
 
 .github/workflows/
   deploy.yml           harness, then wrangler pages deploy
+
+ROADMAP.md           rendering work not done yet, and what it would cost
 ```
+
+## What's next
+
+[`ROADMAP.md`](ROADMAP.md) lists the rendering and compute work still on the
+table — Oklab ramp interpolation, Display-P3 for the fluoro riso inks,
+temporally stable blue noise, a larger corpus, anisotropic filtering, error
+diffusion in focus mode, and partial tone normalisation — with the risk and the
+verification path for each, including the two that may not be worth doing.
 
 Photographs are from Unsplash via Picsum and are credited in each tile's caption.
