@@ -331,6 +331,41 @@ downstream, and invisible until the edges went soft.
 Ordered dithering is deliberately left alone: one threshold per pixel is the
 definition of the process, and there is no sub-pixel geometry to resolve.
 
+## Dot gain
+
+Ink wicks into paper, so a printed dot is bigger than the one on the plate. This
+is modelled as the cause rather than as a curve on the result: `uDotGain` is a
+spread distance in pixels, added to the dot radius and the hatch stroke, with
+the edge softened by the same amount because wet ink does not stop sharply.
+
+Two things then fall out without being asked for. Gain follows the dot's
+**perimeter**, so it vanishes on blank paper, peaks through the midtones and
+falls off into the shadows — the shape every printed TVI curve has. And a
+**finer screen gains more**, because the same spread is a larger share of a
+smaller dot, which is exactly why newsprint is screened coarse.
+
+```
+dot gain 0.35px — tone value increase
+ requested    cell 4    cell 7   cell 12
+      0.00    +0.000    +0.000    +0.000
+      0.25    +0.191    +0.102    +0.057
+      0.50    +0.208    +0.136    +0.079
+      0.75    +0.138    +0.097    +0.064
+      1.00    +0.063    +0.043    +0.028
+```
+
+Gain is a property of the stock and the press, not the screen, so it is set per
+medium: `riso 0.5` (absorbent paper, soy ink), `news 0.35`, `depth 0.2`,
+`plate 0.15` for an engraving pulled on rag.
+
+**This deliberately breaks tone fidelity**, which is the whole point — an
+uncompensated press prints midtones dark. So the fidelity gate renders with a
+dry plate (`uDotGain 0`) and would otherwise be measuring the press instead of
+the screen. The gain model is checked separately, on the shape of its curve:
+`gain_curve()` asserts the four properties above plus monotonicity in screen
+ruling. The differential harness runs *with* gain on, so the port is verified
+too — riso's exposure error against the reference fell 0.032 → 0.007.
+
 Sixteen shader programs across eight genres, 61 presets: ordered dithering,
 halftone, gradient maps, riso, CRT, chromatic aberration, bloom, crystallize,
 kuwahara, phosphor, xerox, crosshatch, Sobel edges, duotone, displace, datamosh.

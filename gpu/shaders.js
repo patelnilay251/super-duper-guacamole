@@ -35,6 +35,7 @@ uniform int   uPaletteLen;
 uniform float uAlpha;       // morph blend weight; 1 when not transitioning
 uniform float uCoarsen;     // >1 enlarges the process; how a tile is "defocused"
 uniform float uDim;         // 0..1 toward the ground colour
+uniform float uDotGain;     // ink spread past the edge, in pixels; 0 is a dry plate
 
 const float PI = 3.14159265;
 
@@ -161,14 +162,26 @@ float pixelStep(vec2 px) { return max(fwidth(px.x), 1e-5); }
 // out of 7 and prints the wrong tone -- worst where the cells are smallest,
 // which is most of the wall. The guard on rad keeps highlights clean: without
 // it a coverage of zero still leaves half a pixel of ink at every cell centre.
+// Dot gain is modelled as the thing that causes it rather than as a curve on
+// the result: ink wicks a fixed distance past the edge of the dot, whatever the
+// screen ruling. Two consequences fall out for free. Gain follows the dot's
+// *perimeter*, so it vanishes at both ends of the scale and peaks through the
+// midtones, which is the shape every printed TVI curve has. And a finer screen
+// gains more, because the same spread is a larger share of a smaller dot --
+// which is exactly why newsprint is screened coarse.
 float dotScreen(vec2 px, float coverage, float cell, float angle) {
   float ca = cos(angle), sa = sin(angle);
   vec2 r = vec2(px.x * ca - px.y * sa, px.x * sa + px.y * ca);
   vec2 d = mod(r, cell) - cell * 0.5;
   float dist = length(d) / (cell * 0.5);
-  float aa = pixelStep(px) / cell;          // half a pixel, in dist units
+  float unit = pixelStep(px);
+  float aa = unit / cell;                        // half a pixel, in dist units
   float rad = sqrt(clamp(coverage, 0.0, 1.0)) * 1.16;
-  return (1.0 - smoothstep(rad - aa, rad + aa, dist)) * smoothstep(0.0, aa, rad);
+  float spread = uDotGain * unit * 2.0 / cell;   // uDotGain is in pixels
+  float soft = aa + spread * 0.5;                // wet ink does not stop sharply
+  float edge = rad + spread;
+  // The guard is on the dry radius: a cell owing nothing stays clean paper.
+  return (1.0 - smoothstep(edge - soft, edge + soft, dist)) * smoothstep(0.0, aa, rad);
 }
 
 // ---- noise -------------------------------------------------------------
@@ -435,7 +448,10 @@ void main() {
   float spacing = uSpacing * (1.0 + uPointerAmt * 1.4 * length(uPointer));
   float drift = uTime * 0.15 + uSeed * 6.28;
   vec2 px = screenPx();
-  float aa = 0.5 * pixelStep(px);   // half a pixel; proj is a unit projection
+  float unit = pixelStep(px);
+  float aa = 0.5 * unit;            // half a pixel; proj is a unit projection
+  float spread = uDotGain * unit;   // ink wicks off the stroke, same as a dot
+  float soft = aa + spread * 0.5;
   float remain = 1.0;         // paper still white after the sets so far
   float ink = 0.0;
   for (int k = 0; k < 4; k++) {
@@ -445,9 +461,9 @@ void main() {
     // Measured from the centre of the line rather than its leading edge, so the
     // stroke thickens symmetrically and only one edge pair needs resolving.
     float m = abs(mod(proj, spacing) - spacing * 0.5);
-    float halfW = spacing * HATCH_C * f * 0.5;
-    ink = max(ink, (1.0 - smoothstep(halfW - aa, halfW + aa, m))
-                   * smoothstep(0.0, aa, halfW));
+    float dry = spacing * HATCH_C * f * 0.5;
+    ink = max(ink, (1.0 - smoothstep(dry + spread - soft, dry + spread + soft, m))
+                   * smoothstep(0.0, aa, dry));
     remain *= 1.0 - HATCH_C * f;
   }
   // Past what four sets can carry the shadow goes solid, as an engraving does.

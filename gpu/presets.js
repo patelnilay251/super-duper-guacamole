@@ -33,8 +33,15 @@ function ordered(label, kind, palette, scale) {
   return { label, program: 'ordered', kind: KIND[kind], palette: PALETTES[palette], uniforms: { uScale: scale } };
 }
 
-function halftone(label, cell, ink, stock) {
-  return { label, program: 'halftone', uniforms: { uCell: cell, uInk: ink, uStock: stock } };
+// Ink spread past the edge of a dot or stroke, in pixels. A property of the
+// stock and the press, not of the screen: newsprint is absorbent and gains
+// heavily, riso more so, an engraving pulled on rag paper barely at all. The
+// screen ruling does not appear here because the model already accounts for it
+// -- the same spread is a larger share of a smaller dot.
+const GAIN = { news: 0.35, riso: 0.5, plate: 0.15, depth: 0.2 };
+
+function halftone(label, cell, ink, stock, gain = GAIN.news) {
+  return { label, program: 'halftone', uniforms: { uCell: cell, uInk: ink, uStock: stock, uDotGain: gain } };
 }
 
 function gradient(label, ramp) {
@@ -42,7 +49,7 @@ function gradient(label, ramp) {
 }
 
 function riso(label, a, b, cell, slip) {
-  return { label, program: 'riso', uniforms: { uInkA: a, uInkB: b, uCell: cell, uSlip: slip } };
+  return { label, program: 'riso', uniforms: { uInkA: a, uInkB: b, uCell: cell, uSlip: slip, uDotGain: GAIN.riso } };
 }
 
 const INK = rgb(18, 16, 14), STOCK = rgb(247, 241, 226);
@@ -108,9 +115,9 @@ export const PRESETS = {
   ],
 
   press: [
-    shader('engraving', 'crosshatch', { uSpacing: 7, uInk: INK, uStock: STOCK }),
-    shader('engraving fine', 'crosshatch', { uSpacing: 4, uInk: INK, uStock: STOCK }),
-    shader('engraving coarse', 'crosshatch', { uSpacing: 11, uInk: INK, uStock: STOCK }),
+    shader('engraving', 'crosshatch', { uSpacing: 7, uInk: INK, uStock: STOCK, uDotGain: GAIN.plate }),
+    shader('engraving fine', 'crosshatch', { uSpacing: 4, uInk: INK, uStock: STOCK, uDotGain: GAIN.plate }),
+    shader('engraving coarse', 'crosshatch', { uSpacing: 11, uInk: INK, uStock: STOCK, uDotGain: GAIN.plate }),
     shader('xerox', 'xerox', { uBias: 0.5 }),
     shader('xerox · overexposed', 'xerox', { uBias: 0.58 }),
     shader('xerox · underexposed', 'xerox', { uBias: 0.42 }),
@@ -129,8 +136,8 @@ export const PRESETS = {
       palette: PALETTES.gameboy, uniforms: { uNear: 1.0, uFar: 4.2 } },
     { label: 'depth dither · ember', program: 'depthDither', kind: KIND.blue,
       palette: PALETTES.ember, uniforms: { uNear: 1.0, uFar: 3.0 } },
-    shader('depth screen', 'depthHalftone', { uNear: 4, uFar: 15, uInk: INK, uStock: STOCK }),
-    shader('depth screen · fine', 'depthHalftone', { uNear: 3, uFar: 9, uInk: INK, uStock: STOCK }),
+    shader('depth screen', 'depthHalftone', { uNear: 4, uFar: 15, uInk: INK, uStock: STOCK, uDotGain: GAIN.depth }),
+    shader('depth screen · fine', 'depthHalftone', { uNear: 3, uFar: 9, uInk: INK, uStock: STOCK, uDotGain: GAIN.depth }),
     { label: 'depth planes', program: 'depthPlanes',
       palette: PALETTES.ember, uniforms: { uPlanes: 5 } },
     { label: 'depth planes · cyanotype', program: 'depthPlanes',
@@ -141,8 +148,8 @@ export const PRESETS = {
       palette: PALETTES.mono, uniforms: { uAmount: 0.14 } },
     { label: 'parallax · sepia', program: 'depthParallax', kind: KIND.bayer4,
       palette: PALETTES.sepia, uniforms: { uAmount: 0.10 } },
-    shader('fog', 'depthFog', { uFog: rgb(236, 238, 242), uDensity: 1.6 }),
-    shader('fog · dusk', 'depthFog', { uFog: rgb(58, 44, 78), uDensity: 1.2 }),
+    shader('fog', 'depthFog', { uFog: rgb(236, 238, 242), uDensity: 1.6, uDotGain: GAIN.depth }),
+    shader('fog · dusk', 'depthFog', { uFog: rgb(58, 44, 78), uDensity: 1.2, uDotGain: GAIN.depth }),
   ],
 
   painterly: [

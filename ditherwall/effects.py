@@ -364,7 +364,8 @@ def lay(stock: tuple, ink: tuple, coverage: np.ndarray) -> np.ndarray:
     return linear_to_srgb(np.clip(a + (b - a) * c, 0, 1))
 
 
-def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
+def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4,
+               gain: float = 0.0) -> np.ndarray:
     """Rotated dot screen. Returns ink coverage per pixel in [0, 1].
 
     `coverage` is desired ink fraction in [0, 1]. Dot radius scales as its
@@ -376,6 +377,12 @@ def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.nd
     out of 7 and prints the wrong tone -- worst where the cells are smallest.
     The guard on `radius` keeps highlights clean: without it a coverage of zero
     still leaves half a pixel of ink at every cell centre.
+
+    `gain` is ink spread past the edge, in pixels. Modelling the cause rather
+    than curving the result gets two things for free: gain follows the dot's
+    perimeter, so it vanishes at both ends of the scale and peaks through the
+    midtones, and a finer screen gains more -- which is why newsprint is
+    screened coarse.
     """
     h, w = coverage.shape
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
@@ -385,25 +392,29 @@ def dot_screen(coverage: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.nd
     dv = (v % cell) - cell / 2
     dist = np.hypot(du, dv) / (cell / 2)
     radius = np.sqrt(np.clip(coverage, 0, 1)) * 1.16
-    aa = 1.0 / cell            # half a pixel, in the units dist is measured in
-    return (1.0 - smoothstep(radius - aa, radius + aa, dist)) * smoothstep(0.0, aa, radius)
+    aa = 1.0 / cell                 # half a pixel, in the units dist is measured in
+    spread = gain * 2.0 / cell      # gain is in pixels
+    soft = aa + spread * 0.5        # wet ink does not stop sharply
+    edge = radius + spread
+    return (1.0 - smoothstep(edge - soft, edge + soft, dist)) * smoothstep(0.0, aa, radius)
 
 
-def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4) -> np.ndarray:
+def halftone(rgb: np.ndarray, cell: int = 7, angle: float = 0.4,
+             gain: float = 0.0) -> np.ndarray:
     """Rotated dot screen -- dot area tracks local darkness.
 
     Coverage is taken from linear luminance: the ink fraction has to correspond
-    to the intensity the dots average out to.
+    to the intensity the dots average out to. `gain` is ink spread in pixels.
     """
     coarse = box_blur(light(rgb)[..., None], max(1, cell // 2))[..., 0]
-    ink = dot_screen(1.0 - coarse, cell, angle)
+    ink = dot_screen(1.0 - coarse, cell, angle, gain)
     return lay((255, 255, 255), (0, 0, 0), ink)
 
 
 HATCH_COVERAGE = 0.45   # coverage of one line set at full width
 
 
-def crosshatch(rgb: np.ndarray, spacing: int = 6) -> np.ndarray:
+def crosshatch(rgb: np.ndarray, spacing: int = 6, gain: float = 0.0) -> np.ndarray:
     """Engraving-style hatching, with the line widths solved for tone.
 
     Hatching is a coverage process: what the burin clears has to add up to the
@@ -421,15 +432,16 @@ def crosshatch(rgb: np.ndarray, spacing: int = 6) -> np.ndarray:
     ink = np.zeros_like(g)
     remain = np.ones_like(g)               # paper still white after the sets so far
     aa = 0.5                               # half a pixel; proj is a unit projection
+    soft = aa + gain * 0.5                 # wet ink does not stop sharply
     for angle in (0.0, np.pi / 4, np.pi / 2, 3 * np.pi / 4):
         f = np.clip((1.0 - (1.0 - target) / remain) / c, 0.0, 1.0)
         proj = xx * np.cos(angle) - yy * np.sin(angle)
         # Measured from the centre of the line rather than its leading edge, so
         # the stroke thickens symmetrically and one edge pair resolves it.
         m = np.abs((proj % spacing) - spacing * 0.5)
-        half_w = spacing * c * f * 0.5
-        ink = np.maximum(ink, (1.0 - smoothstep(half_w - aa, half_w + aa, m))
-                              * smoothstep(0.0, aa, half_w))
+        dry = spacing * c * f * 0.5
+        ink = np.maximum(ink, (1.0 - smoothstep(dry + gain - soft, dry + gain + soft, m))
+                              * smoothstep(0.0, aa, dry))
         remain *= 1.0 - c * f
     # Past what four sets can carry the shadow goes solid, as an engraving does.
     floor_cov = (1.0 - c) ** 4
@@ -641,6 +653,7 @@ def riso(
     rng: np.random.Generator,
     cell: int = 5,
     slip: int = 2,
+    gain: float = 0.0,
 ) -> np.ndarray:
     """Spot-colour screen print.
 
@@ -665,7 +678,7 @@ def riso(
     out = np.ones_like(norm)
     for idx, (ink, sep) in enumerate(zip(inks, seps)):
         colour = srgb_to_linear(np.array(ink, dtype=float) / 255.0)
-        dots = dot_screen(sep * 0.95, cell, 0.35 + idx * 0.85)
+        dots = dot_screen(sep * 0.95, cell, 0.35 + idx * 0.85, gain)
         if slip:
             dy, dx = rng.integers(-slip, slip + 1, 2)
             dots = np.roll(np.roll(dots, dy, axis=0), dx, axis=1)

@@ -1,5 +1,11 @@
 """Does a dithered tile actually reflect the light its source did?
 
+Two checks live here. The first renders the screens with a dry plate (no dot
+gain) and asks whether they reproduce the light of their source -- that is the
+calibration. The second checks the gain model itself, which deliberately breaks
+that calibration and so cannot be judged the same way: it is verified on the
+*shape* of its tone-value-increase curve instead.
+
 A dither is a physical claim: cover x% of the paper in ink and the tile, seen
 from far enough away that the dots blur together, reflects what the original
 reflected. Blurring is an average of *light*, so the claim can only hold if the
@@ -29,7 +35,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "ditherwall"))
 
-from effects import light, luma, normalize_tone  # noqa: E402
+from effects import dot_screen, light, luma, normalize_tone  # noqa: E402
 
 SIZE = 256
 CROP = [0.12, 0.10, 0.62, 0.62]
@@ -43,6 +49,10 @@ MAX_RESIDUAL = 0.05
 # Only the processes that make a tonal claim: they render the photo as coverage
 # of a fixed set of inks. Effects that recolour continuously have nothing to
 # reconstruct and are not measured here.
+#
+# Rendered dry -- uDotGain 0. Gain is a deliberate departure from the source
+# tone, so a calibration check has to run without it, or it would be measuring
+# the press instead of the screen. The gain model is checked by gain_curve().
 CASES = {
     "bayer 8×8 · mono": {"program": "ordered", "kind": 2, "uniforms": {"uScale": 1},
                          "palette": [[0, 0, 0], [1, 1, 1]]},
@@ -51,10 +61,53 @@ CASES = {
     "bayer 2×2 · mono": {"program": "ordered", "kind": 0, "uniforms": {"uScale": 1},
                          "palette": [[0, 0, 0], [1, 1, 1]]},
     "halftone": {"program": "halftone",
-                 "uniforms": {"uCell": 7, "uInk": [0, 0, 0], "uStock": [1, 1, 1]}},
+                 "uniforms": {"uCell": 7, "uInk": [0, 0, 0], "uStock": [1, 1, 1], "uDotGain": 0}},
     "crosshatch": {"program": "crosshatch",
-                   "uniforms": {"uSpacing": 7, "uInk": [0, 0, 0], "uStock": [1, 1, 1]}},
+                   "uniforms": {"uSpacing": 7, "uInk": [0, 0, 0], "uStock": [1, 1, 1], "uDotGain": 0}},
 }
+
+
+def gain_curve(gain: float = 0.35) -> int:
+    """Check the gain model on the shape of its TVI curve, not on an absolute.
+
+    Dot gain is modelled as ink wicking a fixed distance past the edge, so the
+    extra coverage tracks the dot's *perimeter*. That predicts the shape every
+    printed tone-value-increase curve has, and those predictions are what get
+    asserted: nothing added to blank paper, a peak through the midtones, a
+    falloff into the shadows once there is little perimeter left, and more gain
+    on a finer screen, where the same spread is a larger share of each dot.
+    """
+    levels = [0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0]
+    cells = [4, 7, 12]
+    tvi = {}
+    for cell in cells:
+        for req in levels:
+            flat = np.full((300, 300), req)
+            tvi[cell, req] = float(dot_screen(flat, cell, 0.4, gain).mean()
+                                   - dot_screen(flat, cell, 0.4, 0.0).mean())
+
+    print(f"\ndot gain {gain}px -- tone value increase")
+    print(f"{'requested':>10}" + "".join(f"{f'cell {c}':>10}" for c in cells))
+    print("-" * (10 + 10 * len(cells)))
+    for req in levels:
+        print(f"{req:>10.2f}" + "".join(f"{tvi[c, req]:>+10.3f}" for c in cells))
+
+    checks = [
+        ("nothing added to blank paper",
+         all(abs(tvi[c, 0.0]) < 1e-6 for c in cells)),
+        ("gain is positive through the midtones",
+         all(tvi[c, r] > 0 for c in cells for r in (0.25, 0.5, 0.75))),
+        ("peaks in the midtones",
+         all(max(levels, key=lambda r: tvi[c, r]) in (0.25, 0.5) for c in cells)),
+        ("falls off into the shadows",
+         all(tvi[c, 1.0] < tvi[c, 0.5] for c in cells)),
+        ("a finer screen gains more",
+         all(tvi[4, r] > tvi[7, r] > tvi[12, r] for r in levels if r > 0)),
+    ]
+    print("-" * (10 + 10 * len(cells)))
+    for name, ok in checks:
+        print(f"  {'ok  ' if ok else 'FAIL'}  {name}")
+    return sum(0 if ok else 1 for _, ok in checks)
 
 
 def run(url: str, photo_index: int, tag: str) -> int:
@@ -119,7 +172,7 @@ def run(url: str, photo_index: int, tag: str) -> int:
     print("-" * 51)
     print(f"{len(rows) - failures}/{len(rows)} within {MAX_RESIDUAL} "
           f"(worst |residual| = {worst:.4f})")
-    return 1 if failures else 0
+    return failures + gain_curve()
 
 
 if __name__ == "__main__":

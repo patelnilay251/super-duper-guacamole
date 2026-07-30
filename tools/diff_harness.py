@@ -98,8 +98,8 @@ CASES = {
         lambda img: dither_ordered(img, "ember", bayer(2)),
     ),
     "halftone": (
-        {"program": "halftone", "uniforms": {"uCell": 7, "uInk": INK, "uStock": STOCK}},
-        lambda img: inked(halftone(normalize_tone(img), 7, 0.5), (247, 241, 226), (18, 16, 14)),
+        {"program": "halftone", "uniforms": {"uCell": 7, "uInk": INK, "uStock": STOCK, "uDotGain": 0.35}},
+        lambda img: inked(halftone(normalize_tone(img), 7, 0.5, gain=0.35), (247, 241, 226), (18, 16, 14)),
     ),
     "gradient · ironbow": (
         {"program": "gradient", "uniforms": {"uRamp": IRONBOW}},
@@ -115,8 +115,8 @@ CASES = {
         lambda img: edges(normalize_tone(img)),
     ),
     "crosshatch": (
-        {"program": "crosshatch", "uniforms": {"uSpacing": 7, "uInk": INK, "uStock": STOCK}},
-        lambda img: inked(crosshatch(normalize_tone(img), 7), (247, 241, 226), (18, 16, 14)),
+        {"program": "crosshatch", "uniforms": {"uSpacing": 7, "uInk": INK, "uStock": STOCK, "uDotGain": 0.15}},
+        lambda img: inked(crosshatch(normalize_tone(img), 7, gain=0.15), (247, 241, 226), (18, 16, 14)),
     ),
     "duotone": (
         {"program": "duotone", "uniforms": {"uDark": rgbf(16, 24, 52), "uLight": rgbf(236, 232, 220), "uLevels": 0}},
@@ -128,8 +128,8 @@ CASES = {
     ),
     "riso": (
         {"program": "riso", "uniforms": {"uInkA": rgbf(255, 72, 176), "uInkB": rgbf(0, 120, 191),
-                                         "uCell": 5, "uSlip": 0}},
-        lambda img: riso(img, [(255, 72, 176), (0, 120, 191)], np.random.default_rng(0), cell=5, slip=0),
+                                         "uCell": 5, "uSlip": 0, "uDotGain": 0.5}},
+        lambda img: riso(img, [(255, 72, 176), (0, 120, 191)], np.random.default_rng(0), cell=5, slip=0, gain=0.5),
     ),
 }
 
