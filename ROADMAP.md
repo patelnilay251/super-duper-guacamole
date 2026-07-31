@@ -94,14 +94,22 @@ without the spatial spectrum changing.
 **Risk:** low. **Payoff:** the whole wall is animated, so this affects
 everything, but it is a subtle-motion improvement rather than a still-frame one.
 
-## 7. 2048px corpus
+## 7. ~~Larger corpus~~ — partly done
 
-The photographs are currently optimised to a size that limits how tightly a tile
-can crop before the mip chain runs out and the source goes soft. More resolution
-means tighter crops stay sharp, which matters more now that the screens resolve
-sub-pixel geometry.
+**Done at 1440px, 120 photographs (20 MB + 3.2 MB depth).** Measured before
+choosing: 1024 → 16 MB, 1440 → 31 MB, 1600 → 37 MB, 2048 → 58 MB for 120. 1440
+buys 1.4× the linear resolution; 2048 nearly doubles the bytes again for the same
+1.4× on top, and the tiles are a few hundred pixels — only focus mode ever shows a
+full frame. Going further is available but was judged not worth it.
 
-**Where:** `tools/build_corpus.py`, then re-run and commit `gpu/photos/`.
+Also fixed here: `fetch.py` requested a fixed width *and* height from Picsum,
+which makes it **crop**. Every photograph in the old corpus arrived as 4:3 with
+its framing thrown away before the wall ever saw it. Requests now preserve each
+photograph's own proportions.
+
+Still open, if wanted: AVIF instead of JPEG would buy back most of the size.
+
+**Where:** `ditherwall/fetch.py`, `tools/build_corpus.py`, `tools/build_depth.py`.
 
 **Watch for:** this is pure asset work with no rendering risk, but it is the one
 item with a real deployment cost — Cloudflare Pages has a per-file and per-site

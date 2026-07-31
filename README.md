@@ -125,7 +125,7 @@ pointer.
 ![gpu wall in motion](out/gpu_motion.gif)
 
 ```bash
-python3 tools/build_corpus.py     # optimised photos + manifest + blue noise
+python3 tools/build_corpus.py     # 120 photos at 1440px + manifest + blue noise
 cd gpu && python3 -m http.server 8123
 ```
 
@@ -134,10 +134,30 @@ roughly 8–16, so a canvas per tile fails outright past a dozen. The canvas cov
 the page instead, and each tile is drawn by setting `gl.viewport` to its rectangle
 and running a full-screen quad through that tile's program.
 
-**Photographs ship with the site.** WebGL textures must be same-origin or
-CORS-enabled, and Picsum sends no CORS header. Serving a bundled corpus sidesteps
-the question and removes any runtime dependency on a third-party CDN or its rate
-limits — 36 photographs at 1024px come to 3.9 MB.
+**Photographs ship with the site, and a random subset is drawn per visit.** The
+corpus is 120 photographs at 1440px (20 MB); a visit loads 36 of them, or 20 on a
+narrow viewport. So the wall is different every time it is opened, with no runtime
+dependency on anything — and because `/photos/*` is served `immutable`, repeat
+visits accumulate the corpus in cache and the site gets *faster* the more it is
+used. Fetching fresh photographs from an API would do the exact opposite: every
+visit a cold download, forever, plus a hard dependency on a third party with no
+SLA. `?seed=N` pins the selection, which is what makes a screenshot reproducible.
+
+Museum and archive APIs were evaluated as sources — the Met, Library of Congress,
+Wikimedia Featured Pictures, NASA, Art Institute of Chicago — and are worse for
+this. They photograph *objects*: mount board, paper edges, pencil annotations,
+29 000-pixel panoramas, legible text. A tight crop lands on cream card stock. This
+wall wants full-bleed photographs at ordinary proportions.
+
+Scoring candidates for how well they *dither* was also tried, and abandoned.
+Structure retention through a halftone came back 0.98–1.00 across the whole
+corpus — no discrimination at all — and ranked the flattest images best, since a
+flat field is trivial to reproduce. Tonal spread and detail density vary widely
+but do not separate good from bad: the lowest-spread photograph is a figure on
+asphalt, which dithers beautifully, and the highest-detail one is branches against
+sky, which also does. What makes a photograph work here is graphic legibility
+under two-level reduction, which is semantic, not statistical. Only mechanical
+filters survive: minimum resolution and a sane aspect band.
 
 **Statistics the shader cannot compute are measured on the CPU.** `normalize_tone`
 needs luminance percentiles and a mean, neither of which a fragment shader can
@@ -158,7 +178,7 @@ map it can vary *through the scene* instead.
 
 Monocular depth is estimated offline — Depth Anything V2 (small, quantised) via
 ONNX Runtime — and shipped as a greyscale image beside each photograph, so at
-runtime it is just another texture and costs nothing. 36 maps come to 0.6 MB.
+runtime it is just another texture and costs nothing. 120 maps come to 3.2 MB.
 
 ```bash
 python3 tools/build_depth.py     # downloads the model on first run
@@ -259,6 +279,19 @@ It also exposed a real quality gap. The shader was stretching tone by whole-phot
 percentiles while the reference used per-crop ones, so a tight crop got the wrong
 normalisation. Both now measure the crop, and the remaining error falls under
 0.01 on most cases.
+
+**It sweeps several photographs, and reports each case's worst.** For most of
+this project it pinned one, which turned out to hide two real divergences.
+duotone was missing the reference's 1.25 contrast entirely. riso's chroma
+separation used a fixed `(r - b) * 1.6 + 0.5` where the reference stretches by
+percentiles — fine on a photograph whose chroma straddles zero, and on a warm or
+cool one the mapping saturates so the second ink goes solid or vanishes. Its ink
+fraction was off by **0.76** on the third photograph tried. Both were invisible
+on photograph zero. A test that only ever sees one input is measuring that
+input, not the code.
+
+The fix for riso is the one this codebase already had a precedent for: a shader
+cannot take percentiles, so it receives them, by the same route `uTone` does.
 
 The harness runs in CI and gates deployment.
 

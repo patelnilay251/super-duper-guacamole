@@ -142,15 +142,67 @@ async function loadImage(src) {
   return img;
 }
 
+// The corpus ships far more photographs than one wall uses, and a random subset
+// is drawn per visit. That is what makes the wall different every time it is
+// opened, and it costs nothing at runtime: the photographs that are not drawn
+// are simply never requested. Over repeated visits the browser accumulates the
+// whole corpus in cache, so the site gets *faster* the more it is used -- which
+// is the opposite of what fetching fresh photographs from an API would do.
+const WALL_PHOTOS = 36;
+const WALL_PHOTOS_SMALL = 20;   // a phone pays the same bytes for far less wall
+
+// Seeded PRNG, so a capture can pin the selection. Math.random cannot be
+// seeded, and the differential harness is not the only thing that needs a
+// reproducible wall -- screenshots do too.
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function choosePhotos(all, params) {
+  const fallback = window.innerWidth < 900 ? WALL_PHOTOS_SMALL : WALL_PHOTOS;
+  const asked = Number(params.get('photos')) || fallback;
+  const want = Math.max(1, Math.min(asked, all.length));
+
+  const seed = params.get('seed');
+  const rand = seed === null ? Math.random : mulberry32(Number(seed) >>> 0);
+
+  const idx = all.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) {          // Fisher-Yates
+    const j = Math.floor(rand() * (i + 1));
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  return idx.slice(0, want).map(i => all[i]);
+}
+
 async function boot() {
   const manifest = await (await fetch('manifest.json')).json();
-  state.photos = manifest.photos;
+  const wanted = choosePhotos(manifest.photos, new URLSearchParams(location.search));
 
-  const [imgs, depthImgs, noiseImg] = await Promise.all([
-    Promise.all(state.photos.map(p => loadImage(p.src))),
-    Promise.all(state.photos.map(p => p.depth ? loadImage(p.depth) : null)),
-    loadImage('bluenoise.png'),
-  ]);
+  // A photograph that will not decode drops out instead of taking the wall with
+  // it. Boot fires dozens of requests at once, so a single stalled or truncated
+  // response is a transport problem, not a reason to render nothing.
+  const loaded = await Promise.all(wanted.map(async p => {
+    try {
+      return { meta: p, img: await loadImage(p.src),
+               depth: p.depth ? await loadImage(p.depth).catch(() => null) : null };
+    } catch {
+      console.warn(`skipped ${p.src}`);
+      return null;
+    }
+  }));
+
+  const ok = loaded.filter(Boolean);
+  if (!ok.length) throw new Error('no photographs could be loaded');
+
+  state.photos = ok.map(r => r.meta);
+  const imgs = ok.map(r => r.img);
+  const depthImgs = ok.map(r => r.depth);
+  const noiseImg = await loadImage('bluenoise.png');
 
   state.images = imgs;
   state.textures = imgs.map(loadTexture);
@@ -187,6 +239,12 @@ const toneCanvas = document.createElement('canvas');
 toneCanvas.width = toneCanvas.height = TONE_N;
 const toneCtx = toneCanvas.getContext('2d', { willReadFrequently: true });
 
+// One channel through toneMap and then to linear light, mirroring the shader.
+function toneLinear(byte, lo, span, gamma) {
+  const s = Math.pow(Math.min(1, Math.max(0, (byte / 255 - lo) / span)), gamma);
+  return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+}
+
 function cropTone(img, cx, cy, cw, ch) {
   toneCtx.drawImage(img, cx * img.width, cy * img.height, cw * img.width, ch * img.height,
                     0, 0, TONE_N, TONE_N);
@@ -208,8 +266,19 @@ function cropTone(img, cx, cy, cw, ch) {
   let post = 0;
   for (let j = 0; j < lum.length; j++) post += Math.min(1, Math.max(0, (lum[j] - lo) / span));
   const mean = Math.min(0.98, Math.max(0.02, post / lum.length));
+  const gamma = Math.min(2.0, Math.max(0.5, Math.log(0.48) / Math.log(mean)));
 
-  return { lo, hi, gamma: Math.min(2.0, Math.max(0.5, Math.log(0.48) / Math.log(mean))) };
+  // Warm/cool spread, for riso's second separation. Measured through the same
+  // tone map the shader applies and in linear light, because that is where the
+  // shader takes the difference. Free here: the pixels are already read back.
+  const chroma = new Float64Array(lum.length);
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+    chroma[j] = toneLinear(d[i], lo, span, gamma) - toneLinear(d[i + 2], lo, span, gamma);
+  }
+  const cs = Float64Array.from(chroma).sort();
+  const cAt = q => cs[Math.min(cs.length - 1, Math.floor(q * cs.length))];
+
+  return { lo, hi, gamma, chromaLo: cAt(0.03), chromaHi: cAt(0.97) };
 }
 
 // ------------------------------------------------------------------ layout
@@ -316,6 +385,7 @@ function drawTile(t, fx, time, alpha, view) {
   gl.uniform2f(u.uPointer, state.pointer.x, state.pointer.y);
   gl.uniform1f(u.uPointerAmt, state.pointer.active);
   gl.uniform2f(u.uTone, view.lo, view.hi);
+  if (u.uChroma) gl.uniform2f(u.uChroma, view.chromaLo, view.chromaHi);
   gl.uniform1f(u.uCoarsen, view.coarsen);
   gl.uniform1f(u.uDim, view.dim);
 
@@ -357,6 +427,7 @@ function viewFor(t, k) {
     return {
       x: t.x, y: t.y, w: t.w, h: t.h, crop: t.crop,
       lo: t.tone.lo, hi: t.tone.hi, gamma: t.tone.gamma,
+      chromaLo: t.tone.chromaLo, chromaHi: t.tone.chromaHi,
       coarsen: lerp(1, FOCUS_COARSEN, away),
       dim: lerp(0, FOCUS_DIM, away),
     };
@@ -380,6 +451,8 @@ function viewFor(t, k) {
     lo: lerp(t.tone.lo, tone.lo, k),
     hi: lerp(t.tone.hi, tone.hi, k),
     gamma: lerp(t.tone.gamma, tone.gamma, k),
+    chromaLo: lerp(t.tone.chromaLo, tone.chromaLo, k),
+    chromaHi: lerp(t.tone.chromaHi, tone.chromaHi, k),
     coarsen: 1,
     dim: 0,
   };

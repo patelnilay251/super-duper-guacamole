@@ -171,16 +171,8 @@ def reference(photo_path: Path, crop, fn) -> np.ndarray:
     return fn(np.asarray(tile, dtype=np.float64) / 255.0)
 
 
-def run(url: str, photo_index: int) -> int:
-    from playwright.sync_api import sync_playwright
-
-    sys.path.insert(0, str(ROOT / "gpu"))
-    manifest = json.loads((ROOT / "gpu" / "manifest.json").read_text())
-    rec = manifest["photos"][photo_index]
-    photo_path = ROOT / "gpu" / rec["src"]
-    crop = [0.12, 0.10, 0.62, 0.62]
-
-    # The shader receives the same tone statistics the wall would give it.
+def stats_for(photo_path: Path, crop) -> tuple:
+    """Everything the shader needs that it cannot compute for itself."""
     ref_img = Image.open(photo_path).convert("RGB")
     w, h = ref_img.size
     box = (int(crop[0] * w), int(crop[1] * h), int((crop[0] + crop[2]) * w), int((crop[1] + crop[3]) * h))
@@ -191,6 +183,32 @@ def run(url: str, photo_index: int) -> int:
     mean = float(np.clip(post.mean(), 0.02, 0.98))
     gamma = float(np.clip(np.log(0.48) / np.log(mean), 0.5, 2.0))
 
+    # riso's second separation is stretched across the chroma range this crop
+    # occupies. The shader cannot take percentiles, so it receives them -- the
+    # same route uTone takes. Measured after the tone map and in linear light,
+    # which is where the shader takes the difference.
+    toned = np.power(np.clip((crop_arr - lo) / max(hi - lo, 1e-3), 0, 1), gamma)
+    lin = srgb_to_linear(toned)
+    ch = lin[..., 0] - lin[..., 2]
+    chroma = [float(np.percentile(ch, 3)), float(np.percentile(ch, 97))]
+    return [lo, hi], gamma, chroma
+
+
+def run(url: str, photo_indices: list[int]) -> int:
+    """Compare every case against the reference, over several photographs.
+
+    Sweeping matters more than it looks. Two real divergences hid for months
+    behind a single pinned photograph: duotone was missing the reference's 1.25
+    contrast, and riso's chroma separation used a fixed affine mapping where the
+    reference stretches by percentiles. Both are invisible on a photograph whose
+    tone happens to suit them, and both blow out on one that does not -- riso's
+    ink fraction was off by 0.76 on the third photograph tried.
+    """
+    from playwright.sync_api import sync_playwright
+
+    manifest = json.loads((ROOT / "gpu" / "manifest.json").read_text())
+    crop = [0.12, 0.10, 0.62, 0.62]
+
     # This sandbox ships a browser at a fixed path; a CI runner lets Playwright
     # manage its own. Fall back to Playwright's resolution when the former is absent.
     chromium = next(iter(sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux/chrome"))), None)
@@ -198,38 +216,53 @@ def run(url: str, photo_index: int) -> int:
     if chromium:
         launch["executable_path"] = str(chromium)
 
-    rows, failures = [], 0
+    worst: dict[str, dict] = {}
+    failures = 0
     with sync_playwright() as pw:
         browser = pw.chromium.launch(**launch)
         page = browser.new_page()
         page.goto(url, wait_until="load", timeout=60_000)
         page.wait_for_function("window.__ready === true", timeout=60_000)
 
-        for name, (spec, ref_fn) in CASES.items():
-            payload = {
-                **spec,
-                "photo": rec["src"],
-                "size": SIZE,
-                "crop": crop,
-                "tone": [lo, hi],
-                "gamma": gamma,
-            }
-            data_url = page.evaluate("s => window.renderCase(s)", payload)
-            raw = base64.b64decode(data_url.split(",", 1)[1])
-            gpu = np.asarray(Image.open(io.BytesIO(raw)).convert("RGB"), dtype=np.float64) / 255.0
+        for idx in photo_indices:
+            rec = manifest["photos"][idx]
+            photo_path = ROOT / "gpu" / rec["src"]
+            tone, gamma, chroma = stats_for(photo_path, crop)
 
-            ref = np.clip(reference(photo_path, crop, ref_fn), 0, 1)
-            m = measure(gpu, ref)
+            for name, (spec, ref_fn) in CASES.items():
+                payload = {**spec, "photo": rec["src"], "size": SIZE, "crop": crop,
+                           "tone": tone, "gamma": gamma, "chroma": chroma}
+                data_url = page.evaluate("s => window.renderCase(s)", payload)
+                raw = base64.b64decode(data_url.split(",", 1)[1])
+                gpu = np.asarray(Image.open(io.BytesIO(raw)).convert("RGB"), dtype=np.float64) / 255.0
 
-            floor = MIN_STRUCTURE_STOCHASTIC if name.split(" ")[0] in STOCHASTIC else MIN_STRUCTURE
-            ok = (m["structure"] >= floor
-                  and m["exposure"] <= MAX_EXPOSURE_DELTA
-                  and m["ink"] <= MAX_INK_DELTA)
-            failures += 0 if ok else 1
-            rows.append((name, m, ok))
+                ref = np.clip(reference(photo_path, crop, ref_fn), 0, 1)
+                m = measure(gpu, ref)
+                m["photo"] = idx
+
+                # Keep each case's worst photograph, so one bad pairing cannot
+                # be averaged away by the others.
+                prev = worst.get(name)
+                if prev is None or m["structure"] < prev["structure"] \
+                        or m["ink"] > prev["ink"] or m["exposure"] > prev["exposure"]:
+                    worst[name] = m if prev is None else {
+                        "structure": min(m["structure"], prev["structure"]),
+                        "exposure": max(m["exposure"], prev["exposure"]),
+                        "ink": max(m["ink"], prev["ink"]),
+                        "photo": idx if m["structure"] < prev["structure"] else prev["photo"],
+                    }
 
         browser.close()
 
+    rows = []
+    for name, m in worst.items():
+        floor = MIN_STRUCTURE_STOCHASTIC if name.split(" ")[0] in STOCHASTIC else MIN_STRUCTURE
+        ok = (m["structure"] >= floor and m["exposure"] <= MAX_EXPOSURE_DELTA
+              and m["ink"] <= MAX_INK_DELTA)
+        failures += 0 if ok else 1
+        rows.append((name, m, ok))
+
+    print(f"worst of {len(photo_indices)} photographs, per case")
     print(f"{'case':<24} {'structure':>9} {'exposure':>9} {'ink':>7}   verdict")
     print("-" * 62)
     for name, m, ok in rows:
@@ -244,6 +277,7 @@ def run(url: str, photo_index: int) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://127.0.0.1:8123/diff.html")
-    ap.add_argument("--photo", type=int, default=0)
+    ap.add_argument("--photos", type=int, default=4,
+                    help="how many photographs to sweep; one is not enough")
     a = ap.parse_args()
-    sys.exit(run(a.url, a.photo))
+    sys.exit(run(a.url, list(range(a.photos))))

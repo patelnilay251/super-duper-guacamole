@@ -119,6 +119,7 @@ window.renderCase = async function (spec) {
   gl.uniform2f(u.uPointer, 0, 0);
   gl.uniform1f(u.uPointerAmt, 0);    // interaction disabled
   gl.uniform2f(u.uTone, tone[0], tone[1]);
+  if (u.uChroma && spec.chroma) gl.uniform2f(u.uChroma, spec.chroma[0], spec.chroma[1]);
   if (u.uCropGamma) gl.uniform1f(u.uCropGamma, gamma);
   if (u.uAlpha) gl.uniform1f(u.uAlpha, 1);
   if (u.uCoarsen) gl.uniform1f(u.uCoarsen, 1);

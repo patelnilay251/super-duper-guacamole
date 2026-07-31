@@ -5,7 +5,7 @@ same-origin or CORS-enabled. Serving them from the site itself sidesteps the
 question entirely -- and removes any runtime dependency on a third-party CDN or
 its rate limits.
 
-    python3 tools/build_corpus.py --count 36 --edge 1024
+    python3 tools/build_corpus.py --count 120 --edge 1440
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ def tone_stats(img: Image.Image) -> dict:
 
 def build(count: int, edge: int, quality: int) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    photos = fetch(count)
+    photos = fetch(count, edge=edge)
 
     manifest = []
     total = 0
@@ -91,8 +91,8 @@ def build(count: int, edge: int, quality: int) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--count", type=int, default=36)
-    ap.add_argument("--edge", type=int, default=1024)
-    ap.add_argument("--quality", type=int, default=80)
+    ap.add_argument("--count", type=int, default=120)
+    ap.add_argument("--edge", type=int, default=1440)
+    ap.add_argument("--quality", type=int, default=82)
     a = ap.parse_args()
     build(a.count, a.edge, a.quality)

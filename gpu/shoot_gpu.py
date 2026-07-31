@@ -47,7 +47,9 @@ def run(url: str, seconds: float, shots: int, genre: str | None = None) -> int:
         page.on("pageerror", lambda e: problems.append(f"pageerror: {e}"))
         page.on("requestfailed", lambda r: problems.append(f"request failed: {r.url}"))
 
-        page.goto(url, wait_until="load", timeout=60_000)
+        # Pinned selection: the wall draws a random subset of the corpus per
+        # visit, so a capture has to fix the seed or no two runs are comparable.
+        page.goto(url + ("&" if "?" in url else "?") + "seed=7", wait_until="load", timeout=60_000)
 
         renderer = page.evaluate("""() => {
             const c = document.createElement('canvas');
@@ -98,7 +100,7 @@ def capture_gif(url: str, frames: int, interval: float, width: int, height: int)
     with sync_playwright() as pw:
         browser = pw.chromium.launch(args=FLAGS, **({'executable_path': chromium_path()} if chromium_path() else {}))
         page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
-        page.goto(url, wait_until="load", timeout=60_000)
+        page.goto(url + ("&" if "?" in url else "?") + "seed=7", wait_until="load", timeout=60_000)
         page.wait_for_timeout(4000)
 
         tmp = OUT / "_frames"

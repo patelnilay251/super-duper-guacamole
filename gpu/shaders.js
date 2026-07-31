@@ -36,6 +36,7 @@ uniform float uAlpha;       // morph blend weight; 1 when not transitioning
 uniform float uCoarsen;     // >1 enlarges the process; how a tile is "defocused"
 uniform float uDim;         // 0..1 toward the ground colour
 uniform float uDotGain;     // ink spread past the edge, in pixels; 0 is a dry plate
+uniform vec2  uChroma;      // per-crop (r-b) percentiles, measured on the CPU
 
 const float PI = 3.14159265;
 
@@ -284,7 +285,14 @@ void main() {
 
   float density = 1.0 - light(ca);                      // first ink: overall tone
   vec3 cbLin = srgbToLinear(cb);
-  float chroma = clamp((cbLin.r - cbLin.b) * 1.6 + 0.5, 0.0, 1.0) * 0.85;
+  // Second ink follows the warm/cool axis, stretched across the range this crop
+  // actually occupies. This used to be a fixed (r-b) * 1.6 + 0.5, which only
+  // matched the reference on a photograph whose chroma happened to straddle
+  // zero: on a strongly warm or cool one the fixed mapping saturates and the
+  // ink goes solid or disappears entirely. Percentiles cannot be computed in a
+  // shader, so they arrive as a uniform -- the same route uTone already takes.
+  float chroma = clamp((cbLin.r - cbLin.b - uChroma.x)
+                       / max(uChroma.y - uChroma.x, 1e-4), 0.0, 1.0) * 0.85;
 
   float a = dotScreen(screenPx() + slipA, density * 0.95, cell, 0.35);
   float b = dotScreen(screenPx() + slipB, chroma,         cell, 1.20);
@@ -488,7 +496,11 @@ uniform vec3 uDark;
 uniform vec3 uLight;
 uniform float uLevels;
 void main() {
-  float g = luma(srcToned(vUv));
+  // The 1.25 contrast is part of the effect and was missing from this port --
+  // the reference has always applied it. A single-photograph harness never
+  // caught it, because whether it matters depends entirely on how much of the
+  // frame sits near mid grey.
+  float g = clamp((luma(srcToned(vUv)) - 0.5) * 1.25 + 0.5, 0.0, 1.0);
   g = clamp(g + 0.08 * sin(uTime * 0.3 + uSeed * 6.28) + uPointerAmt * 0.2 * uPointer.x, 0.0, 1.0);
   if (uLevels > 1.5) g = floor(g * uLevels) / (uLevels - 1.0);
   fragColor = vec4(finish(linearToSrgb(mix(srgbToLinear(uDark), srgbToLinear(uLight), clamp(g, 0.0, 1.0)))), uAlpha);
