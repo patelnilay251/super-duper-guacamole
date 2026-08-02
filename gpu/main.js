@@ -8,6 +8,7 @@
 import { VERT, FRAG } from './shaders.js';
 import { PRESETS, pickEffect, pickPlacement } from './presets.js';
 import { splitCanvas } from './layout.js';
+import { Radio } from './radio.js';
 
 const canvas = document.getElementById('stage');
 const labels = document.getElementById('labels');
@@ -34,6 +35,12 @@ const MORPH_MIN = 6, MORPH_SPREAD = 14, MORPH_SECONDS = 1.8;
 // cutting. Each tile reuses the cross-fade it already has; only the start time
 // differs, so the wall dissolves into the new style in a wave.
 const RIPPLE_SECONDS = 0.9, RIPPLE_JITTER = 0.25;
+
+// How far the music can push the ink. The level reads low -- it is a mean
+// over the whole spectrum, most of which is empty -- so it needs scaling
+// before it means anything, and clamping so a loud track cannot plug the
+// shadows solid.
+const ENERGY_TO_INK = 6.0, INK_SWELL = 0.6;
 
 // Focus: one tile grows to fill the canvas while the rest are pushed back.
 const FOCUS_INSET = 26;          // px of canvas left visible around the tile
@@ -405,6 +412,18 @@ function drawTile(t, fx, time, alpha, view) {
   if (fx.kind !== undefined && u.uKind) gl.uniform1i(u.uKind, fx.kind);
   if (fx.rampLen && u.uRampLen) gl.uniform1i(u.uRampLen, fx.rampLen);
 
+  // Loudness swells the ink. Of everything the music could drive, dot gain is
+  // the one a press actually does -- more ink laid down means dots spreading
+  // and shadows plugging. It rides the slow smoothed level rather than the beat,
+  // so the wall thickens through a loud passage instead of flashing on hits.
+  if (u.uDotGain && radio.playing) {
+    const base = fx.uniforms?.uDotGain ?? 0;
+    if (base > 0) {
+      const swell = Math.min(1, radio.energy * ENERGY_TO_INK);
+      gl.uniform1f(u.uDotGain, base * (1 + INK_SWELL * swell));
+    }
+  }
+
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
@@ -494,6 +513,7 @@ function frame(now) {
 
   const time = now / 1000;
   const dt = Math.min(0.1, (now - last) / 1000);   // clamped: tab switches jump
+  radio.tick();
   gl.disable(gl.SCISSOR_TEST);
   gl.clearColor(0.04, 0.04, 0.05, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -684,6 +704,7 @@ addEventListener('pointerdown', (e) => {
 const ACTIONS = {
   ' ': () => { state.paused = !state.paused; },
   r: () => buildTiles(),
+  m: () => toggleMusic(),
   l: () => {
     const pinned = labels.classList.toggle('pinned');
     if (pinned && nearTile && nearTile.label) nearTile.label.classList.remove('near');
@@ -731,10 +752,82 @@ addEventListener('resize', () => {
 
 document.addEventListener('visibilitychange', () => { state.paused = document.hidden; });
 
+// ------------------------------------------------------------------- radio
+//
+// Music adds a layer of motion over the drift the wall already has; it never
+// replaces it. Everything below is inert until someone presses play, and the
+// wall is expected to be watched in silence more often than not.
+//
+// The layers run at different rates on purpose. Sync everything to the beat and
+// it reads as a karaoke screen -- the point is that only *some* of the movement
+// is on the grid, so the rest feels like weather.
+
+// Each track picks a mood for the wall to sit in. Chosen by tempo and feel
+// rather than anything measured, and easily rearranged.
+const TRACK_MOOD = ['everything', 'newsprint', 'blueprint', 'press', 'depth',
+                    'painterly', 'thermal', 'phosphor'];
+
+const radio = new Radio();
+const nowPlaying = document.getElementById('nowPlaying');
+const musicBtn = document.getElementById('music');
+
+// Once a bar, one tile somewhere changes. One -- not all of them. Sparse enough
+// that it reads as something alive in the wall rather than a level meter.
+radio.on('bar', () => {
+  if (!state.tiles.length) return;
+  const t = state.tiles[Math.floor(Math.random() * state.tiles.length)];
+  if (!t.next && !t.restyleAt) t.restyleAt = performance.now() / 1000;
+});
+
+// Every eight bars the ripple already built for genre changes sweeps through
+// from somewhere random, so the whole wall turns over slowly.
+radio.on('phrase', (n) => {
+  if (n <= 0 || !state.tiles.length) return;
+  restyle(Math.random() * canvas.clientWidth, Math.random() * canvas.clientHeight);
+});
+
+radio.on('track', (track) => {
+  if (!track) return;
+  const mood = TRACK_MOOD[radio.at % TRACK_MOOD.length];
+  if (GENRES.includes(mood)) setGenre(mood);
+  if (nowPlaying) {
+    nowPlaying.innerHTML =
+      `<span class="np-title">${track.title}</span>` +
+      `<span class="np-artist">${track.artist}</span>`;
+    nowPlaying.title = `${track.title} — ${track.artist} · ${track.license}`;
+  }
+});
+
+// CC-BY is most of the music, and attribution is a condition of it -- so the
+// full list lives in the help panel with artist, licence and a link back to the
+// source, not just the title in the corner. Built from the manifest so it cannot
+// drift out of step with what actually ships.
+function renderCredits() {
+  const ul = document.getElementById('trackCredits');
+  if (!ul || ul.children.length) return;
+  for (const t of radio.tracks) {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="${t.source}" target="_blank" rel="noopener">${t.title}</a>`
+      + ` — ${t.artist} <span class="lic">${t.license}</span>`;
+    ul.appendChild(li);
+  }
+}
+
+async function toggleMusic() {
+  if (!radio.ready && !(await radio.load())) return;
+  renderCredits();
+  const on = radio.playing ? radio.pause() : await radio.play();
+  document.body.classList.toggle('playing', !!on);
+  if (musicBtn) musicBtn.setAttribute('aria-pressed', String(!!on));
+}
+
+if (musicBtn) musicBtn.onclick = toggleMusic;
+
 // Lets the capture and test scripts drive the wall without depending on the
 // chrome being visible, which it usually is not.
 window.setGenre = setGenre;
 window.__wall = state;
+window.__radio = radio;
 
 boot()
   .then(() => wake())

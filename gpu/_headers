@@ -13,6 +13,9 @@
 /depth/*
   Cache-Control: public, max-age=31536000, immutable
 
+/audio/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /bluenoise.png
   Cache-Control: public, max-age=31536000, immutable
 

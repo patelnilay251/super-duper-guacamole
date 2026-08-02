@@ -171,6 +171,43 @@ nine texture fetches on *every pixel*, to recompute a value that is constant
 across the tile — removing that took the software-rendered frame rate from 5 fps
 to 13.
 
+## Radio
+
+Fourteen Creative Commons instrumentals (35 MB, 49 min) play under the wall, and
+the wall moves to them. Press `m`, or the play control in the corner.
+
+**The clock comes from the tempo, not from listening.** Every track carries a
+BPM its own artist wrote down, so bars are counted from `currentTime` rather
+than detected. Beat detection jitters, and its mistakes are visible — a tile
+turning over a beat late reads as a bug, not as timing.
+
+**Motion is layered by rate, and only some of it is on the grid.** Sync
+everything to the beat and it reads as a karaoke screen.
+
+| Rate | What happens |
+|---|---|
+| continuous, ignores the music | the drift that was always there — screens rotating, grain crawling |
+| every bar | **one** tile somewhere changes process. One, not all of them |
+| every 8 bars | the ripple sweeps through from a random point |
+| every track | the wall changes genre, so each piece has its own mood |
+| smoothed loudness | **dot gain** — of everything the music could drive, ink spreading is the one a press actually does |
+
+**Nothing above is required.** The wall is expected to be watched in silence
+more often than not, so the radio is a layer on top of motion that already
+exists — it is never the reason anything moves.
+
+Tracks are normalised to −19 LUFS by pure gain, held back where peak headroom
+demands it, rather than by limiting: a fixed gain cannot change how a track
+breathes. The collected pool spanned 17 dB; the shipped set spans 1.5.
+
+```bash
+python3 tools/build_audio.py --src <dir of collected candidates>
+```
+
+Attribution is a licence condition for the CC-BY material, so the full list —
+artist, licence and a link to the source — is in the help panel, built from the
+manifest so it cannot drift from what actually ships.
+
 ## Depth-aware processes
 
 A photographic process is normally applied uniformly across a frame. With a depth

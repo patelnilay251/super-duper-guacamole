@@ -154,3 +154,41 @@ body.bare .hud, body.bare .help, body.bare .labels { opacity: 0; pointer-events:
 /* While a tile owns the screen the wall behind it is inert. */
 body.focused .label { transition: opacity .25s ease; }
 body.focused .hint { opacity: 0; }
+
+/* ---- radio -------------------------------------------------------------
+   The now-playing line sits in the same corner block as everything else and
+   stays quiet: this is a wall you look at, with music under it, not a player. */
+
+.hud .music {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hud .music .glyph {
+  width: 0.75em;
+  flex: none;
+  opacity: 0.75;
+}
+.hud .music .glyph::before { content: '▹'; }
+body.playing .hud .music .glyph::before { content: '▪'; }
+
+#nowPlaying {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.np-title { opacity: 0.95; }
+.np-artist { opacity: 0.55; }
+.np-artist::before { content: ' · '; }
+
+.help .credits { margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 0.7rem; }
+.help .credits p { margin: 0 0 0.4rem; opacity: 0.7; }
+.help .credits ul { margin: 0; padding: 0; list-style: none; max-height: 32vh; overflow-y: auto; }
+.help .credits li { opacity: 0.66; line-height: 1.5; }
+.help .credits a { color: inherit; }
+.help .credits .lic { opacity: 0.5; }

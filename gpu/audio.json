@@ -1,0 +1,172 @@
+{
+ "tracks": [
+  {
+   "src": "audio/robbero-sad-night.mp3",
+   "title": "Sad Night",
+   "artist": "Robbero",
+   "bpm": 67,
+   "seconds": 258.74,
+   "bytes": 3105271,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/Robbero/63869",
+   "gain_db": -5.48
+  },
+  {
+   "src": "audio/airtone-losttrack.mp3",
+   "title": "lostTrack",
+   "artist": "airtone",
+   "bpm": 80,
+   "seconds": 201.04,
+   "bytes": 2412817,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/airtone/64772",
+   "gain_db": -1.54
+  },
+  {
+   "src": "audio/airtone-renovation.mp3",
+   "title": "reNovation",
+   "artist": "airtone",
+   "bpm": 82,
+   "seconds": 210.76,
+   "bytes": 2529428,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/airtone/60674",
+   "gain_db": -6.4
+  },
+  {
+   "src": "audio/doxent-zsigmond-space-jazz-78bpm.mp3",
+   "title": "Space Jazz 78bpm",
+   "artist": "Doxent Zsigmond",
+   "bpm": 78,
+   "seconds": 261.64,
+   "bytes": 3140066,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/doxent/46623",
+   "gain_db": -1.96
+  },
+  {
+   "src": "audio/doxent-zsigmond-piano-song-for-goodnight.mp3",
+   "title": "Piano Song For Goodnight",
+   "artist": "Doxent Zsigmond",
+   "bpm": 88,
+   "seconds": 279.8,
+   "bytes": 3357928,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/doxent/47797",
+   "gain_db": 8.2
+  },
+  {
+   "src": "audio/mana-junkie-reflections-in-the-rain.mp3",
+   "title": "Reflections in the Rain",
+   "artist": "Mana Junkie",
+   "bpm": 75,
+   "seconds": 233.22,
+   "bytes": 2799012,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/mana_junkie/34419",
+   "gain_db": -2.47
+  },
+  {
+   "src": "audio/onlymeith-truth.mp3",
+   "title": "Truth?",
+   "artist": "onlymeith",
+   "bpm": 75,
+   "seconds": 224.08,
+   "bytes": 2689297,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/onlymeith/38010",
+   "gain_db": -7.3
+  },
+  {
+   "src": "audio/olddog-too-quiet-piano.mp3",
+   "title": "too quiet (piano)",
+   "artist": "oldDog",
+   "bpm": 70,
+   "seconds": 189.31,
+   "bytes": 2272070,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/oldDog/17322",
+   "gain_db": -2.3
+  },
+  {
+   "src": "audio/wired-ant-eternal-loop-of-glue-instrumental.mp3",
+   "title": "Eternal Loop of Glue - Instrumental",
+   "artist": "Wired Ant",
+   "bpm": 83,
+   "seconds": 202.48,
+   "bytes": 2430058,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/Wired_Ant/39945",
+   "gain_db": -1.6
+  },
+  {
+   "src": "audio/moscardo-staying-together-as-the-first-time.mp3",
+   "title": "Staying together as the first time",
+   "artist": "moscardo",
+   "bpm": 80,
+   "seconds": 192.79,
+   "bytes": 2313836,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/moscardo/60242",
+   "gain_db": -1.33
+  },
+  {
+   "src": "audio/zikweb-ark.mp3",
+   "title": "ARK",
+   "artist": "zikweb",
+   "bpm": 77,
+   "seconds": 171.47,
+   "bytes": 2057970,
+   "license": "CC BY 2.5",
+   "license_url": "http://creativecommons.org/licenses/by/2.5/",
+   "source": "https://ccmixter.org/files/zikweb/70150",
+   "gain_db": -8.89
+  },
+  {
+   "src": "audio/jeris-3-pound-universe.mp3",
+   "title": "3 pound universe",
+   "artist": "Jeris",
+   "bpm": 73,
+   "seconds": 184.16,
+   "bytes": 2210316,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/VJ_Memes/41544",
+   "gain_db": -6.52
+  },
+  {
+   "src": "audio/wired-ant-rio-sleeping-instrumental.mp3",
+   "title": "Rio sleeping (Instrumental)",
+   "artist": "Wired Ant",
+   "bpm": 88,
+   "seconds": 152.82,
+   "bytes": 1834153,
+   "license": "CC BY 3.0",
+   "license_url": "http://creativecommons.org/licenses/by/3.0/",
+   "source": "https://ccmixter.org/files/Wired_Ant/38273",
+   "gain_db": -4.99
+  },
+  {
+   "src": "audio/grapes-ophelia-s-song.mp3",
+   "title": "Ophelia's Song",
+   "artist": "grapes",
+   "bpm": 85,
+   "seconds": 188.63,
+   "bytes": 2263919,
+   "license": "CC BY 2.5",
+   "license_url": "http://creativecommons.org/licenses/by/2.5/",
+   "source": "https://ccmixter.org/files/grapes/24049",
+   "gain_db": -7.3
+  }
+ ]
+}
