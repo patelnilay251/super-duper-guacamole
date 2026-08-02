@@ -204,6 +204,14 @@ breathes. The collected pool spanned 17 dB; the shipped set spans 1.5.
 python3 tools/build_audio.py --src <dir of collected candidates>
 ```
 
+The track list opens from the now-playing line and reuses the genre list
+wholesale — same shape, same open and close, so there is one interaction to
+learn rather than two. It lists in manifest order rather than shuffled play
+order, because a list that reorders itself between glances is not a list you can
+use, and it can be browsed and picked from before anything is playing. Picking a
+track crossfades over 1.2s rather than the 4s a track running out gets: that one
+is a response, and it should feel like one. `n` skips.
+
 Attribution is a licence condition for the CC-BY material, so the full list —
 artist, licence and a link to the source — is in the help panel, built from the
 manifest so it cannot drift from what actually ships.

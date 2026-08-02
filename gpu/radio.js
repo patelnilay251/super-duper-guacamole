@@ -88,8 +88,11 @@ export class Radio {
     this.init();
     if (this.ctx.state === 'suspended') await this.ctx.resume();
 
+    // Re-cue whenever the deck is holding something other than the current
+    // selection -- which is the case after picking a different track while
+    // paused, not just on the very first play.
     const deck = this.decks[this.live];
-    if (!deck.track) await this.cue(deck, this.current);
+    if (deck.track !== this.current) await this.cue(deck, this.current);
     try {
       await deck.el.play();
     } catch {
@@ -120,22 +123,37 @@ export class Radio {
     deck.gain.gain.linearRampToValueAtTime(to, now + seconds);
   }
 
-  async advance() {
-    this.at = (this.at + 1) % this.order.length;
+  advance() { return this.goTo((this.at + 1) % this.order.length); }
+
+  // Jump to a position in the shuffled order. `seconds` controls the handover:
+  // a track running out gets the long overlap, but someone picking from a list
+  // wants the change to feel like a response, so that fade is much shorter.
+  async goTo(at, seconds = CROSSFADE) {
+    if (at === this.at && this.playing) return;
+    this.at = ((at % this.order.length) + this.order.length) % this.order.length;
+
+    // Picked while paused. Hand straight to play() rather than touching a deck:
+    // before the first play there are no decks at all, because the audio graph
+    // is not built until a gesture arrives.
+    if (!this.playing) return this.play();
+
     const next = this.decks[1 - this.live];
     await this.cue(next, this.current);
     try { await next.el.play(); } catch { return; }
 
-    this.fade(this.decks[this.live], 0, CROSSFADE);
-    this.fade(next, 1, CROSSFADE);
     const outgoing = this.decks[this.live];
-    setTimeout(() => { outgoing.el.pause(); outgoing.track = null; }, CROSSFADE * 1000 + 200);
+    this.fade(outgoing, 0, seconds);
+    this.fade(next, 1, seconds);
+    setTimeout(() => { outgoing.el.pause(); outgoing.track = null; }, seconds * 1000 + 200);
 
     this.live = 1 - this.live;
     this.bar = -1;                      // the new track restarts the count
     this.phrase = -1;
     this.emit('track', this.current);
   }
+
+  /** Pick from the list: a shorter fade, because this one is a response. */
+  select(index) { return this.goTo(index, 1.2); }
 
   // Called once a frame. Advances the clock, fires bar and phrase events, and
   // keeps the smoothed level up to date.

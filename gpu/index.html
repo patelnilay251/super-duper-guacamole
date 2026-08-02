@@ -33,9 +33,16 @@
     <span class="caret">▸</span><span id="currentGenre">everything</span>
   </button>
 
-  <button id="music" class="line music" aria-pressed="false" aria-label="Play music">
-    <span class="glyph"></span><span id="nowPlaying">radio</span>
-  </button>
+  <ul id="tracks" class="genres tracks" role="listbox" aria-label="Track"></ul>
+
+  <div class="line music">
+    <button id="music" class="playbtn" aria-pressed="false" aria-label="Play music">
+      <span class="glyph"></span>
+    </button>
+    <button id="trackToggle" class="tracktoggle" aria-expanded="false" aria-controls="tracks">
+      <span id="nowPlaying">radio</span>
+    </button>
+  </div>
 
   <div class="line meta">
     <span class="mark">ditherwall</span>
@@ -51,6 +58,7 @@
     <dt>space</dt><dd>freeze</dd>
     <dt>r</dt><dd>shuffle</dd>
     <dt>m</dt><dd>music</dd>
+    <dt>n</dt><dd>next track</dd>
     <dt>l</dt><dd>pin captions</dd>
     <dt>f</dt><dd>fullscreen</dd>
     <dt>h</dt><dd>hide all chrome</dd>

@@ -157,34 +157,51 @@ body.focused .hint { opacity: 0; }
 
 /* ---- radio -------------------------------------------------------------
    The now-playing line sits in the same corner block as everything else and
-   stays quiet: this is a wall you look at, with music under it, not a player. */
+   stays quiet: this is a wall you look at, with music under it, not a player.
+   The track list reuses the genre list's styling wholesale -- same shape, same
+   behaviour, so there is only one thing to learn. */
 
-.hud .music {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5em;
-  width: 100%;
-  text-align: left;
+.line.music { gap: 7px; max-width: min(46vw, 320px); }
+
+.line.music button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
   cursor: pointer;
+  min-width: 0;
 }
 
-.hud .music .glyph {
-  width: 0.75em;
-  flex: none;
-  opacity: 0.75;
+.playbtn { color: var(--accent); flex: none; opacity: .8; }
+.playbtn:hover { opacity: 1; }
+.playbtn .glyph::before { content: '▹'; }
+body.playing .playbtn .glyph::before { content: '❚❚'; font-size: 9px; }
+
+.tracktoggle {
+  overflow: hidden;
+  text-align: left;
+  color: var(--muted);
 }
-.hud .music .glyph::before { content: '▹'; }
-body.playing .hud .music .glyph::before { content: '▪'; }
+.tracktoggle:hover { color: var(--ink); }
+body.playing .tracktoggle { color: var(--ink); }
 
 #nowPlaying {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.np-title { opacity: 0.95; }
-.np-artist { opacity: 0.55; }
+.np-title { opacity: .95; }
+.np-artist { opacity: .55; }
 .np-artist::before { content: ' · '; }
+
+/* Track list: wider than the genre list, since titles are longer. */
+.tracks { max-width: min(78vw, 340px); }
+.tracks li { justify-content: space-between; }
+.tracks li .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracks li .bpm { color: #5d5d6b; font-size: 10px; flex: none; }
 
 .help .credits { margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 0.7rem; }
 .help .credits p { margin: 0 0 0.4rem; opacity: 0.7; }

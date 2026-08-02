@@ -705,6 +705,7 @@ const ACTIONS = {
   ' ': () => { state.paused = !state.paused; },
   r: () => buildTiles(),
   m: () => toggleMusic(),
+  n: () => nextTrack(),
   l: () => {
     const pinned = labels.classList.toggle('pinned');
     if (pinned && nearTile && nearTile.label) nearTile.label.classList.remove('near');
@@ -770,6 +771,8 @@ const TRACK_MOOD = ['everything', 'newsprint', 'blueprint', 'press', 'depth',
 const radio = new Radio();
 const nowPlaying = document.getElementById('nowPlaying');
 const musicBtn = document.getElementById('music');
+const trackToggle = document.getElementById('trackToggle');
+const trackList = document.getElementById('tracks');
 
 // Once a bar, one tile somewhere changes. One -- not all of them. Sparse enough
 // that it reads as something alive in the wall rather than a level meter.
@@ -796,7 +799,44 @@ radio.on('track', (track) => {
       `<span class="np-artist">${track.artist}</span>`;
     nowPlaying.title = `${track.title} — ${track.artist} · ${track.license}`;
   }
+  markTrack();
 });
+
+// The track list mirrors the genre list exactly -- same shape, same open and
+// close -- so there is one interaction to learn rather than two. Listed in
+// manifest order, not shuffled play order: a list that reorders itself between
+// glances is not a list you can use.
+function buildTrackList() {
+  if (!trackList || trackList.children.length) return;
+  radio.tracks.forEach((t, i) => {
+    const li = document.createElement('li');
+    li.dataset.track = String(i);
+    li.setAttribute('role', 'option');
+    li.innerHTML = `<span class="t">${t.title} <span class="np-artist">${t.artist}</span></span>`
+      + (t.bpm ? `<span class="bpm">${t.bpm}</span>` : '');
+    li.onclick = async () => {
+      await radio.select(radio.order.indexOf(i));
+      openTracks(false);
+    };
+    trackList.appendChild(li);
+  });
+  markTrack();
+}
+
+function markTrack() {
+  if (!trackList) return;
+  const playing = radio.order[radio.at];
+  for (const li of trackList.children) {
+    li.setAttribute('aria-selected', String(Number(li.dataset.track) === playing));
+  }
+}
+
+function openTracks(open) {
+  if (!trackList) return;
+  trackList.classList.toggle('open', open);
+  trackToggle?.setAttribute('aria-expanded', String(open));
+  if (open) wake();
+}
 
 // CC-BY is most of the music, and attribution is a condition of it -- so the
 // full list lives in the help panel with artist, licence and a link back to the
@@ -816,12 +856,27 @@ function renderCredits() {
 async function toggleMusic() {
   if (!radio.ready && !(await radio.load())) return;
   renderCredits();
+  buildTrackList();
   const on = radio.playing ? radio.pause() : await radio.play();
   document.body.classList.toggle('playing', !!on);
   if (musicBtn) musicBtn.setAttribute('aria-pressed', String(!!on));
 }
 
 if (musicBtn) musicBtn.onclick = toggleMusic;
+
+// Opening the list loads the manifest if it has not been fetched yet, so the
+// tracks can be browsed -- and picked from -- before anything is playing.
+if (trackToggle) trackToggle.onclick = async () => {
+  if (!radio.ready && !(await radio.load())) return;
+  buildTrackList();
+  openTracks(!trackList.classList.contains('open'));
+};
+
+async function nextTrack() {
+  if (!radio.ready && !(await radio.load())) return;
+  if (!radio.playing) return toggleMusic();
+  await radio.select(radio.at + 1);
+}
 
 // Lets the capture and test scripts drive the wall without depending on the
 // chrome being visible, which it usually is not.
