@@ -204,6 +204,8 @@ breathes. The collected pool spanned 17 dB; the shipped set spans 1.5.
 python3 tools/build_audio.py --src <dir of collected candidates>
 ```
 
+Sixty-one tracks were collected and fourteen ship. [`tools/audio_sources/`](tools/audio_sources) keeps the provenance for all of them — licence, the page that states it, and the download URL — because the expensive part was never the downloading, it was verifying that everything could legally be shipped. archive.org's licence field is uploader-supplied and wrong often enough that items tagged CC0 there included Nine Inch Nails and the Skyrim soundtrack, so every licence was confirmed against the source page's served HTML instead.
+
 The track list opens from the now-playing line and reuses the genre list
 wholesale — same shape, same open and close, so there is one interaction to
 learn rather than two. It lists in manifest order rather than shuffled play

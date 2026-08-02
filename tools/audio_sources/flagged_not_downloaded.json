@@ -1,0 +1,3664 @@
+{
+  "jamendo_cc_by_calm_instrumental": [
+    {
+      "title": "Ambient Voyager",
+      "artist": "Zeropage",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/20231",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=20231&format=mp32",
+      "duration_seconds": 235.0,
+      "genres": [
+        "chillout",
+        "downtempo",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "space",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Plathe (Beatless Ambient Mix)",
+      "artist": "POA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/596719",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=596719&format=mp32",
+      "duration_seconds": 109.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "commercial",
+        "dreamy",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Lemon Scented (Lemony Fresh Ambient Mix)",
+      "artist": "POA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/596714",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=596714&format=mp32",
+      "duration_seconds": 180.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "music for ambient samadhi 三昧",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1200141",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1200141&format=mp32",
+      "duration_seconds": 129.0,
+      "genres": [
+        "ambient",
+        "psytrance",
+        "world"
+      ],
+      "tags": [
+        "echo",
+        "instrumental",
+        "psychedelic",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambiental Abstract",
+      "artist": "Doxent Zsigmond",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1058132",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1058132&format=mp32",
+      "duration_seconds": 233.0,
+      "genres": [
+        "ambient",
+        "electronic",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Urawa Ambient Music Part 1",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1189633",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1189633&format=mp32",
+      "duration_seconds": 225.0,
+      "genres": [
+        "ambient",
+        "world"
+      ],
+      "tags": [
+        "echo",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Urawa Ambient Music Part 3",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1189635",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1189635&format=mp32",
+      "duration_seconds": 264.0,
+      "genres": [
+        "ambient",
+        "world"
+      ],
+      "tags": [
+        "echo",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Guitar For ストックホルム・シンドローム",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1336443",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1336443&format=mp32",
+      "duration_seconds": 234.0,
+      "genres": [
+        "ambient",
+        "newage",
+        "world"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium",
+        "zoomr16"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "DreamDance 38 [Ambient]",
+      "artist": "Hardcore Scm",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1348202",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1348202&format=mp32",
+      "duration_seconds": 268.0,
+      "genres": [
+        "ambient",
+        "newage"
+      ],
+      "tags": [
+        "instrumental",
+        "peaceful",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Dance",
+      "artist": "Alexander Blu",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1476509",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1476509&format=mp32",
+      "duration_seconds": 129.0,
+      "genres": [
+        "ambient",
+        "electronic",
+        "newage"
+      ],
+      "tags": [
+        "atmospheric",
+        "chillambient",
+        "instrumental",
+        "lounge",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient",
+      "artist": "Alexander Blu",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1476529",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1476529&format=mp32",
+      "duration_seconds": 243.0,
+      "genres": [
+        "ambient",
+        "electronic",
+        "newage"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "meditative",
+        "peaceful",
+        "soft",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Guitar &quot; Stockholm Syndrome”",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1352431",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1352431&format=mp32",
+      "duration_seconds": 248.0,
+      "genres": [
+        "ambient",
+        "newage",
+        "world"
+      ],
+      "tags": [
+        "boss",
+        "instrumental",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "That's not Psy Ambient!",
+      "artist": "Voytek Pavlik",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1024467",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1024467&format=mp32",
+      "duration_seconds": 174.0,
+      "genres": [
+        "electronic",
+        "experimental",
+        "filmscore"
+      ],
+      "tags": [
+        "dark",
+        "euphonium",
+        "improvisation",
+        "instrumental",
+        "melancholic",
+        "scifi",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Guitar For Ha Ru No Me Gu Mi",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1352432",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1352432&format=mp32",
+      "duration_seconds": 275.0,
+      "genres": [
+        "ambient",
+        "newage",
+        "world"
+      ],
+      "tags": [
+        "boss",
+        "instrumental",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Guitar For 腹時計",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1336442",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1336442&format=mp32",
+      "duration_seconds": 157.0,
+      "genres": [
+        "ambient",
+        "newage",
+        "world"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium",
+        "zoomr16"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ambient Guitar For 春の恵み",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1336439",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1336439&format=mp32",
+      "duration_seconds": 233.0,
+      "genres": [
+        "ambient",
+        "newage",
+        "world"
+      ],
+      "tags": [
+        "instrumental",
+        "nakagawa",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Mera - Downtempo version (feat. Dia Yiannopoulou)",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1926722",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1926722&format=mp32",
+      "duration_seconds": 181.0,
+      "genres": [
+        "downtempo",
+        "electronic"
+      ],
+      "tags": [
+        "abstract",
+        "instrumental",
+        "melancholic",
+        "piano",
+        "speed_medium",
+        "viola"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Night Voyage (Chill Mix)",
+      "artist": "Screw-Jay",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1306035",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1306035&format=mp32",
+      "duration_seconds": 226.0,
+      "genres": [
+        "chillout",
+        "trance"
+      ],
+      "tags": [
+        "backgroundmusic",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Yet To Come (Chill Mix) - BONUS TRACK",
+      "artist": "REC",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1199528",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1199528&format=mp32",
+      "duration_seconds": 293.0,
+      "genres": [
+        "chillout",
+        "downtempo",
+        "triphop"
+      ],
+      "tags": [
+        "instrumental",
+        "sample",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Quincy Ortiz - Arabian Sands ( chill out lounge track 2016)",
+      "artist": "Dj Quincy Ortiz",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1355577",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1355577&format=mp32",
+      "duration_seconds": 198.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "middleeastern"
+      ],
+      "tags": [
+        "downtemp",
+        "instrumental",
+        "speed_medium",
+        "spiritual"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Chill...Breath",
+      "artist": "Soularis",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1450739",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1450739&format=mp32",
+      "duration_seconds": 228.0,
+      "genres": [
+        "hiphop",
+        "triphop"
+      ],
+      "tags": [
+        "chillll",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Space Chilling",
+      "artist": "oncoming way",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1356978",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1356978&format=mp32",
+      "duration_seconds": 207.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "darkambient"
+      ],
+      "tags": [
+        "advertising",
+        "film",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Chill Breeze",
+      "artist": "Evan Schaeffer",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1425351",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1425351&format=mp32",
+      "duration_seconds": 207.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "backgroundmusic",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "70s Chillout Room",
+      "artist": "Master of the Subway Ninjas",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1257277",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1257277&format=mp32",
+      "duration_seconds": 80.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "psychodelic",
+        "soft",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Chillout In Shangri Laa",
+      "artist": "CHASMA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1394957",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1394957&format=mp32",
+      "duration_seconds": 200.0,
+      "genres": [
+        "chillout",
+        "drumnbass",
+        "electronic"
+      ],
+      "tags": [
+        "chorus",
+        "instrumental",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "The Mellow Road",
+      "artist": "Phopha",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/144779",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=144779&format=mp32",
+      "duration_seconds": 281.0,
+      "genres": [
+        "triphop"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "The Mellow Road (Effy Mix)",
+      "artist": "Phopha",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/144783",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=144783&format=mp32",
+      "duration_seconds": 254.0,
+      "genres": [
+        "triphop"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "(exp) Gone Jazz",
+      "artist": "Flex Blur",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1036133",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1036133&format=mp32",
+      "duration_seconds": 210.0,
+      "genres": [
+        "dubstep",
+        "electronic",
+        "jazz"
+      ],
+      "tags": [
+        "guitar",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "05. Hip-Hop Jazz",
+      "artist": "Prospect Of Idiots",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1199610",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1199610&format=mp32",
+      "duration_seconds": 212.0,
+      "genres": [
+        "hiphop",
+        "jazz",
+        "rock"
+      ],
+      "tags": [
+        "instrumental",
+        "prospect",
+        "psychedelic",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "nOs@jaZZ",
+      "artist": "GASNOPROD",
+      "license": "BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0/fr/",
+      "source_page": "https://www.jamendo.com/track/178326",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=178326&format=mp32",
+      "duration_seconds": 114.0,
+      "genres": [
+        "electronic",
+        "funk",
+        "jazz"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Mello Jazz Melody",
+      "artist": "kbongos",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1358033",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1358033&format=mp32",
+      "duration_seconds": 143.0,
+      "genres": [
+        "country",
+        "dance",
+        "jazz"
+      ],
+      "tags": [
+        "guitar",
+        "instrumental",
+        "soft",
+        "speed_medium",
+        "stuff"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "FREE BGM FOR RELAXATION",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1199585",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1199585&format=mp32",
+      "duration_seconds": 133.0,
+      "genres": [
+        "ambient",
+        "psytrance",
+        "world"
+      ],
+      "tags": [
+        "echo",
+        "instrumental",
+        "psychedelic",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Music For Relaxation Of Commuter",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1195601",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1195601&format=mp32",
+      "duration_seconds": 281.0,
+      "genres": [
+        "ambient",
+        "world"
+      ],
+      "tags": [
+        "echo",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Fading Out Of Atmosphere : 空気のフェードアウト",
+      "artist": "Ambient Samurai - Ichiro NAKAGAWA",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1091239",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1091239&format=mp32",
+      "duration_seconds": 159.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_verylow"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Millennium sunset",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/373287",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=373287&format=mp32",
+      "duration_seconds": 104.0,
+      "genres": [
+        "ambient",
+        "darkwave",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "electricpiano",
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Epilogue",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/373302",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=373302&format=mp32",
+      "duration_seconds": 273.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "bass",
+        "englishhorn",
+        "instrumental",
+        "meditative",
+        "neutral",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Disabled emotions suite - Part 2",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/202927",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=202927&format=mp32",
+      "duration_seconds": 249.0,
+      "genres": [
+        "classical",
+        "filmscore",
+        "symphonic"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "neutral",
+        "sad",
+        "speed_medium",
+        "strings",
+        "violin",
+        "woodwinds"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Dragons",
+      "artist": "Arnogh the Dragon",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/332171",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=332171&format=mp32",
+      "duration_seconds": 216.0,
+      "genres": [
+        "ambient",
+        "trance"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "speed_medium",
+        "uplifting"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Disabled emotions suite - Part 6",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/202938",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=202938&format=mp32",
+      "duration_seconds": 135.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "atmospheric",
+        "concerto",
+        "contemporary",
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium",
+        "violin"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Calm Space",
+      "artist": "Duda",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1655687",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1655687&format=mp32",
+      "duration_seconds": 290.0,
+      "genres": [
+        "ambient",
+        "electronic",
+        "newage"
+      ],
+      "tags": [
+        "instrumental",
+        "space",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ever after",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/682600",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=682600&format=mp32",
+      "duration_seconds": 221.0,
+      "genres": [
+        "ambient",
+        "filmscore",
+        "newage"
+      ],
+      "tags": [
+        "calmness",
+        "guitar",
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Diamonds",
+      "artist": "Christian Zell",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/2171553",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2171553&format=mp32",
+      "duration_seconds": 190.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "electronic",
+        "filmscore"
+      ],
+      "tags": [
+        "calm",
+        "guitar",
+        "instrumental",
+        "soft",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Fur Elise (solo guitar)",
+      "artist": "Mark Bodino",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1475526",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1475526&format=mp32",
+      "duration_seconds": 278.0,
+      "genres": [
+        "ambient",
+        "classical"
+      ],
+      "tags": [
+        "calming",
+        "classicalguitar",
+        "instrumental",
+        "peaceful",
+        "sad",
+        "soft",
+        "speed_medium",
+        "spiritual"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "nuage",
+      "artist": "thomas saliba",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1241611",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1241611&format=mp32",
+      "duration_seconds": 199.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium",
+        "piano",
+        "violin",
+        "calme"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Diamonds (Early Mix)",
+      "artist": "Christian Zell",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/2171562",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2171562&format=mp32",
+      "duration_seconds": 174.0,
+      "genres": [
+        "easylistening",
+        "newage"
+      ],
+      "tags": [
+        "calm",
+        "guitar",
+        "instrumental",
+        "soft",
+        "speed_low",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Intro",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/2185462",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2185462&format=mp32",
+      "duration_seconds": 222.0,
+      "genres": [
+        "electronic",
+        "newage"
+      ],
+      "tags": [
+        "bagpipes",
+        "calm",
+        "ethno",
+        "instrumental",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Sonata#1 (Mozart) solo guitar",
+      "artist": "Mark Bodino",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1475534",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1475534&format=mp32",
+      "duration_seconds": 157.0,
+      "genres": [
+        "ambient",
+        "classical"
+      ],
+      "tags": [
+        "calming",
+        "classicalguitar",
+        "instrumental",
+        "peaceful",
+        "soft",
+        "speed_medium",
+        "spiritual"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Joyful Joyful (solo nylon guitar)",
+      "artist": "Mark Bodino",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1475528",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1475528&format=mp32",
+      "duration_seconds": 120.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "calming",
+        "classicalguitar",
+        "happy",
+        "instrumental",
+        "soft",
+        "speed_medium",
+        "spiritual",
+        "upbeat"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Clear",
+      "artist": "Christian Zell",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1950139",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1950139&format=mp32",
+      "duration_seconds": 183.0,
+      "genres": [
+        "ambient",
+        "filmscore",
+        "folk"
+      ],
+      "tags": [
+        "acousticguitar",
+        "calm",
+        "instrumental",
+        "soft",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Gone",
+      "artist": "Christian Zell",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1950142",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1950142&format=mp32",
+      "duration_seconds": 293.0,
+      "genres": [
+        "ambient",
+        "filmscore"
+      ],
+      "tags": [
+        "calm",
+        "electricguitar",
+        "electroamplified",
+        "film",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Prelude in A Major (Chopin-solo guitar)",
+      "artist": "Mark Bodino",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1475531",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1475531&format=mp32",
+      "duration_seconds": 85.0,
+      "genres": [
+        "ambient",
+        "classical"
+      ],
+      "tags": [
+        "calming",
+        "classicalguitar",
+        "instrumental",
+        "peaceful",
+        "soft",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "A new world",
+      "artist": "zero-project",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/2185505",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2185505&format=mp32",
+      "duration_seconds": 226.0,
+      "genres": [
+        "electronic",
+        "newage"
+      ],
+      "tags": [
+        "calm",
+        "instrumental",
+        "piano",
+        "space",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Pipistrelle [trip hop]",
+      "artist": "Hardcore Scm",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1196260",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1196260&format=mp32",
+      "duration_seconds": 283.0,
+      "genres": [
+        "electronic",
+        "triphop"
+      ],
+      "tags": [
+        "echoing",
+        "instrumental",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Feeling - Piano Instrumental",
+      "artist": "E. Erkut",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1320222",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1320222&format=mp32",
+      "duration_seconds": 191.0,
+      "genres": [
+        "blues",
+        "chillout"
+      ],
+      "tags": [
+        "emotional",
+        "instrumental",
+        "peaceful",
+        "piano",
+        "pianostrings",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Emotional - Piano Instrumental",
+      "artist": "E. Erkut",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1320221",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1320221&format=mp32",
+      "duration_seconds": 82.0,
+      "genres": [
+        "blues",
+        "chillout"
+      ],
+      "tags": [
+        "emotional",
+        "instrumental",
+        "peaceful",
+        "piano",
+        "pianostrings",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "EL PIANO",
+      "artist": "DANI LUCAS",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/862835",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=862835&format=mp32",
+      "duration_seconds": 276.0,
+      "genres": [
+        "ambient",
+        "dance",
+        "electronic"
+      ],
+      "tags": [
+        "dreamy",
+        "flying",
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Piano Jams",
+      "artist": "Razvan Veina",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1275148",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1275148&format=mp32",
+      "duration_seconds": 235.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "dreaming",
+        "instrumental",
+        "melancholic",
+        "piano",
+        "sad",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Sad Piano",
+      "artist": "Alexander Blu",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1476512",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1476512&format=mp32",
+      "duration_seconds": 201.0,
+      "genres": [
+        "ambient",
+        "newage"
+      ],
+      "tags": [
+        "instrumental",
+        "lounge",
+        "piano",
+        "sad",
+        "sadpiano",
+        "sentimental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "lounge act",
+      "artist": "LoFi Theory",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1718274",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1718274&format=mp32",
+      "duration_seconds": 263.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "rock"
+      ],
+      "tags": [
+        "dreamy",
+        "drums",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Lounge",
+      "artist": "CyberSDF",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1289105",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1289105&format=mp32",
+      "duration_seconds": 156.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "effects",
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "trumpet"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Viva La Wave",
+      "artist": "Ton in Ton",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1245184",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1245184&format=mp32",
+      "duration_seconds": 295.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "synthi"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Champagne",
+      "artist": "Ton in Ton",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1245188",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1245188&format=mp32",
+      "duration_seconds": 257.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "synthi"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Skyflower",
+      "artist": "Ton in Ton",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1245190",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1245190&format=mp32",
+      "duration_seconds": 289.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "synthi"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "Ibiza",
+      "artist": "Christian Zell",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1419912",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1419912&format=mp32",
+      "duration_seconds": 213.0,
+      "genres": [
+        "ambient",
+        "filmscore",
+        "rock",
+        "spacerock"
+      ],
+      "tags": [
+        "guitar",
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    },
+    {
+      "title": "White_beach",
+      "artist": "Christian Petermann",
+      "license": "BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_page": "https://www.jamendo.com/track/1375003",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1375003&format=mp32",
+      "duration_seconds": 223.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "newage"
+      ],
+      "tags": [
+        "chilloutmusic",
+        "classicalguitar",
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "romantic",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record."
+    }
+  ],
+  "jamendo_cc_by_sa_calm_instrumental": [
+    {
+      "title": "Mante (ambient remix)",
+      "artist": "Mischapex",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/375193",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=375193&format=mp32",
+      "duration_seconds": 259.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "downtempo"
+      ],
+      "tags": [
+        "birthday",
+        "happy",
+        "instrumental",
+        "neutral",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Confused relaxing (ambient synth)",
+      "artist": "Ostenvegr",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/704397",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=704397&format=mp32",
+      "duration_seconds": 124.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Wilk-Ambient Vision",
+      "artist": "Mateusz &quot;Wilk&quot; Wilczewski",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/264212",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=264212&format=mp32",
+      "duration_seconds": 120.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "ambiente dudoso",
+      "artist": "Corvus",
+      "license": "BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0/fr/",
+      "source_page": "https://www.jamendo.com/track/289680",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=289680&format=mp32",
+      "duration_seconds": 92.0,
+      "genres": [
+        "ambient",
+        "filmscore",
+        "rock"
+      ],
+      "tags": [
+        "computer",
+        "electricguitar",
+        "film",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Indie ambient",
+      "artist": "Jaros",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1114357",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1114357&format=mp32",
+      "duration_seconds": 150.0,
+      "genres": [
+        "african",
+        "ambient",
+        "asian"
+      ],
+      "tags": [
+        "computer",
+        "indianmusic",
+        "instrumental",
+        "sitar",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "PARPG Solitude (Calm, Ambient)",
+      "artist": "Pal Zoltan Illes",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/875307",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=875307&format=mp32",
+      "duration_seconds": 197.0,
+      "genres": [
+        "ambient",
+        "classical",
+        "rock"
+      ],
+      "tags": [
+        "apocalyptique",
+        "bass",
+        "doublebass",
+        "instrumental",
+        "scifi",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Temple Exploration (Ambient)",
+      "artist": "Pal Zoltan Illes",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1123287",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1123287&format=mp32",
+      "duration_seconds": 100.0,
+      "genres": [
+        "classical",
+        "filmscore",
+        "symphonic"
+      ],
+      "tags": [
+        "doublebass",
+        "gamemusic",
+        "instrumental",
+        "scifi",
+        "speed_medium",
+        "violin"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Meine (ambient remix)",
+      "artist": "Mischapex",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1029230",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1029230&format=mp32",
+      "duration_seconds": 230.0,
+      "genres": [
+        "ambient",
+        "dubstep",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "groovy",
+        "instrumental",
+        "piano",
+        "positivevibes",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Metropolis Ruin - [AMBIENT DARK]",
+      "artist": "Fireslice",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1074862",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1074862&format=mp32",
+      "duration_seconds": 256.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "dark",
+        "electricpiano",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Cave Exploration (Ambient)",
+      "artist": "Pal Zoltan Illes",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1123293",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1123293&format=mp32",
+      "duration_seconds": 89.0,
+      "genres": [
+        "classical",
+        "filmscore",
+        "symphonic"
+      ],
+      "tags": [
+        "cello",
+        "gamemusic",
+        "harp",
+        "instrumental",
+        "scifi",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "IZARBONUS - Ambient Distorsian",
+      "artist": "IZARBONUS",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1086289",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1086289&format=mp32",
+      "duration_seconds": 191.0,
+      "genres": [
+        "ambient",
+        "filmscore",
+        "newage"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "lounge",
+        "spaceambient",
+        "speed_high",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "3tech Ambient",
+      "artist": "Jaros",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1114352",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1114352&format=mp32",
+      "duration_seconds": 277.0,
+      "genres": [
+        "ambient",
+        "techno"
+      ],
+      "tags": [
+        "atmospheric",
+        "computer",
+        "instrumental",
+        "speed_veryhigh",
+        "synthesizer",
+        "technoambient"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "DownTempo Mix Track 4",
+      "artist": "DJ STIVIT",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1300820",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1300820&format=mp32",
+      "duration_seconds": 199.0,
+      "genres": [
+        "downtempo",
+        "electronic",
+        "electronica"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Downtempo Emotion Part1",
+      "artist": "SMAO",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1222933",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1222933&format=mp32",
+      "duration_seconds": 280.0,
+      "genres": [
+        "ambient",
+        "downtempo",
+        "electronic"
+      ],
+      "tags": [
+        "dark",
+        "darkambientminimalistic",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Other Dimension(Chill Pill Mix) - (The Diventa Project)",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1439562",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1439562&format=mp32",
+      "duration_seconds": 194.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "lounge",
+        "rhodesriff",
+        "saxophone",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chill",
+      "artist": "Outsider",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/125873",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=125873&format=mp32",
+      "duration_seconds": 258.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "world"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "After and Back [Chill Jazzy Mellow Mix]",
+      "artist": "EIVISSA SALINAS feat. DJ HSERES",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1076596",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1076596&format=mp32",
+      "duration_seconds": 269.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "filmscore"
+      ],
+      "tags": [
+        "accordion",
+        "drums",
+        "film",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Winter Clouds (Chilling House Dub)",
+      "artist": "happySize-Project",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1267048",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1267048&format=mp32",
+      "duration_seconds": 289.0,
+      "genres": [
+        "chillout",
+        "house"
+      ],
+      "tags": [
+        "akaimpc",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chilled Electronic - 1 minute",
+      "artist": "Thomas Attwood",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1161594",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1161594&format=mp32",
+      "duration_seconds": 68.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "speed_high",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chill Together on the Beach",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1539773",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1539773&format=mp32",
+      "duration_seconds": 224.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "bongo",
+        "instrumental",
+        "sfx",
+        "speed_low",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chill",
+      "artist": "My Free Mickey",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1091171",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1091171&format=mp32",
+      "duration_seconds": 155.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "chambermusic",
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "violin"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chill Your Eyes",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1543589",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1543589&format=mp32",
+      "duration_seconds": 235.0,
+      "genres": [
+        "chillout",
+        "funk"
+      ],
+      "tags": [
+        "epiano",
+        "hammond",
+        "instrumental",
+        "percussion",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chilled Electronic - 2 minutes",
+      "artist": "Thomas Attwood",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1161591",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1161591&format=mp32",
+      "duration_seconds": 124.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chilled Electronic - 3 Minutes",
+      "artist": "Thomas Attwood",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1161592",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1161592&format=mp32",
+      "duration_seconds": 192.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Folk Banjo ( Chill Out Mix )",
+      "artist": "Hasenchat",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1540413",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1540413&format=mp32",
+      "duration_seconds": 270.0,
+      "genres": [
+        "ambient",
+        "ambientdub",
+        "chillout"
+      ],
+      "tags": [
+        "ambientelectronic",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chill Out Space",
+      "artist": "Jim Gaven",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1344289",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1344289&format=mp32",
+      "duration_seconds": 186.0,
+      "genres": [
+        "ambient",
+        "pop"
+      ],
+      "tags": [
+        "clubjazz",
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "chilling with the MPC",
+      "artist": "John Henderson",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1573489",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1573489&format=mp32",
+      "duration_seconds": 154.0,
+      "genres": [
+        "chillout",
+        "hiphop"
+      ],
+      "tags": [
+        "90s",
+        "instrumental",
+        "sampler",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chillout days",
+      "artist": "Francisco Sánchez Lab",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/2068326",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2068326&format=mp32",
+      "duration_seconds": 260.0,
+      "genres": [
+        "chillout",
+        "downtempo",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "intimate",
+        "nostalgic",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Mellow meadows",
+      "artist": "Torley on Piano",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/151033",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=151033&format=mp32",
+      "duration_seconds": 177.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Midnight Jazz Beat",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1543583",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1543583&format=mp32",
+      "duration_seconds": 258.0,
+      "genres": [
+        "chillout",
+        "funk"
+      ],
+      "tags": [
+        "epiano",
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "trumpet"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz Cantina",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227396",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227396&format=mp32",
+      "duration_seconds": 255.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "trumpet",
+        "wahgitarre"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Spanish Jazz",
+      "artist": "Stepo del Sol",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1536315",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1536315&format=mp32",
+      "duration_seconds": 218.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "beat",
+        "guitar",
+        "instrumental",
+        "speed_low",
+        "trumpet"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz",
+      "artist": "Mister M",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/298298",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=298298&format=mp32",
+      "duration_seconds": 193.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz",
+      "artist": "MARZ",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/243314",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=243314&format=mp32",
+      "duration_seconds": 95.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "TOCCO VISIVO- piano jazz version",
+      "artist": "Angus &amp; Friends",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1086347",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1086347&format=mp32",
+      "duration_seconds": 263.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "jazzycool",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "African jazz",
+      "artist": "Angel.F",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1325822",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1325822&format=mp32",
+      "duration_seconds": 182.0,
+      "genres": [
+        "electronic",
+        "jazz",
+        "world"
+      ],
+      "tags": [
+        "happy",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz - Suite No. 178",
+      "artist": "CHASMA",
+      "license": "BY-SA 2.5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.5/se/",
+      "source_page": "https://www.jamendo.com/track/1162522",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1162522&format=mp32",
+      "duration_seconds": 287.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "bigband",
+        "instrumental",
+        "neutral",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "All That Jazz",
+      "artist": "Daniel Bautista",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1275355",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1275355&format=mp32",
+      "duration_seconds": 246.0,
+      "genres": [
+        "acidjazz",
+        "jazz",
+        "jazzfusion"
+      ],
+      "tags": [
+        "instrumental",
+        "instrumentaljazz",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz",
+      "artist": "La Ksa Producciones",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1444795",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1444795&format=mp32",
+      "duration_seconds": 204.0,
+      "genres": [
+        "ambient",
+        "dance",
+        "hiphop"
+      ],
+      "tags": [
+        "improvisa",
+        "instrumental",
+        "party",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Electro Jazz Part 2",
+      "artist": "Hasenchat",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1067887",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1067887&format=mp32",
+      "duration_seconds": 275.0,
+      "genres": [
+        "chillout",
+        "jazz",
+        "pop"
+      ],
+      "tags": [
+        "instrumental",
+        "lounge",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Jazz longue Africa",
+      "artist": "Adamaximus",
+      "license": "BY-SA 2.5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.5/it/",
+      "source_page": "https://www.jamendo.com/track/1129316",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1129316&format=mp32",
+      "duration_seconds": 168.0,
+      "genres": [
+        "classical",
+        "jazz",
+        "medieval"
+      ],
+      "tags": [
+        "bass",
+        "etno",
+        "instrumental",
+        "meditative",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "My Boy (Relax Mix)",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1543598",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1543598&format=mp32",
+      "duration_seconds": 272.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "guitar",
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "synthy"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Dj CreySis - relax dubstep",
+      "artist": "Jetronic",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/853172",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=853172&format=mp32",
+      "duration_seconds": 209.0,
+      "genres": [
+        "chillout",
+        "dub",
+        "dubstep"
+      ],
+      "tags": [
+        "free",
+        "instrumental",
+        "neutral",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Easy day (relax and sleep)",
+      "artist": "Freeman",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1098220",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1098220&format=mp32",
+      "duration_seconds": 162.0,
+      "genres": [
+        "ambient",
+        "drumnbass",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Relaxer",
+      "artist": "Soularis",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1505610",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1505610&format=mp32",
+      "duration_seconds": 185.0,
+      "genres": [
+        "hiphop",
+        "newage",
+        "triphop"
+      ],
+      "tags": [
+        "dark",
+        "instrumental",
+        "sampling",
+        "speed_verylow"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Relax",
+      "artist": "Tomy",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1119550",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1119550&format=mp32",
+      "duration_seconds": 267.0,
+      "genres": [
+        "hiphop",
+        "jazz",
+        "triphop"
+      ],
+      "tags": [
+        "computer",
+        "instrumental",
+        "jazzy",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Maximum Relax with Pop",
+      "artist": "Hasenchat",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1137476",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1137476&format=mp32",
+      "duration_seconds": 297.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "out",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "theorie of a relaxed state of mind",
+      "artist": "The Ionist",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1121527",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1121527&format=mp32",
+      "duration_seconds": 282.0,
+      "genres": [
+        "experimental",
+        "hiphop",
+        "jazz"
+      ],
+      "tags": [
+        "drums",
+        "instrumental",
+        "neojazz",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Ferlinka - Relax Bahia",
+      "artist": "ferlinka",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1359391",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1359391&format=mp32",
+      "duration_seconds": 214.0,
+      "genres": [
+        "ambient",
+        "tribal"
+      ],
+      "tags": [
+        "commercial",
+        "guitar",
+        "instrumental",
+        "lounge",
+        "speed_low",
+        "uplifting"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "L'Antica Monterano",
+      "artist": "Ostenvegr",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1224892",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1224892&format=mp32",
+      "duration_seconds": 122.0,
+      "genres": [
+        "ambient",
+        "synthpop"
+      ],
+      "tags": [
+        "instrumental",
+        "meditative",
+        "nature",
+        "relaxive",
+        "speed_medium",
+        "synthesizer",
+        "travel"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Smooth Wake Up (Instrumental)",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/2188738",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2188738&format=mp32",
+      "duration_seconds": 215.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "guitar",
+        "instrumental",
+        "relaxing",
+        "speed_low",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Atmosphere (Instrumental)",
+      "artist": "M Productions",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/394407",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=394407&format=mp32",
+      "duration_seconds": 180.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Atmosphere",
+      "artist": "Pal Zoltan Illes",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/811246",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=811246&format=mp32",
+      "duration_seconds": 152.0,
+      "genres": [
+        "classical",
+        "filmscore",
+        "symphonic"
+      ],
+      "tags": [
+        "cello",
+        "doublebass",
+        "film",
+        "instrumental",
+        "sound",
+        "speed_medium",
+        "videogame"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Cometary Atmosphere",
+      "artist": "Panda In Shell",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1041944",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1041944&format=mp32",
+      "duration_seconds": 248.0,
+      "genres": [
+        "ambient",
+        "electronic",
+        "postrock"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Like It (Instrumental)",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1543597",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1543597&format=mp32",
+      "duration_seconds": 245.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "pads",
+        "piano",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Underworld",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1543591",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1543591&format=mp32",
+      "duration_seconds": 200.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "pads",
+        "piano",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "We Are Temporary And We Are Beautiful As Such",
+      "artist": "Tonepoet",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1530806",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1530806&format=mp32",
+      "duration_seconds": 262.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "atmospheric",
+        "dreamy",
+        "instrumental",
+        "sleep",
+        "soundscape",
+        "speed_verylow"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "The Dream Is Now",
+      "artist": "Tonepoet",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1530545",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1530545&format=mp32",
+      "duration_seconds": 241.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "atmospheric",
+        "dreamy",
+        "instrumental",
+        "sleep",
+        "soundscape",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Celestial Moments In Green",
+      "artist": "Tonepoet",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1530488",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1530488&format=mp32",
+      "duration_seconds": 258.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "filmscore"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "sleep",
+        "soundscape",
+        "speed_verylow"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Awareness Of Self",
+      "artist": "Tonepoet",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1531132",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1531132&format=mp32",
+      "duration_seconds": 244.0,
+      "genres": [
+        "ambient",
+        "chillout",
+        "filmscore"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "sleep",
+        "soundscape",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Eternal (Prod. by Conclussion Beats)",
+      "artist": "Conclussion Beats",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1044535",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1044535&format=mp32",
+      "duration_seconds": 181.0,
+      "genres": [
+        "electronic",
+        "filmscore",
+        "garage"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "sampler",
+        "speed_low",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Happy new year (2008)",
+      "artist": "Desperate Mars",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1094161",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1094161&format=mp32",
+      "duration_seconds": 262.0,
+      "genres": [
+        "classical",
+        "electronic",
+        "idm"
+      ],
+      "tags": [
+        "atmospheric",
+        "christmas",
+        "dreamy",
+        "instrumental",
+        "newyear",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Talking &amp; Bells (Part 1)",
+      "artist": "Tonepoet",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1531134",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1531134&format=mp32",
+      "duration_seconds": 95.0,
+      "genres": [
+        "ambient"
+      ],
+      "tags": [
+        "atmospheric",
+        "dreamy",
+        "instrumental",
+        "sleep",
+        "soundscape",
+        "speed_verylow"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Roots",
+      "artist": "Jahzzar",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/508495",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=508495&format=mp32",
+      "duration_seconds": 296.0,
+      "genres": [
+        "ambient",
+        "downtempo",
+        "filmscore"
+      ],
+      "tags": [
+        "atmospheric",
+        "instrumental",
+        "neutral",
+        "scifi",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Corvois calm",
+      "artist": "Torley on Piano",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/151039",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=151039&format=mp32",
+      "duration_seconds": 108.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Eaux calmes",
+      "artist": "Noziris",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1296459",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1296459&format=mp32",
+      "duration_seconds": 237.0,
+      "genres": [
+        "ambient",
+        "chillout"
+      ],
+      "tags": [
+        "calme",
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "PARPG Ruins (Calm, Amibient)",
+      "artist": "Pal Zoltan Illes",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/875308",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=875308&format=mp32",
+      "duration_seconds": 217.0,
+      "genres": [
+        "ambient",
+        "classical",
+        "rock"
+      ],
+      "tags": [
+        "bass",
+        "gamemusic",
+        "instrumental",
+        "scifi",
+        "soft",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Keep Calm",
+      "artist": "Jahzzar",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1075574",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1075574&format=mp32",
+      "duration_seconds": 152.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "melancholic",
+        "peaceful",
+        "piano",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Calm BeforeThe Storm",
+      "artist": "Gary David Pobst",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1191880",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1191880&format=mp32",
+      "duration_seconds": 299.0,
+      "genres": [
+        "newage",
+        "pop"
+      ],
+      "tags": [
+        "atmosphericc",
+        "instrumental",
+        "meditative",
+        "peaceful",
+        "piano",
+        "saxophone",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "SiJ - Calm Heartbeat",
+      "artist": "SiJ",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1086947",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1086947&format=mp32",
+      "duration_seconds": 268.0,
+      "genres": [
+        "ambient",
+        "darkambient",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "SiJ - Calm",
+      "artist": "SiJ",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1086966",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1086966&format=mp32",
+      "duration_seconds": 272.0,
+      "genres": [
+        "darkambient",
+        "downtempo",
+        "electronic"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Beach paradise",
+      "artist": "XeMa",
+      "license": "BY-SA 2.5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "source_page": "https://www.jamendo.com/track/2970",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=2970&format=mp32",
+      "duration_seconds": 175.0,
+      "genres": [
+        "ambient",
+        "chansonfrancaise",
+        "easylistening",
+        "jazz"
+      ],
+      "tags": [
+        "acousticguitar",
+        "bluefunk",
+        "calm",
+        "instrumental",
+        "soft",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Tartine",
+      "artist": "Fadièse",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/38770",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=38770&format=mp32",
+      "duration_seconds": 64.0,
+      "genres": [
+        "easylistening",
+        "folk",
+        "newage"
+      ],
+      "tags": [
+        "acousticguitar",
+        "calm",
+        "improvisation",
+        "instrumental",
+        "neutral",
+        "peaceful",
+        "soft",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Le piano troix",
+      "artist": "Torley on Piano",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/150810",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=150810&format=mp32",
+      "duration_seconds": 129.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Le piano",
+      "artist": "Torley on Piano",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/150798",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=150798&format=mp32",
+      "duration_seconds": 122.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "2-charlie-piano",
+      "artist": "Lepellec dominique",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1193601",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1193601&format=mp32",
+      "duration_seconds": 189.0,
+      "genres": [
+        "classical",
+        "symphonic"
+      ],
+      "tags": [
+        "instrumental",
+        "piano",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Le piano deux",
+      "artist": "Torley on Piano",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/150803",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=150803&format=mp32",
+      "duration_seconds": 98.0,
+      "genres": [
+        "classical"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "study no 01 for virtual piano",
+      "artist": "pharmacopia",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/79440",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=79440&format=mp32",
+      "duration_seconds": 140.0,
+      "genres": [
+        "classical",
+        "electronic",
+        "jazz"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Greensleeves (Piano)",
+      "artist": "Oursvince",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1398740",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1398740&format=mp32",
+      "duration_seconds": 95.0,
+      "genres": [
+        "classical",
+        "medieval"
+      ],
+      "tags": [
+        "christmas",
+        "holiday",
+        "holidays",
+        "instrumental",
+        "peaceful",
+        "sad",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Ultimum sidus sol vincit (piano solo)",
+      "artist": "Aufklarung",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/828834",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=828834&format=mp32",
+      "duration_seconds": 99.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "cinematic",
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium",
+        "strange",
+        "vocals"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Bach-Vivaldi 1 Piano Allegro",
+      "artist": "Re-Lab",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1009061",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1009061&format=mp32",
+      "duration_seconds": 228.0,
+      "genres": [
+        "ambient",
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Castillo de versos (piano version)",
+      "artist": "Víctor Figueroa Molina",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/786540",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=786540&format=mp32",
+      "duration_seconds": 68.0,
+      "genres": [
+        "newage"
+      ],
+      "tags": [
+        "instrumental",
+        "piano",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "N'oublie jamais (Piano)",
+      "artist": "Julien Allioux",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/934752",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=934752&format=mp32",
+      "duration_seconds": 182.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "piano",
+        "scoremovie",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Piano Lessons",
+      "artist": "Daniel Bautista",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/137328",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=137328&format=mp32",
+      "duration_seconds": 171.0,
+      "genres": [
+        "classical",
+        "metal"
+      ],
+      "tags": [
+        "instrumental",
+        "speed_high"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Off for adventure (Piano ver.)",
+      "artist": "K4MMERER",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/872170",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=872170&format=mp32",
+      "duration_seconds": 158.0,
+      "genres": [
+        "chillout",
+        "filmscore"
+      ],
+      "tags": [
+        "dreamy",
+        "instrumental",
+        "piano",
+        "sad",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "The crazy piano man",
+      "artist": "Juan López-Tarruella Maldonado",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1205061",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1205061&format=mp32",
+      "duration_seconds": 244.0,
+      "genres": [
+        "ambient",
+        "experimental",
+        "filmscore"
+      ],
+      "tags": [
+        "emotional",
+        "improvisations",
+        "instrumental",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Gaspar Sanz Canarios Piano",
+      "artist": "Re-Lab",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1283093",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1283093&format=mp32",
+      "duration_seconds": 77.0,
+      "genres": [
+        "ambient",
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "barroque",
+        "instrumental",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Piano",
+      "artist": "José Carrillo",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1233008",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1233008&format=mp32",
+      "duration_seconds": 112.0,
+      "genres": [
+        "classical",
+        "filmscore"
+      ],
+      "tags": [
+        "instrumental",
+        "orchestra",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Asian Shisha Lounge - Mazelo Nostra FEAT. Stepo Del Sol",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1673073",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1673073&format=mp32",
+      "duration_seconds": 210.0,
+      "genres": [
+        "chillout",
+        "electrofunk",
+        "electronic"
+      ],
+      "tags": [
+        "groovy",
+        "instrumental",
+        "percussion",
+        "speed_medium",
+        "synthesizer",
+        "travel"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "At The Lounge",
+      "artist": "Emorej",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/588700",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=588700&format=mp32",
+      "duration_seconds": 228.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "soft",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "the pink ribbon lounge",
+      "artist": "Bod",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/249836",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=249836&format=mp32",
+      "duration_seconds": 242.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "instrumental",
+        "neutral",
+        "speed_low"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "San Telmo Lounge",
+      "artist": "Elektrotango",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1059910",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1059910&format=mp32",
+      "duration_seconds": 242.0,
+      "genres": [
+        "acidjazz",
+        "ambient",
+        "chillout"
+      ],
+      "tags": [
+        "acousticbass",
+        "bandoneon",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "tangonuevo"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Oriental Lounge",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1540443",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1540443&format=mp32",
+      "duration_seconds": 194.0,
+      "genres": [
+        "asian",
+        "chillout"
+      ],
+      "tags": [
+        "bongo",
+        "epiano",
+        "instrumental",
+        "speed_low",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "The Lounge ! (Piano Version)",
+      "artist": "Sounds Hilarious",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1769723",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1769723&format=mp32",
+      "duration_seconds": 176.0,
+      "genres": [
+        "jazz"
+      ],
+      "tags": [
+        "film",
+        "improvisation",
+        "instrumental",
+        "piano",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Tales of Spring",
+      "artist": "Martin Eigenmann",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1198744",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1198744&format=mp32",
+      "duration_seconds": 244.0,
+      "genres": [
+        "ambient",
+        "chillout"
+      ],
+      "tags": [
+        "instrumental",
+        "jazzy",
+        "lounge",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Gone",
+      "artist": "Martin Eigenmann",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1198814",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1198814&format=mp32",
+      "duration_seconds": 129.0,
+      "genres": [
+        "chillout",
+        "downtempo"
+      ],
+      "tags": [
+        "instrumental",
+        "longing",
+        "lounge",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "In The Story That We Say",
+      "artist": "Café Del Chillia",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1455877",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1455877&format=mp32",
+      "duration_seconds": 166.0,
+      "genres": [
+        "chillout",
+        "electronic"
+      ],
+      "tags": [
+        "feeling",
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Chillnight",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227394",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227394&format=mp32",
+      "duration_seconds": 298.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "jazz"
+      ],
+      "tags": [
+        "electricpiano",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "trumpet"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Angels Are Coming",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227362",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227362&format=mp32",
+      "duration_seconds": 271.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "egitarren",
+        "electricpiano",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "trumpet"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Pedestrian babble",
+      "artist": "K4MMERER",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/493577",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=493577&format=mp32",
+      "duration_seconds": 182.0,
+      "genres": [
+        "chillout"
+      ],
+      "tags": [
+        "instrumental",
+        "lounge",
+        "neutral",
+        "peaceful",
+        "speed_medium",
+        "synthesizer"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "PianoBar",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227368",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227368&format=mp32",
+      "duration_seconds": 195.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "electricpiano",
+        "gitarre",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "synthy"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Storm",
+      "artist": "A.K.1974",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/171149",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=171149&format=mp32",
+      "duration_seconds": 163.0,
+      "genres": [
+        "ambient",
+        "electronic"
+      ],
+      "tags": [
+        "happy",
+        "instrumental",
+        "lounge",
+        "neutral",
+        "peaceful",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Leave Me",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227376",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227376&format=mp32",
+      "duration_seconds": 211.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "electricpiano",
+        "flächen",
+        "gitarre",
+        "instrumental",
+        "lounge",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Dreams From Venedig",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227373",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227373&format=mp32",
+      "duration_seconds": 295.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "electricpiano",
+        "epiano",
+        "instrumental",
+        "lounge",
+        "speed_medium",
+        "strings"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Midnight",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227360",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227360&format=mp32",
+      "duration_seconds": 208.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "drums",
+        "gitarre",
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "speed_medium",
+        "streicher"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Smooth Night",
+      "artist": "Mazelo Nostra",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/1227365",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=1227365&format=mp32",
+      "duration_seconds": 231.0,
+      "genres": [
+        "chillout",
+        "jazz"
+      ],
+      "tags": [
+        "bongo",
+        "gitarre",
+        "instrumental",
+        "lounge",
+        "peaceful",
+        "sfx",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    },
+    {
+      "title": "Thrilled hands holding",
+      "artist": "Tymphony",
+      "license": "BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "source_page": "https://www.jamendo.com/track/341563",
+      "download_url": "https://prod-1.storage.jamendo.com/?trackid=341563&format=mp32",
+      "duration_seconds": 116.0,
+      "genres": [
+        "chillout",
+        "electronic",
+        "pop"
+      ],
+      "tags": [
+        "happy",
+        "instrumental",
+        "lounge",
+        "neutral",
+        "peaceful",
+        "soft",
+        "speed_medium"
+      ],
+      "reason_not_downloaded": "Licence reported by the Openverse API (which mirrors Jamendo's own API), but the Jamendo track page is fully JS-rendered and its served HTML contains NO licence text, and the Jamendo API needs a client_id. Could not confirm the licence at the source page, so not downloaded. Audio URL is a working direct MP3 if a human accepts Openverse as the licence-of-record. ALSO share-alike."
+    }
+  ],
+  "rejected_categories": [
+    {
+      "what": "ccMixter CC BY-NC / BY-NC-SA uploads",
+      "action": "rejected",
+      "why": "Non-commercial only. A public website is not reliably non-commercial. Harvest used lic=open to exclude these."
+    },
+    {
+      "what": "archive.org items with uploader-supplied licenceurl that is obviously wrong",
+      "action": "rejected",
+      "why": "archive.org licence metadata is uploader-supplied and unverified. Concrete examples seen tagged CC0 that plainly are not: 'Nine Inch Nails - Closer [impulse.0000 remix]', 'Jason Mraz - I Won't Give Up', 'Jeremy Soule - The Elder Scrolls V: Skyrim Official Game Soundtrack', 'Hiroshi Yoshimura - Music For Nine Post Cards' (1982 commercial album). Only releases from genuine netlabel collections were kept.",
+      "examples": [
+        "NineInchNails-Closerimpulse.0000RemixOriginal",
+        "JasonMraz-IWontGiveUpabcde",
+        "Hiroshi Yoshimura - Music For Nine Post Cards"
+      ]
+    },
+    {
+      "what": "Holizna on archive.org",
+      "action": "rejected",
+      "why": "Two items are CC BY-NC-ND 4.0 (non-commercial AND no-derivatives); two others carry no licenceurl at all. The Holizna material that IS verifiably CC0 was taken from Freesound instead."
+    },
+    {
+      "what": "Musopen (public-domain classical)",
+      "action": "not pursued",
+      "why": "Compositions are public domain but individual recordings/performances carry their own terms and the site gates bulk download behind an account. Not a fit for the mellow/lofi brief either."
+    },
+    {
+      "what": "Free Music Archive",
+      "action": "not pursued",
+      "why": "Old API is dead; artist URLs 404 (e.g. /music/holizna/ returned 404). Per-track licence would need scraping with no reliable machine-readable field."
+    }
+  ]
+}
