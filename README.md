@@ -20,6 +20,115 @@ Every tile is a different algorithm on a different photograph, cropped at its ow
 zoom and framing. The layout is a recursive split rather than a grid, so the tile
 shapes vary and the result reads as a composition instead of a contact sheet.
 
+```mermaid
+flowchart LR
+  subgraph ref["reference implementation"]
+    EFF["effects.py<br/>42 algorithms<br/><i>plain NumPy</i>"]
+  end
+
+  subgraph ships["what ships"]
+    GLSL["shaders.js<br/>21 GLSL programs"]
+    SRV["server.py<br/>renders per request"]
+  end
+
+  subgraph out["output"]
+    POSTER["poster<br/><i>PNG</i>"]
+    WALL["the wall<br/><i>60fps, on your GPU</i>"]
+    GALLERY["gallery<br/><i>one image per tile</i>"]
+  end
+
+  EFF -->|"ported to"| GLSL
+  EFF -->|"called by"| SRV
+  EFF --> POSTER
+  GLSL --> WALL
+  SRV --> GALLERY
+
+  GLSL -.->|"compared against"| EFF
+
+  style EFF fill:#2d4a1a,stroke:#d8ff4f,color:#ffffff
+  style GLSL fill:#1e2c4d,stroke:#8fb0f0,color:#ffffff
+```
+
+The dotted line is the one that matters. The NumPy engine is not just the first
+version — it stays the **authority**, and every shader is measured against it on
+every push. Two implementations of the same idea disagreeing is the most reliable
+bug detector in the project; almost everything genuinely broken was found that
+way rather than by looking.
+
+## Contents
+
+| | |
+|---|---|
+| [Genres](#genres) · [Run it](#run-it) · [What's in it](#whats-in-it) | the algorithms |
+| [Live gallery](#live-gallery) · [GPU wall](#gpu-wall) · [Radio](#radio) | the three front ends |
+| [Depth](#depth-aware-processes) · [Chrome](#chrome) · [Focus](#focus-and-motion) · [Morph](#morph-transitions) | how the wall behaves |
+| [Differential harness](#differential-harness) · [Linear light](#linear-light) · [Antialiased screens](#antialiased-screens) · [Dot gain](#dot-gain) | correctness, and what it caught |
+| [Deploying](#deploying) · [Layout](#layout) · [What's next](#whats-next) | shipping it |
+
+## How it fits together
+
+Everything expensive happens **before** the site is served. What reaches the
+browser is static files and a fragment shader.
+
+```mermaid
+flowchart TB
+  subgraph build["build time — run by hand, committed"]
+    direction LR
+    PIC["Picsum<br/><i>993 photos</i>"] --> BC["build_corpus.py<br/><i>filter, resize, tone stats</i>"]
+    BC --> PH["photos/ ×120<br/>manifest.json<br/>20 MB"]
+    PH --> BD["build_depth.py<br/><i>Depth Anything V2, ONNX</i>"]
+    BD --> DP["depth/ ×120<br/>3.2 MB"]
+    CCM["ccMixter<br/><i>licence-verified</i>"] --> BA["build_audio.py<br/><i>EBU R128, re-encode</i>"]
+    BA --> AU["audio/ ×14<br/>audio.json<br/>34 MB"]
+  end
+
+  subgraph ci["every push"]
+    direction LR
+    DH["diff_harness.py<br/><i>do GPU and NumPy agree?</i>"]
+    TF["tone_fidelity.py<br/><i>is either of them right?</i>"]
+  end
+
+  subgraph run["runtime — the viewer's browser"]
+    direction LR
+    BOOT["boot<br/><i>pick 36 of 120</i>"] --> TEX["textures<br/>+ tone measured per crop"]
+    TEX --> LOOP["frame loop<br/><i>one gl.viewport per tile</i>"]
+    RAD["radio.js<br/><i>bar clock from BPM</i>"] -.->|"restyle, ripple, ink swell"| LOOP
+  end
+
+  build --> ci --> CF["Cloudflare Pages<br/><i>static, 58 MB</i>"]
+  CF --> run
+
+```
+
+No server, no runtime dependency on anything. If Picsum and ccMixter both
+vanished tomorrow the site would carry on exactly as it is.
+
+## Drawing one frame
+
+The whole wall is a single WebGL context. A tile is not an element — it is a
+viewport rectangle and a program.
+
+```mermaid
+flowchart TB
+  F["frame(now)"] --> R["radio.tick()<br/><i>advance bar clock, smooth level</i>"]
+  R --> T{"for each tile"}
+  T --> V["viewFor(tile, focus)<br/><i>interpolate rect, crop, tone</i>"]
+  V --> D["drawTile()<br/><i>gl.viewport → uniforms → 3 vertices</i>"]
+  D --> M{"mid-morph?"}
+  M -->|yes| D2["draw the incoming effect<br/>over the outgoing at rising alpha"]
+  M -->|no| N["next tile"]
+  D2 --> N
+  N --> T
+  T -->|done| SWAP["schedule the next swap"]
+
+  style D fill:#1e2c4d,stroke:#8fb0f0,color:#ffffff
+```
+
+One context because browsers cap concurrent WebGL contexts at roughly 8–16, so a
+canvas per tile fails outright past a dozen. Three vertices because a single
+oversized triangle covers the viewport with no seam down the diagonal that two
+would leave.
+
 ## Genres
 
 The default wall is deliberately heterogeneous — it exists to compare algorithms
@@ -342,6 +451,34 @@ cannot take percentiles, so it receives them, by the same route `uTone` does.
 
 The harness runs in CI and gates deployment.
 
+```mermaid
+flowchart LR
+  SRC["a photograph<br/><i>4 of them, swept</i>"] --> G["GPU<br/><i>real Chromium, SwiftShader</i>"]
+  SRC --> N["NumPy reference"]
+  G --> C{"compare"}
+  N --> C
+  C --> S["structure ≥ 0.70<br/><i>32×32 correlation</i>"]
+  C --> E["exposure ≤ 0.10<br/><i>mean luminance</i>"]
+  C --> I["ink ≤ 0.13<br/><i>fraction dark</i>"]
+
+  SRC --> L["light of the source<br/><i>linear, not sRGB</i>"]
+  G --> L2["light of the render"]
+  L --> C2{"residual ≤ 0.05"}
+  L2 --> C2
+
+  S & E & I --> OK["diff_harness<br/><i>do they agree?</i>"]
+  C2 --> OK2["tone_fidelity<br/><i>are they right?</i>"]
+  OK & OK2 --> DEP["deploy"]
+
+  style OK fill:#2d4a1a,stroke:#d8ff4f,color:#ffffff
+  style OK2 fill:#2d4a1a,stroke:#d8ff4f,color:#ffffff
+```
+
+Two different questions, and both are needed. Crosshatch passed the differential
+harness for the entire project while being wrong by a third of the tonal range —
+the two implementations agreed with each other perfectly, and were both wrong.
+Only measuring against the *source* caught it.
+
 ## Linear light
 
 A dither is a physical claim: cover *x*% of the paper in ink and the tile, seen
@@ -580,21 +717,26 @@ about 11 seconds.
 
 ```
 ditherwall/          NumPy engine — posters, and the reference implementation
-  fetch.py             photo corpus + caching
-  effects.py           all algorithms, plus the EFFECTS registry
+  fetch.py             Picsum catalogue, mechanical filters, caching
+  effects.py           all 42 algorithms, plus the EFFECTS registry
   genres.py            style presets: palette, screen and finish per genre
   layout.py            recursive canvas splitting, detail-seeking crops
   render.py            composition and labelling
 
 gpu/                 WebGL2 wall — what ships to Cloudflare Pages
-  shaders.js           GLSL ports, 16 programs
-  presets.js           palettes, ramps and inks bound to those programs
+  shaders.js           21 GLSL programs + the shared prelude
+  presets.js           73 presets across 9 genres, bound to those programs
   layout.js            the splitting algorithm, ported
-  main.js              one context, tone measurement, morph, chrome
+  main.js              one context, tone measurement, focus, morph, chrome
+  radio.js             two decks, crossfade, and the bar clock
+  index.html style.css the corner HUD and help panel
   diff.html            headless bench the differential harness drives
-  _headers             Pages cache rules
-  photos/ depth/       bundled corpus and its depth maps
+  _headers             Pages cache rules — photos, depth and audio immutable
+  photos/ ×120         the corpus, 1440px            20 MB
+  depth/  ×120         monocular depth maps           3.2 MB
+  audio/  ×14          normalised to −19 LUFS         34 MB
   manifest.json        corpus index
+  audio.json           track list: bpm, licence, gain
 
 web/                 server-rendered gallery
   server.py            http.server + a pre-rendering worker pool
@@ -604,11 +746,13 @@ web/                 server-rendered gallery
 tools/
   build_corpus.py      optimised photos, manifest, blue-noise texture
   build_depth.py       monocular depth maps via ONNX Runtime
+  build_audio.py       loudness normalisation and re-encoding
   diff_harness.py      GPU vs NumPy, gates deployment
   tone_fidelity.py     rendered light vs source light, gates deployment
+  audio_sources/       provenance for all 61 collected tracks
 
 .github/workflows/
-  deploy.yml           harness, then wrangler pages deploy
+  deploy.yml           both harnesses, then wrangler pages deploy
 
 ROADMAP.md           rendering work not done yet, and what it would cost
 ```
